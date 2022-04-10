@@ -1,0 +1,7 @@
+{
+  "name": "apsc",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
