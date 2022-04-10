@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "apsc-46801": {
+      "hosting": {
+        "app": [
+          "apsc-46801"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "apsc-46801"
+  }
+}
