@@ -1,18 +1,61 @@
 import { Component } from '@angular/core';
+import { AuthService } from './services/auth.service';
+import { ComponentStore } from '@ngrx/component-store';
+import { FirestoreService } from './services/firestore.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
-  public appPages = [
-    { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/Favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
+export class AppComponent extends ComponentStore<any> {
+  public readonly appPages = [
+    {
+      title: 'Members',
+      pages: [
+        // { title: 'Log In', url: '/login', icon: 'person' },
+        { title: 'Job Board', url: '/job-board', icon: 'list-circle' },
+        {
+          title: 'Log My Hours',
+          url: '/work-log',
+          icon: 'document-text',
+        },
+      ],
+    },
+    {
+      title: 'Admin',
+      pages: [
+        { title: 'Job Data', url: '/job-data', icon: 'list-circle' },
+        { title: 'Boats', url: '/boats', icon: 'list-circle' },
+        { title: 'Post A Job', url: '/post-job', icon: 'list-circle' },
+        {
+          title: 'Worked Hours Report',
+          url: '/work-report',
+          icon: 'document-text',
+        },
+      ],
+    },
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+
+  readonly vm$ = this.select(
+    this.authService.userInfo$,
+    this.firestoreService.currentUser$,
+    (userInfo, currentUser) => ({
+      userInfo,
+      currentUser,
+    })
+  );
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly firestoreService: FirestoreService
+  ) {
+    super({});
+
+    this.vm$.subscribe((vm) => console.log('[AppComponent] vm', vm));
+  }
+
+  logout() {
+    this.authService.signOut();
+  }
 }

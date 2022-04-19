@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Job Board</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="filter"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="vm$|async; let vm">
+  <ion-list>
+    <ion-list-header>Filters</ion-list-header>
+    <ion-item>
+      <ion-label position="stacked">Job Category</ion-label>
+      <ion-select
+        interface="popover"
+        size="cover"
+        (ionChange)="setCategoryFilter($event.detail.value)"
+      >
+        <ion-select-option *ngFor="let option of  jobCategoryOptions"
+          >{{option}}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+    <ion-item button id="open-date-input">
+      <ion-label position="stacked">Date</ion-label>
+      <ion-input> {{vm.filters?.date}} </ion-input>
+
+      <ion-popover trigger="open-date-input" show-backdrop="false">
+        <ng-template>
+          <ion-datetime
+            #popoverDatetime
+            presentation="date"
+            [value]="vm.filters?.date"
+            showDefaultButtons="false"
+            showClearButton="true"
+            [max]="vm.dateRange.max"
+            [min]="vm.dateRange.min"
+            [isDateEnabled]="vm.isDateEnabledCallback"
+            (ionChange)="setDateFilter($event.detail.value)"
+          ></ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item>
+  </ion-list>
+
+  <ion-card
+    *ngFor="let job of vm.filteredJobs"
+    button
+    [routerLink]="['/sign-up',job.id]"
+  >
+    <ion-card-header>
+      <ion-card-title>{{job.jobDetails.title}}</ion-card-title>
+      <ion-card-subtitle
+        >{{job.jobDetails.date|date}}, {{job.jobDetails.hours}} Hours
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content> {{job.jobDetails.description}} </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="vm.filteredJobs.length===0">
+    <ion-card-header>
+      <ion-card-title>No Jobs</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Sorry, no jobs available
+      <span *ngIf="vm.filterArray.length>0"> matching </span>
+      <p *ngFor="let filter of vm.filterArray">
+        <b> {{filter.key | titlecase }}:</b> <em> {{filter.value}} </em>
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
