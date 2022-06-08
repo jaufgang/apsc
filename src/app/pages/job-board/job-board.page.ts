@@ -15,7 +15,7 @@ const ANY_JOB_CATEGORY = 'Any';
   styleUrls: ['./job-board.page.scss'],
 })
 export class JobBoardPage extends ComponentStore<{
-  filters?: { date?: string; category?: string };
+  filters?: { date?: string; category?: string; showVolunteered?: boolean };
 }> {
   readonly jobCategoryOptions = [ANY_JOB_CATEGORY, ...jobCategoryOptions];
 
@@ -41,8 +41,13 @@ export class JobBoardPage extends ComponentStore<{
     (jobBoard, filters) =>
       jobBoard.filter((job) =>
         filters.every(({ key, value }) => {
-          const isMatch = job.jobDetails[key] === value;
-          console.log('??', isMatch, key, value, job);
+          const isMatch =
+            key === 'showVolunteered'
+              ? value
+                ? true
+                : job.submittedBy === null
+              : job.jobDetails[key] === value;
+          //console.log('??', isMatch, key, value, job);
           return isMatch;
         })
       )
@@ -73,7 +78,7 @@ export class JobBoardPage extends ComponentStore<{
     this.filters$,
     this.filterArray$,
     this.filteredJobs$,
-    this.firestoreService.boats$,
+    this.firestoreService.boatNames$,
 
     (
       jobBoard,
@@ -102,14 +107,14 @@ export class JobBoardPage extends ComponentStore<{
     private readonly firestoreService: FirestoreService,
     private readonly router: Router
   ) {
-    super({});
+    super({ filters: { showVolunteered: false } });
 
-    this.vm$.subscribe((vm) => console.log('[JobBoardPage] vm', vm));
-    this.state$.subscribe((vm) => console.log('[JobBoardPage] state', vm));
+    // this.vm$.subscribe((vm) => console.log('[JobBoardPage] vm', vm));
+    // this.state$.subscribe((vm) => console.log('[JobBoardPage] state', vm));
   }
 
   jobClicked(jobId: string) {
-    console.log(jobId);
+    // console.log(jobId);
   }
 
   setDateFilter(dateFilter: string) {
@@ -126,6 +131,12 @@ export class JobBoardPage extends ComponentStore<{
         categoryFilter !== ANY_JOB_CATEGORY
           ? { ...state.filters, category: categoryFilter }
           : (({ category, ...filters }) => filters)(state.filters ?? {}),
+    }));
+  }
+
+  showVolunteered(showVolunteered: boolean) {
+    this.patchState((state) => ({
+      filters: { ...state.filters, showVolunteered },
     }));
   }
 }

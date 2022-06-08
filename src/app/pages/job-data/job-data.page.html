@@ -1,26 +1,86 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>JobData</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-content *ngIf="vm$|async; let vm">
-  <!--  <pre>{{vm|json}}</pre>-->
+<ng-container *ngIf="vm$|async; let vm">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Job Descriptions</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <ion-list>
-    <ion-item *ngFor="let jobType of vm.jobTypes">
-      <ion-label>
-        <p><b>{{jobType.title}}</b> ({{jobType.category}})</p>
+  <ion-content>
+    <!--  <pre>{{vm|json}}</pre>-->
+    <ion-list>
+      <ion-item button *ngFor="let jobType of vm.jobTypes" detail>
+        <ion-label>
+          <p><b>{{jobType.title}}</b> ({{jobType.category}})</p>
 
-        <p>{{jobType.description}}</p>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>
-        <ion-input job></ion-input>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-</ion-content>
+          <p>{{jobType.description}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-buttons>
+        <ion-button id="add-button">Add</ion-button>
+
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+
+  <ion-modal trigger="add-button">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Add A New Job Type</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="form">
+          <ion-list>
+            <ion-item>
+              <ion-label position="stacked">Job Category</ion-label>
+              <ion-select
+                interface="popover"
+                formControlName="category"
+                [value]="vm.formValues?.jobCategory"
+                (ionDismiss)="dismissPopover($event)"
+              >
+                <ion-select-option *ngFor="let option of  jobCategoryOptions"
+                  >{{option}}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Job Title</ion-label>
+              <ion-input formControlName="title"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Description</ion-label>
+              <ion-textarea
+                formControlName="description"
+                auto-grow="true"
+              ></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-content>
+      <ion-footer>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button color="secondary" onclick="dismissModal()"
+              >Cancel</ion-button
+            >
+
+
+            <ion-button color="primary" (click)="addJob()"
+              >Add Job</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+</ng-container>

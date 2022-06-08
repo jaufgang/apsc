@@ -28,7 +28,7 @@ export interface PostedJobDetails extends JobDetails {
 // Basic info required for all volunteer jobs
 export interface Volunteer {
   name: string;
-  boat: string;
+  boatName: string;
 }
 
 // Volunteers signing up for job board jobs need to include contact info
@@ -45,7 +45,7 @@ export interface JobBoardJob {
   submittedBy: null;
 }
 
-class SignedUpJobBoardJob implements SignedUpJobBoardJob {
+export interface SignedUpJobBoardJob {
   jobDetails: PostedJobDetails;
   showOnJobBoard: true;
   submittedBy: MemberInfo;

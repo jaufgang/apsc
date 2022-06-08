@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import firebase from 'firebase/compat/app';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, UserInfo } from '../../services/auth.service';
 import { ComponentStore } from '@ngrx/component-store';
-import { filter, tap } from 'rxjs/operators';
+import { delay, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage extends ComponentStore<never> {
-  // *** Effects **
+  // *** Selectors **
+
+  readonly vm$: Observable<{ userInfo: UserInfo }> = this.select(
+    this.authService.userInfo$,
+    (userInfo) => ({
+      userInfo,
+    })
+  );
+
+  // *** Effects ***
+
+  readonly initializeForm = this.effect<UserInfo>((userInfo$) =>
+    userInfo$.pipe(
+      filter((userInfo) => !userInfo.email),
+      delay(0),
+      tap(() => this.authService.fbui('#firebaseui-auth-container'))
+    )
+  );
+
   readonly redirectIfSignedIn = this.effect<boolean>((isSignedIn$) =>
     isSignedIn$.pipe(
       filter(Boolean),
@@ -20,15 +38,26 @@ export class LoginPage extends ComponentStore<never> {
     )
   );
 
+  readonly sendEmailVerification = this.effect(($) =>
+    $.pipe(
+      withLatestFrom(this.authService.user$),
+      map(([, user]) => user.sendEmailVerification())
+    )
+  );
+
   constructor(
+    private readonly fb: FormBuilder,
     private readonly authService: AuthService,
     private readonly router: Router
   ) {
     super();
-    this.redirectIfSignedIn(this.authService.isSignedIn$);
+    this.redirectIfSignedIn(this.authService.isSignedInAndVerified$);
+    this.initializeForm(this.authService.userInfo$);
+
+    // this.vm$.subscribe((vm) => console.log('vm', vm));
   }
 
-  login(authType: 'google' | 'facebook') {
-    this.authService.signIn(authType);
+  verified() {
+    window.location.reload();
   }
 }

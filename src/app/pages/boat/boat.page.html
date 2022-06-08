@@ -1,0 +1,63 @@
+<ng-container *ngIf="vm$|async; let vm">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>{{vm.selectedBoatName}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+    <div *ngIf="vm.submittedByBoat; let boat">
+      <!--    <ion-card>-->
+      <!--      <ion-card-content>-->
+      <!--        <pre>{{vm.selectedBoat|json}}</pre>-->
+      <!--      </ion-card-content>-->
+      <!--    </ion-card>-->
+      <ion-list *ngIf="vm.selectedBoat">
+        <ion-item>
+          <ion-label>Model</ion-label>
+          <ion-note slot="end">{{vm.selectedBoat.model}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>LOA</ion-label>
+          <ion-note slot="end">{{vm.selectedBoat.loa}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Registration</ion-label>
+          <ion-note slot="end">{{vm.selectedBoat.registrationNumber}}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Mooring Ball Number</ion-label>
+          <ion-note slot="end">{{vm.selectedBoat.mooringBallNumber}}</ion-note>
+        </ion-item>
+      </ion-list>
+
+      <div class="work-hours ion-padding">
+        <h3>Work hours</h3>
+        <p>{{boat.totalHours}} Hours Total</p>
+
+        <ion-card *ngFor="let item of boat.jobs">
+          <ion-card-header>
+            <ion-card-title>
+              {{item.jobDetails.hours}} Hours, {{item.jobDetails.date|date}}
+            </ion-card-title>
+            <ion-card-subtitle> {{item.volunteer.name}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <p><b>{{item.jobDetails.category}}</b></p>
+            <p>{{item.jobDetails.title ?? item.jobDetails.description}}</p>
+            <p *ngIf="item.submittedBy.name!== item.volunteer.name">
+              <em>
+                Submitted By {{item.submittedBy.name}}
+                ({{item.submittedBy.email}})
+              </em>
+            </p>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </ion-content>
+</ng-container>

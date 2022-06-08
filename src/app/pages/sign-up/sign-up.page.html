@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Job Sign Up</ion-title>
@@ -24,7 +25,7 @@
 
       <ion-item>
         <ion-label position="stacked">Boat</ion-label>
-        <ion-select formControlName="boat" interface="popover">
+        <ion-select formControlName="boatName" interface="popover">
           <ion-select-option *ngFor="let boat of vm.boats"
             >{{boat.name}}</ion-select-option
           >

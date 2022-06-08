@@ -4,17 +4,30 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Job Board</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon name="filter"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="vm$|async; let vm">
+  <ion-card color="light">
+    <ion-card-content>
+      <p>Use this page to find and sign up for posted jobs.</p>
+      <p>
+        If you've performed volunteer work that wasn't posted on the job board,
+        you can log those hours using the
+        <a routerLink="/work-log">work log</a> page.
+      </p>
+    </ion-card-content>
+  </ion-card>
+
   <ion-list>
     <ion-list-header>Filters</ion-list-header>
+
+    <ion-item>
+      <ion-label position="stacked"
+        >Show Jobs that have already been volunteered</ion-label
+      >
+      <ion-toggle (ionChange)="showVolunteered($event.detail.checked)"></ion-toggle>
+    </ion-item>
     <ion-item>
       <ion-label position="stacked">Job Category</ion-label>
       <ion-select
@@ -53,6 +66,8 @@
     *ngFor="let job of vm.filteredJobs"
     button
     [routerLink]="['/sign-up',job.id]"
+    [ngClass]="{volunteered:job.volunteer}"
+    [disabled]="job.volunteer"
   >
     <ion-card-header>
       <ion-card-title>{{job.jobDetails.title}}</ion-card-title>
@@ -60,7 +75,10 @@
         >{{job.jobDetails.date|date}}, {{job.jobDetails.hours}} Hours
       </ion-card-subtitle>
     </ion-card-header>
-    <ion-card-content> {{job.jobDetails.description}} </ion-card-content>
+    <ion-card-content
+      ><p>{{job.jobDetails.description}}</p>
+      <p *ngIf="job.volunteer"><b>Volunteer: {{job.volunteer.name}}</b></p>
+    </ion-card-content>
   </ion-card>
 
   <ion-card *ngIf="vm.filteredJobs.length===0">

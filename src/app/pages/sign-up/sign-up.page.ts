@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from '../../services/firestore.service';
 import { ComponentStore } from '@ngrx/component-store';
@@ -33,7 +33,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
     name: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', [Validators.required, Validators.pattern(PHONE_NUMBER_REGEX)]],
-    boat: ['', [Validators.required]],
+    boatName: ['', [Validators.required]],
   });
 
   readonly formValues$ = this.form
@@ -50,7 +50,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
     this.authService.userInfo$,
     this.jobId$,
     this.job$,
-    this.firestoreService.boats$,
+    this.firestoreService.boatNames$,
     this.formValues$,
     this.volunteerMatchesUser$,
     this.submitted$,
@@ -86,7 +86,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
       })),
       tap((signUpData) => {
         this.firestoreService.signUpForJob(signUpData);
-        return console.log(signUpData);
+        // return console.log(signUpData);
       }),
       tap(() => this.patchState({ submitted: true })),
       tap(() => this.form.disable())
@@ -100,9 +100,9 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
     private readonly authService: AuthService
   ) {
     super({});
-    this.vm$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((vm) => console.log('[SignUpPage] vm', vm));
+    // this.vm$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((vm) => console.log('[SignUpPage] vm', vm));
 
     this.authService.user$.subscribe((user) => {
       this.form.patchValue({

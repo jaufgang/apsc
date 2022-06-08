@@ -9,11 +9,15 @@ import {
   Job,
   JobBoardJob,
   PostedJobDetails,
+  SignedUpJobBoardJob,
+  UserInitiatedJob,
   Volunteer,
 } from '../types/job.types';
+import { AppService } from './app.service';
 
 const USERS_COLLECTION_ID = 'Users';
-const JOB_BOARD_COLLECTION_ID = 'JobBoard';
+const BOATS_COLLECTION_ID = 'Boats';
+const JOB_BOARD_COLLECTION_ID = 'Jobs';
 const APP_DATA_COLLECTION_ID = 'AppData';
 const APP_DATA_DOC_ID = 'Jobs';
 
@@ -37,6 +41,9 @@ export class FirestoreService extends ComponentStore<never> {
     switchMap((currentUserDoc) => currentUserDoc.valueChanges())
   );
 
+  readonly boatsCollection =
+    this.firestore.collection<any>(BOATS_COLLECTION_ID);
+
   readonly jobsCollection = this.firestore.collection<Job>(
     JOB_BOARD_COLLECTION_ID
   );
@@ -51,13 +58,30 @@ export class FirestoreService extends ComponentStore<never> {
 
   readonly jobTypes$ = this.appData$.pipe(map((appData) => appData.types));
 
-  readonly boats$ = this.appData$.pipe(
+  readonly boatNames$ = this.appData$.pipe(
     map((appData) => appData.boats.sort((a, b) => a.name.localeCompare(b.name)))
   );
 
+  readonly selectedBoatDoc$ = this.appService.selectedBoatName$.pipe(
+    map((boatName) => this.boatsCollection.doc(boatName))
+  );
+
+  readonly selectedBoat$ = this.selectedBoatDoc$.pipe(
+    switchMap((doc) => doc.valueChanges())
+  );
+
   readonly jobBoard$ = this.firestore
-    .collection<JobBoardJob>(JOB_BOARD_COLLECTION_ID, (ref) =>
-      ref.where('showOnJobBoard', '==', true).where('submittedBy', '==', null)
+    .collection<JobBoardJob>(
+      JOB_BOARD_COLLECTION_ID,
+      (ref) => ref.where('showOnJobBoard', '==', true)
+      // .where('submittedBy', '==', null)
+    )
+    .valueChanges({ idField: 'id' });
+
+  readonly submittedWork$ = this.firestore
+    .collection<SignedUpJobBoardJob | UserInitiatedJob>(
+      JOB_BOARD_COLLECTION_ID,
+      (ref) => ref.where('submittedBy', '!=', null)
     )
     .valueChanges({ idField: 'id' });
 
@@ -101,20 +125,22 @@ export class FirestoreService extends ComponentStore<never> {
 
   readonly submitHours = this.effect<any>((formValues$) =>
     formValues$.pipe(
-      withLatestFrom(this.authService.userEmail$),
-      tap(([formValues, memberEmail]) =>
-        this.jobsCollection.add({
-          ...formValues,
-          memberEmail,
-          showOnJobBoard: false,
-        })
-      )
+      withLatestFrom(this.authService.userInfo$),
+
+      map(([formValues, userInfo]) => ({
+        ...formValues,
+        submittedBy: userInfo,
+        showOnJobBoard: false,
+      })),
+      // tap((jobData) => console.log('adding job', jobData)),
+      tap((jobData) => this.jobsCollection.add(jobData))
     )
   );
 
   constructor(
     private readonly firestore: AngularFirestore,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly appService: AppService
   ) {
     super();
   }

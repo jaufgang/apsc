@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./boats.page.scss'],
 })
 export class BoatsPage {
-  readonly boats$ = this.firestoreService.boats$;
+  readonly boats$ = this.firestoreService.boatNames$;
 
   readonly vm$ = this.boats$.pipe(
     map((boats) => ({

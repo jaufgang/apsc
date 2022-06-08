@@ -33,9 +33,9 @@ export class PostJobPage extends ComponentStore<{ submitted?: boolean }> {
 
   readonly form = this.fb.group({
     title: ['', [Validators.required]],
-    hours: ['', [Validators.required, Validators.min(1)]],
+    hours: ['', [Validators.required]],
     date: ['', [Validators.required]],
-    peopleNeeded: ['', [Validators.required, Validators.min(1)]],
+    peopleNeeded: ['', [Validators.required]],
   });
 
   //  *** Selectors ***
@@ -113,6 +113,6 @@ export class PostJobPage extends ComponentStore<{ submitted?: boolean }> {
     private readonly firestoreService: FirestoreService
   ) {
     super({});
-    this.vm$.subscribe((vm) => console.log('vm', vm));
+    // this.vm$.subscribe((vm) => console.log('vm', vm));
   }
 }

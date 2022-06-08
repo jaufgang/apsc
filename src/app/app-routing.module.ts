@@ -47,14 +47,6 @@ const routes: Routes = [
       import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: 'work-report',
-    loadChildren: () =>
-      import('./pages/work-report/work-report.module').then(
-        (m) => m.WorkReportPageModule
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'sign-up/:jobId',
     loadChildren: () =>
       import('./pages/sign-up/sign-up.module').then((m) => m.SignUpPageModule),
@@ -64,6 +56,12 @@ const routes: Routes = [
     path: 'boats',
     loadChildren: () =>
       import('./pages/boats/boats.module').then((m) => m.BoatsPageModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'boats/:boatName',
+    loadChildren: () =>
+      import('./pages/boat/boat.module').then((m) => m.BoatPageModule),
     canActivate: [AuthGuard],
   },
 ];

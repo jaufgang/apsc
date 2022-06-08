@@ -1,18 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Boats</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ng-container  *ngIf="vm$|async; let vm">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Boats</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content *ngIf="vm$|async; let vm">
-
-  <ion-list>
-    <ion-item *ngFor="let boat of vm.boats">
-      <ion-label>{{boat.name}}</ion-label>
-    </ion-item>
-  </ion-list>
-
-</ion-content>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let boat of vm.boats" detail routerLink="{{boat.name}}">
+        <ion-label>{{boat.name}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ng-container>

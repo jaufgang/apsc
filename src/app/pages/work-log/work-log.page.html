@@ -9,6 +9,19 @@
 
 <ion-content>
   <ng-container *ngIf="vm$ |async;  let vm">
+    <ion-card color="light">
+      <ion-card-content>
+        <p>
+          This form is for logging volunteer work that you've done that was not
+          posted on the <a routerLink="/job-board">job board</a>.
+        </p>
+        <p>
+          Work that you signed up for on the job board will be automatically
+          added to your volunteer hours, and you do not need to log them here.
+        </p>
+      </ion-card-content>
+    </ion-card>
+
     <form [formGroup]="form">
       <ion-list>
         <ion-item>

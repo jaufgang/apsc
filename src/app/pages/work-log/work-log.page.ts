@@ -34,7 +34,7 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
 
   readonly vm$ = this.select(
     this.formValues$,
-    this.firestoreService.boats$,
+    this.firestoreService.boatNames$,
     this.submitted$,
     (formValues, boats, submitted) => ({
       formValues,
@@ -51,6 +51,19 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
       map(([, formValues]) => formValues),
       tap(() => this.patchState({ submitted: true })),
       tap(() => this.form.disable()),
+      map((formValues) => ({
+        showOnJobBoard: false,
+        jobDetails: {
+          category: formValues.jobCategory,
+          description: formValues.description,
+          date: formValues.date,
+          hours: formValues.hours,
+        },
+        volunteer: {
+          boatName: formValues.boat,
+          name: formValues.name,
+        },
+      })),
       tap((formValues) => this.firestoreService.submitHours(formValues))
     )
   );
@@ -77,21 +90,21 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
       });
     });
 
-    this.formValues$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((formValues) =>
-        console.log('[WorkLogPage] formValues', formValues)
-      );
+    // this.formValues$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((formValues) =>
+    //     console.log('[WorkLogPage] formValues', formValues)
+    //   );
   }
 
   readonly isDateEnabled = (dateIsoString: string) => {
     const date = new Date(dateIsoString);
-    console.log(dateIsoString, date, date.getDate(), date.getDate() % 7);
+    // console.log(dateIsoString, date, date.getDate(), date.getDate() % 7);
     return date.getDate() !== 17;
   };
 
   setDate(value: string) {
-    console.log(value);
+    // console.log(value);
     this.form.patchValue({ date: value });
   }
 }

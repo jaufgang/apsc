@@ -5,6 +5,13 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import firebase from 'firebase/compat/app';
 import { EmptyObject } from '../types/util.types';
 import { Router } from '@angular/router';
+import * as firebaseui from 'firebaseui';
+
+export interface UserInfo {
+  name: string;
+  email: string;
+  emailVerified: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +21,16 @@ export class AuthService extends ComponentStore<EmptyObject> {
 
   readonly user$ = this.auth.authState;
 
-  readonly isSignedIn$ = this.user$.pipe(map((user) => !!user));
+  readonly isSignedInAndVerified$ = this.user$.pipe(
+    // tap((user) => console.log('ccc', user)),
+    map((user) => !!user?.emailVerified)
+  );
 
   readonly userInfo$ = this.user$.pipe(
     map((user) => ({
       name: user?.displayName,
       email: user?.email,
+      emailVerified: !!user?.emailVerified,
     }))
   );
 
@@ -28,19 +39,6 @@ export class AuthService extends ComponentStore<EmptyObject> {
   readonly userName$ = this.userInfo$.pipe(map(({ name }) => name));
 
   //  *** Effects ***
-
-  readonly signIn = this.effect<'google' | 'facebook'>((authProvider$) =>
-    authProvider$.pipe(
-      map((authProviderType) =>
-        authProviderType === 'google'
-          ? new firebase.auth.GoogleAuthProvider()
-          : authProviderType === 'facebook'
-          ? new firebase.auth.FacebookAuthProvider()
-          : undefined
-      ),
-      switchMap((authProvider) => this.auth.signInWithRedirect(authProvider))
-    )
-  );
 
   readonly signOut = this.effect(($) =>
     $.pipe(
@@ -51,18 +49,62 @@ export class AuthService extends ComponentStore<EmptyObject> {
     )
   );
 
+  // readonly tryAgain$ = this.effect(($) =>
+  //   $.pipe(
+  //     switchMap(() => this.auth.()),
+  //     tap(() => {
+  //       this.router.navigate(['login']);
+  //     })
+  //   )
+  // );
+
   constructor(
     private readonly auth: AngularFireAuth,
     private readonly router: Router
   ) {
     super({});
 
-    this.auth.authState.subscribe((authState) =>
-      console.log('[AuthService] authState', authState)
-    );
+    // this.auth.authState.subscribe((authState) =>
+    //   console.log('[AuthService] authState', authState)
+    // );
+    //
+    // this.state$.subscribe((state) =>
+    //   console.log('[AuthService], state', state)
+    // );
+  }
 
-    this.state$.subscribe((state) =>
-      console.log('[AuthService], state', state)
-    );
+  fbui(authContainerId: string) {
+    const ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start(authContainerId, {
+      callbacks: {
+        signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+          if (
+            authResult.additionalUserInfo.providerId === 'password' &&
+            !authResult.user?.emailVerified
+          ) {
+            if (authResult.additionalUserInfo.isNewUser) {
+              authResult.user.sendEmailVerification();
+            } else {
+              //prompt to re-send verification email;
+            }
+          }
+
+          // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+          // console.log(authResult);
+          return true;
+        },
+      },
+      // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+      signInFlow: 'popup',
+      signInSuccessUrl: '/',
+
+      signInOptions: [
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+      ],
+      // Other config options...
+    });
   }
 }

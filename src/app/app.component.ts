@@ -13,7 +13,6 @@ export class AppComponent extends ComponentStore<any> {
     {
       title: 'Members',
       pages: [
-        // { title: 'Log In', url: '/login', icon: 'person' },
         { title: 'Job Board', url: '/job-board', icon: 'list-circle' },
         {
           title: 'Log My Hours',
@@ -25,22 +24,20 @@ export class AppComponent extends ComponentStore<any> {
     {
       title: 'Admin',
       pages: [
-        { title: 'Job Data', url: '/job-data', icon: 'list-circle' },
-        { title: 'Boats', url: '/boats', icon: 'list-circle' },
+        { title: 'Job Descriptions', url: '/job-data', icon: 'list-circle' },
+
         { title: 'Post A Job', url: '/post-job', icon: 'list-circle' },
-        {
-          title: 'Worked Hours Report',
-          url: '/work-report',
-          icon: 'document-text',
-        },
+        { title: 'Boats', url: '/boats', icon: 'list-circle' },
       ],
     },
   ];
 
   readonly vm$ = this.select(
+    this.authService.isSignedInAndVerified$,
     this.authService.userInfo$,
     this.firestoreService.currentUser$,
-    (userInfo, currentUser) => ({
+    (isSignedIn, userInfo, currentUser) => ({
+      isSignedIn,
       userInfo,
       currentUser,
     })
