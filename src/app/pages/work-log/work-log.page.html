@@ -22,20 +22,20 @@
       </ion-card-content>
     </ion-card>
 
-    <form [formGroup]="form">
+    <form [formGroup]="form" >
       <ion-list>
         <ion-item>
-          <ion-label position="stacked">Boat</ion-label>
-          <ion-select formControlName="boat" interface="popover">
-            <ion-select-option *ngFor="let boat of vm.boats"
-              >{{boat.name}}</ion-select-option
+          <ion-label position="stacked">Member</ion-label>
+          <ion-select formControlName="member" interface="popover"
+                      [compareWith]="compareWith"
+          >
+            <ion-select-option
+              *ngFor="let member of vm.members"
+              [value]="member"
             >
+              {{member.firstName}} {{member.lastName}} (#{{member.membershipNumber}})
+            </ion-select-option>
           </ion-select>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="stacked">Volunteer Name</ion-label>
-          <ion-input formControlName="name"></ion-input>
         </ion-item>
 
         <ion-item>
@@ -68,6 +68,7 @@
                 #popoverDatetime
                 presentation="date"
                 formControlName="date"
+                showDefaultButtons="true"
               ></ion-datetime>
             </ng-template>
           </ion-popover>

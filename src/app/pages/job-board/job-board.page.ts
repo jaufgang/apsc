@@ -40,16 +40,13 @@ export class JobBoardPage extends ComponentStore<{
     this.filterArray$,
     (jobBoard, filters) =>
       jobBoard.filter((job) =>
-        filters.every(({ key, value }) => {
-          const isMatch =
-            key === 'showVolunteered'
-              ? value
-                ? true
-                : job.submittedBy === null
-              : job.jobDetails[key] === value;
-          //console.log('??', isMatch, key, value, job);
-          return isMatch;
-        })
+        filters.every(({ key, value }) =>
+          key === 'showVolunteered'
+            ? value
+              ? true
+              : !job.submittedBy
+            : job.jobDetails[key] === value
+        )
       )
   );
 

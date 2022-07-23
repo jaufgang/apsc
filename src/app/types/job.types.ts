@@ -1,4 +1,5 @@
-import { MemberInfo } from './auth.types';
+import { UserInfo } from './auth.types';
+import { Member } from './appData.types';
 
 export enum JobCategory {
   dutyOfficer = 'Duty Officer',
@@ -25,17 +26,10 @@ export interface PostedJobDetails extends JobDetails {
   title: string;
 }
 
-// Basic info required for all volunteer jobs
-export interface Volunteer {
-  name: string;
-  boatName: string;
-}
-
 // Volunteers signing up for job board jobs need to include contact info
 // so they can be contacted in case of problems
-export interface VolunteerWithContactInfo extends Volunteer {
-  email: string;
-  phone: string;
+export interface MemberWithContactInfo extends Member {
+  contactPhone: string;
 }
 
 // Jobs to be posted on the Job Board
@@ -48,15 +42,15 @@ export interface JobBoardJob {
 export interface SignedUpJobBoardJob {
   jobDetails: PostedJobDetails;
   showOnJobBoard: true;
-  submittedBy: MemberInfo;
-  volunteer: VolunteerWithContactInfo;
+  submittedBy: UserInfo;
+  volunteer: MemberWithContactInfo;
 }
 
 // User initiated jobs just need basic job and volunteer info
 export interface UserInitiatedJob {
   jobDetails: JobDetails;
-  volunteer: Volunteer;
-  submittedBy: MemberInfo;
+  volunteer: Member;
+  submittedBy: UserInfo;
   showOnJobBoard: false;
 }
 

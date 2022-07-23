@@ -1,7 +1,7 @@
 <ng-container *ngIf="vm$|async; let vm">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Sign In to ASPC</ion-title>
+      <ion-title>Sign In to APSC</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -36,6 +36,13 @@
     </ng-container>
 
     <ng-template #elseBlock>
+      <p>Welcome to Aquatic Park Sailing Club Member's Portal.</p>
+
+      <p>
+        Please Choose a sign-in method. You can sign up with either method if
+        you don't already have an account.
+      </p>
+
       <div id="firebaseui-auth-container"></div>
     </ng-template>
   </ion-content>

@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument,
+} from '@angular/fire/compat/firestore';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { AuthService } from './auth.service';
-import { AppData } from '../types/appData.types';
-import { MemberInfo } from '../types/auth.types';
+import { AuthService, UserInfo } from './auth.service';
+import { AppData, Member } from '../types/appData.types';
+
 import {
   Job,
   JobBoardJob,
+  MemberWithContactInfo,
   PostedJobDetails,
   SignedUpJobBoardJob,
   UserInitiatedJob,
-  Volunteer,
 } from '../types/job.types';
 import { AppService } from './app.service';
+import { memberList } from './members';
 
 const USERS_COLLECTION_ID = 'Users';
 const BOATS_COLLECTION_ID = 'Boats';
@@ -21,8 +25,9 @@ const JOB_BOARD_COLLECTION_ID = 'Jobs';
 const APP_DATA_COLLECTION_ID = 'AppData';
 const APP_DATA_DOC_ID = 'Jobs';
 
-interface User {
+export interface User {
   isAdmin: boolean;
+  member?: Member;
 }
 @Injectable({
   providedIn: 'root',
@@ -57,6 +62,32 @@ export class FirestoreService extends ComponentStore<never> {
   readonly appData$ = this.appDataDoc.valueChanges();
 
   readonly jobTypes$ = this.appData$.pipe(map((appData) => appData.types));
+
+  readonly members$ = this.appData$.pipe(
+    map((appData) =>
+      appData.members.sort((a, b) =>
+        a.lastName !== b.lastName
+          ? a.lastName.localeCompare(b.lastName)
+          : a.firstName.localeCompare(b.firstName)
+      )
+    )
+  );
+
+  readonly membersGrouped$ = this.members$.pipe(
+    map((members) =>
+      members.reduce(
+        (acc, { membershipNumber, ...member }) => ({
+          ...acc,
+          ...{
+            [membershipNumber]: [...(acc[membershipNumber] ?? []), member].sort(
+              (a, b) => a.status.localeCompare(b.status)
+            ),
+          },
+        }),
+        {}
+      )
+    )
+  );
 
   readonly boatNames$ = this.appData$.pipe(
     map((appData) => appData.boats.sort((a, b) => a.name.localeCompare(b.name)))
@@ -110,14 +141,25 @@ export class FirestoreService extends ComponentStore<never> {
 
   readonly signUpForJob = this.effect<{
     jobId: string;
-    volunteer: Volunteer;
-    submittedBy: MemberInfo;
+    volunteer: MemberWithContactInfo;
+    submittedBy: UserInfo;
   }>((job$) =>
     job$.pipe(
       tap(({ jobId, volunteer, submittedBy }) =>
         this.jobsCollection.doc(jobId).update({
           volunteer,
           submittedBy,
+        })
+      )
+    )
+  );
+
+  readonly cancelSignUp = this.effect<string>((jobId$) =>
+    jobId$.pipe(
+      tap((jobId: string) =>
+        this.jobsCollection.doc(jobId).update({
+          volunteer: null,
+          submittedBy: null,
         })
       )
     )
@@ -137,11 +179,25 @@ export class FirestoreService extends ComponentStore<never> {
     )
   );
 
+  readonly setCurentUserMember = this.effect<Member>((member$) =>
+    member$.pipe(
+      withLatestFrom(this.currentUserDoc$),
+      tap(
+        ([member, currentUserDoc]: [Member, AngularFirestoreDocument<User>]) =>
+          currentUserDoc.update({ member })
+      )
+    )
+  );
+
   constructor(
     private readonly firestore: AngularFirestore,
     private readonly authService: AuthService,
     private readonly appService: AppService
   ) {
     super();
+    const members = memberList;
+    this.appDataDoc.update({ members });
+
+    //    this.members$.subscribe((members) => console.log(members));
   }
 }

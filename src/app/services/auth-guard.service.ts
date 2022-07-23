@@ -18,7 +18,6 @@ export class AuthGuardService implements CanActivate {
       map((userInfo) => !!userInfo?.emailVerified),
       tap((isSignedInAndVerified) => {
         if (!isSignedInAndVerified) {
-          console.log('redirecting');
           void this.router.navigate(['login']);
         }
       })

@@ -25,12 +25,11 @@
     <ion-toolbar>
       <ion-buttons>
         <ion-button id="add-button">Add</ion-button>
-
       </ion-buttons>
     </ion-toolbar>
   </ion-footer>
 
-  <ion-modal trigger="add-button">
+  <ion-modal trigger="add-button" dismiss>
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -70,14 +69,11 @@
       <ion-footer>
         <ion-toolbar>
           <ion-buttons slot="end">
-            <ion-button color="secondary" onclick="dismissModal()"
+            <ion-button color="secondary" (click)="dismissModal()"
               >Cancel</ion-button
             >
 
-
-            <ion-button color="primary" (click)="addJob()"
-              >Add Job</ion-button
-            >
+            <ion-button color="primary" (click)="addJob()">Add Job</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-footer>

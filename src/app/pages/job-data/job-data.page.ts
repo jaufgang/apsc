@@ -4,8 +4,8 @@ import { ComponentStore } from '@ngrx/component-store';
 import { FormBuilder, Validators } from '@angular/forms';
 import { jobCategoryOptions } from 'src/app/types/job.types';
 import { startWith, tap, withLatestFrom } from 'rxjs/operators';
-import { tapLog } from '../../util/operators';
 import { JobType } from '../../types/appData.types';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-job-data',
@@ -28,7 +28,7 @@ export class JobDataPage extends ComponentStore<never> {
   readonly addJob = this.effect(($) =>
     $.pipe(
       withLatestFrom(this.formValues$, this.firestoreService.jobTypes$),
-     // tapLog('sub', this),
+      // tapLog('sub', this),
       tap(([, formValues, jobTypes]) =>
         this.firestoreService.appDataDoc.update({
           types: [...jobTypes, formValues as JobType],
@@ -48,11 +48,15 @@ export class JobDataPage extends ComponentStore<never> {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly firestoreService: FirestoreService
+    private readonly firestoreService: FirestoreService,
+    private readonly modalController: ModalController
   ) {
     super();
-   // this.vm$.pipe(tapLog('vm', this)).subscribe();
   }
 
   dismissPopover() {}
+
+  dismissModal() {
+    this.modalController.dismiss();
+  }
 }

@@ -30,6 +30,16 @@
         </ion-note>
       </ion-item>
 
+      <ion-item>
+        <ion-label position="stacked">Number of hours required</ion-label>
+        <ion-input
+          type="number"
+          inputmode="numeric"
+          formControlName="hours"
+        ></ion-input>
+      </ion-item>
+
+
       <ion-item button id="open-date-input">
         <ion-label position="stacked">Date</ion-label>
         <ion-input>{{vm.formValues?.date|date }} </ion-input>
@@ -39,20 +49,18 @@
               #popoverDatetime
               presentation="date"
               formControlName="date"
+              showDefaultButtons="true"
             ></ion-datetime>
           </ng-template>
         </ion-popover>
       </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Number of hours required</ion-label>
-        <ion-input formControlName="hours"></ion-input>
-      </ion-item>
 
       <ion-item>
         <ion-label position="stacked">Number of people needed</ion-label>
         <ion-input
           type="number"
+          inputmode="numeric"
           formControlName="peopleNeeded"
         ></ion-input>
       </ion-item>

@@ -21,48 +21,59 @@
 
   <form [formGroup]="form">
     <ion-list>
-      <ion-list-header> Volunteer for this job </ion-list-header>
+      <ion-list-header *ngIf="!vm.submitted">
+        Volunteer for this job
+      </ion-list-header>
 
-      <ion-item>
-        <ion-label position="stacked">Boat</ion-label>
-        <ion-select formControlName="boatName" interface="popover">
-          <ion-select-option *ngFor="let boat of vm.boats"
-            >{{boat.name}}</ion-select-option
+      <ion-item *ngIf="vm.submitted">
+        <ion-label position="stacked">Member</ion-label>
+        <ion-input
+          [disabled]="true"
+          value="{{vm.job.volunteer?.firstName}} {{vm.job.volunteer?.lastName}}"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item [hidden]="vm.submitted">
+        <ion-label position="stacked">Member</ion-label>
+        <ion-select formControlName="member" interface="popover"
+        [compareWith]="compareWith"
+        >
+          <ion-select-option *ngFor="let member of vm.members" [value]="member">
+            {{member.firstName}} {{member.lastName}}
+            (#{{member.membershipNumber}})
+          </ion-select-option>
           >
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Volunteer Name</ion-label>
-        <ion-input formControlName="name"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Email</ion-label>
-        <ion-input formControlName="email"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label position="stacked">Phone</ion-label>
-        <ion-input type="tel" formControlName="phone"></ion-input>
-      </ion-item>
-
-      <ion-item *ngIf="vm.volunteerMatchesUser">
-        <ion-label position="stacked">Signed Up By</ion-label>
+        <ion-label position="stacked">Contact Phone Number</ion-label>
         <ion-input
-          disabled
-          value="  {{vm.userInfo.name}} ({{vm.userInfo.email}})"
-        >
-        </ion-input>
+          type="tel"
+          formControlName="phone"
+          [disabled]="vm.submitted"
+        ></ion-input>
       </ion-item>
 
-      <ion-item *ngIf="!vm.submitted">
-        <ion-button type="submit" [disabled]="form.invalid" (click)="submit()"
-          >Sign Up</ion-button
-        >
-      </ion-item>
       <ion-item *ngIf="vm.submitted">
         <ion-label color="primary"> Thank you for signing up! </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-button
+          type="submit"
+          *ngIf="!vm.submitted"
+          [disabled]="form.invalid"
+          (click)="submit()"
+        >
+          Sign Up
+        </ion-button>
+        <ion-button
+          type="submit"
+          *ngIf="vm.submitted"
+          (click)="confirmCancelSignUp(vm.jobId)"
+          >Cancel Sign Up</ion-button
+        >
       </ion-item>
     </ion-list>
   </form>

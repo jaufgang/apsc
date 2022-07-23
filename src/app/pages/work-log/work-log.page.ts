@@ -6,6 +6,7 @@ import { map, startWith, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service';
 import { datePart } from '../../util/date-helpers';
+import { Member } from '../../types/appData.types';
 
 @Component({
   selector: 'app-work-log',
@@ -14,8 +15,7 @@ import { datePart } from '../../util/date-helpers';
 })
 export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
   readonly form = this.fb.group({
-    name: ['', [Validators.required]],
-    boat: ['', [Validators.required]],
+    member: ['', [Validators.required]],
     jobCategory: ['', [Validators.required]],
     description: ['', [Validators.required, Validators.minLength(5)]],
     date: ['', [Validators.required]],
@@ -34,11 +34,13 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
 
   readonly vm$ = this.select(
     this.formValues$,
-    this.firestoreService.boatNames$,
+    this.firestoreService.currentUser$,
+    this.firestoreService.members$,
     this.submitted$,
-    (formValues, boats, submitted) => ({
+    (formValues, currentUser, members, submitted) => ({
       formValues,
-      boats,
+      currentUser,
+      members,
       submitted,
     })
   );
@@ -51,19 +53,19 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
       map(([, formValues]) => formValues),
       tap(() => this.patchState({ submitted: true })),
       tap(() => this.form.disable()),
-      map((formValues) => ({
-        showOnJobBoard: false,
-        jobDetails: {
-          category: formValues.jobCategory,
-          description: formValues.description,
-          date: formValues.date,
-          hours: formValues.hours,
-        },
-        volunteer: {
-          boatName: formValues.boat,
-          name: formValues.name,
-        },
-      })),
+      map((formValues) => {
+        const { status, ...volunteer } = formValues.member;
+        return {
+          showOnJobBoard: false,
+          jobDetails: {
+            category: formValues.jobCategory,
+            description: formValues.description,
+            date: formValues.date,
+            hours: formValues.hours,
+          },
+          volunteer,
+        };
+      }),
       tap((formValues) => this.firestoreService.submitHours(formValues))
     )
   );
@@ -83,28 +85,25 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
   ) {
     super({});
 
-    this.authService.user$.pipe(takeUntil(this.destroy$)).subscribe((user) => {
-      this.form.patchValue({
-        name: user.displayName,
-        email: user.email,
+    this.firestoreService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((user) => {
+        this.form.patchValue({
+          member: user.member,
+        });
       });
-    });
-
-    // this.formValues$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((formValues) =>
-    //     console.log('[WorkLogPage] formValues', formValues)
-    //   );
   }
 
   readonly isDateEnabled = (dateIsoString: string) => {
     const date = new Date(dateIsoString);
-    // console.log(dateIsoString, date, date.getDate(), date.getDate() % 7);
     return date.getDate() !== 17;
   };
 
   setDate(value: string) {
-    // console.log(value);
     this.form.patchValue({ date: value });
+  }
+
+  compareWith(a: Member, b: Member) {
+    return a.membershipNumber === b.membershipNumber && a.status === b.status;
   }
 }

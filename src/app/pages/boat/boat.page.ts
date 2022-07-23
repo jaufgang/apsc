@@ -14,9 +14,7 @@ export class BoatPage extends ComponentStore<never> {
   readonly submittedWork$ = this.firestoreService.submittedWork$;
 
   readonly selectedBoatName$ = this.route.paramMap.pipe(
-    // tap((params) => console.log('params', params)),
     map((params) => params.get('boatName'))
-    // tap((boatName) => console.log('boatName', boatName))
   );
 
   readonly selectedBoat$ = this.selectedBoatName$.pipe(

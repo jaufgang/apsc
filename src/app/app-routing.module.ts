@@ -53,16 +53,19 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'boats',
+    path: 'members',
     loadChildren: () =>
-      import('./pages/boats/boats.module').then((m) => m.BoatsPageModule),
-    canActivate: [AuthGuard],
+      import('./pages/members/members.module').then((m) => m.MembersPageModule),
   },
   {
-    path: 'boats/:boatName',
+    path: 'members/:membershipNumber',
     loadChildren: () =>
-      import('./pages/boat/boat.module').then((m) => m.BoatPageModule),
-    canActivate: [AuthGuard],
+      import('./pages/member/member.module').then((m) => m.MemberPageModule),
+  },
+  {
+    path: 'my-hours',
+    loadChildren: () =>
+      import('./pages/member/member.module').then((m) => m.MemberPageModule),
   },
 ];
 

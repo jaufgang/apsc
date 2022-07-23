@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Member Report</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" *ngIf="vm$| async; let vm">
+  <h1 *ngFor="let member of vm.member">
+    {{member.firstName}} {{member.lastName }}
+  </h1>
+  <h5>Member# {{vm.membershipNumber}}</h5>
+
+  <div class="work-hours ion-padding">
+    <h3>Work hours</h3>
+    <p>{{vm.submittedByMembershipNumber.totalHours}} Hours Total</p>
+
+    <ion-card *ngFor="let item of vm.submittedByMembershipNumber.jobs">
+      <ion-card-header>
+        <ion-card-title>
+          {{item.jobDetails.hours}} Hours, {{item.jobDetails.date|date}}
+        </ion-card-title>
+        <ion-card-subtitle>
+          {{item.volunteer.firstName}}
+          {{item.volunteer.lastName}}</ion-card-subtitle
+        >
+      </ion-card-header>
+      <ion-card-content>
+        <p><b>{{item.jobDetails.category}}</b></p>
+        <p>{{item.jobDetails.title ?? item.jobDetails.description}}</p>
+        <p>
+          <em>
+            Submitted By {{item.submittedBy.name}} ({{item.submittedBy.email}})
+          </em>
+        </p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
