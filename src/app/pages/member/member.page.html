@@ -31,7 +31,7 @@
       <ion-card-content>
         <p><b>{{item.jobDetails.category}}</b></p>
         <p>{{item.jobDetails.title ?? item.jobDetails.description}}</p>
-        <p>
+        <p *ngIf="item.submittedBy.name!=='import'">
           <em>
             Submitted By {{item.submittedBy.name}} ({{item.submittedBy.email}})
           </em>

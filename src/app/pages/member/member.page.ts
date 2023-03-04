@@ -68,5 +68,6 @@ export class MemberPage extends ComponentStore<never> {
     private readonly route: ActivatedRoute
   ) {
     super();
+    this.vm$.subscribe(console.log);
   }
 }

@@ -23,7 +23,9 @@ export class JobBoardPage extends ComponentStore<{
 
   readonly jobBoard$ = this.firestoreService.jobBoard$.pipe(
     map((jobs) =>
-      jobs.map((job) => ({ ...job, date: datePart(job.jobDetails.date) }))
+      jobs
+        .sort((a, b) => a.jobDetails.date.localeCompare(b.jobDetails.date))
+        .map((job) => ({ ...job, date: datePart(job.jobDetails.date) }))
     )
   );
 

@@ -55,16 +55,18 @@
 
 
 
-        <ion-modal [isOpen]="!vm.currentUser.member">
+        <ion-modal [isOpen]="vm.isSignedIn && !vm.currentUser?.member">
           <ng-template>
+
+
             <ion-header>
               <ion-toolbar>
-                <ion-title>Who Are you?</ion-title>
+                <ion-title>APSC Membership</ion-title>
               </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding">
               <ion-item>
-                <ion-label position="stacked">Please choose a member</ion-label>
+                <ion-label position="stacked">Which APSC member are you?</ion-label>
                 <ion-select interface="popover" (ionChange)="selectMember($event.detail.value)">
                   <ion-select-option
                     *ngFor="let member of vm.members"

@@ -7,7 +7,6 @@ import {
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { AuthService, UserInfo } from './auth.service';
 import { AppData, Member } from '../types/appData.types';
-
 import {
   Job,
   JobBoardJob,
@@ -18,6 +17,8 @@ import {
 } from '../types/job.types';
 import { AppService } from './app.service';
 import { memberList } from './members';
+import add from 'date-fns/add';
+import { tapLog } from '../util/operators';
 
 const USERS_COLLECTION_ID = 'Users';
 const BOATS_COLLECTION_ID = 'Boats';
@@ -26,7 +27,7 @@ const APP_DATA_COLLECTION_ID = 'AppData';
 const APP_DATA_DOC_ID = 'Jobs';
 
 export interface User {
-  isAdmin: boolean;
+  isAdmin?: boolean;
   member?: Member;
 }
 @Injectable({
@@ -86,7 +87,8 @@ export class FirestoreService extends ComponentStore<never> {
         }),
         {}
       )
-    )
+    ),
+    tapLog('membersGrouped', this)
   );
 
   readonly boatNames$ = this.appData$.pipe(
@@ -102,10 +104,14 @@ export class FirestoreService extends ComponentStore<never> {
   );
 
   readonly jobBoard$ = this.firestore
-    .collection<JobBoardJob>(
-      JOB_BOARD_COLLECTION_ID,
-      (ref) => ref.where('showOnJobBoard', '==', true)
-      // .where('submittedBy', '==', null)
+    .collection<JobBoardJob>(JOB_BOARD_COLLECTION_ID, (ref) =>
+      ref
+        .where('showOnJobBoard', '==', true)
+        .where(
+          'jobDetails.date',
+          '>=',
+          add(new Date(), { days: -1 }).toISOString()
+        )
     )
     .valueChanges({ idField: 'id' });
 
@@ -114,7 +120,53 @@ export class FirestoreService extends ComponentStore<never> {
       JOB_BOARD_COLLECTION_ID,
       (ref) => ref.where('submittedBy', '!=', null)
     )
-    .valueChanges({ idField: 'id' });
+    .valueChanges({ idField: 'id' })
+    .pipe(
+      map((work) =>
+        work.sort((a, b) => b.jobDetails.date.localeCompare(a.jobDetails.date))
+      )
+    );
+
+  readonly submittedByMembershipNumber$ = this.submittedWork$.pipe(
+    // map((submittedWork) =>
+    //   submittedWork.filter(
+    //     (workItem) => workItem.volunteer.membershipNumber === membershipNumber
+    //   )
+    // ),
+    map((submittedWork) =>
+      submittedWork.reduce(
+        (acc, job) => ({
+          ...acc,
+          [job.volunteer.membershipNumber]: {
+            totalHours:
+              (acc[job.volunteer.membershipNumber]?.totalHours ?? 0) +
+              job.jobDetails.hours,
+            jobs: [
+              ...(acc[job.volunteer.membershipNumber]?.jobs ?? []),
+              { ...job },
+            ],
+          },
+        }),
+        { totalHours: 0, jobs: [] }
+      )
+    )
+  );
+
+  readonly membershipsSorted$ = this.membersGrouped$.pipe(
+    withLatestFrom(this.submittedByMembershipNumber$),
+    map(([memberships, submittedByMembershipNumber]) =>
+      Object.entries(memberships)
+        .map(([membershipNumber, members]) => ({
+          membershipNumber,
+          members,
+          submittedWork: submittedByMembershipNumber[membershipNumber],
+        }))
+        .sort((a, b) =>
+          a.members[0].lastName.localeCompare(b.members[0].lastName)
+        )
+    ),
+    tapLog('membershipsSorted$', this)
+  );
 
   readonly myWork$ = this.authService.userEmail$.pipe(
     switchMap((userEmail) =>
@@ -142,7 +194,7 @@ export class FirestoreService extends ComponentStore<never> {
   readonly signUpForJob = this.effect<{
     jobId: string;
     volunteer: MemberWithContactInfo;
-    submittedBy: UserInfo;
+    submittedBy?: UserInfo;
   }>((job$) =>
     job$.pipe(
       tap(({ jobId, volunteer, submittedBy }) =>
@@ -171,7 +223,7 @@ export class FirestoreService extends ComponentStore<never> {
 
       map(([formValues, userInfo]) => ({
         ...formValues,
-        submittedBy: userInfo,
+        submittedBy: { name: 'import' },
         showOnJobBoard: false,
       })),
       // tap((jobData) => console.log('adding job', jobData)),
@@ -183,8 +235,12 @@ export class FirestoreService extends ComponentStore<never> {
     member$.pipe(
       withLatestFrom(this.currentUserDoc$),
       tap(
-        ([member, currentUserDoc]: [Member, AngularFirestoreDocument<User>]) =>
-          currentUserDoc.update({ member })
+        ([member, currentUserDoc]: [
+          Member,
+          AngularFirestoreDocument<User>
+        ]) => {
+          currentUserDoc.set({ member }, { merge: true });
+        }
       )
     )
   );

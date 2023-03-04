@@ -7,8 +7,18 @@
     <ion-title>Members</ion-title>
   </ion-toolbar>
 </ion-header>
-
+-
 <ion-content class="ion-padding" *ngIf="vm$|async; let vm">
+
+  <pre>
+    Membership Number, Name, Hours
+    <ng-container *ngFor="let membership of vm.membershipsSorted">
+{{membership.membershipNumber}},{{membership.submittedWork?.totalHours??0}},<ng-container *ngFor="let member of membership.members"> {{member.firstName}} {{member.lastName}}, </ng-container></ng-container>
+  </pre>
+
+
+
+
   <ion-list>
     <ion-card
       *ngFor="let membership of vm.membershipsSorted"
@@ -23,7 +33,11 @@
           Member #{{membership.membershipNumber}}
         </ion-card-subtitle>
       </ion-card-header>
-      <ion-card-content> </ion-card-content>
+      <ion-card-content>
+        <div *ngIf="membership.submittedWork">
+          Volunteered {{membership.submittedWork.totalHours}} Hours
+        </div>
+      </ion-card-content>
     </ion-card>
   </ion-list>
 </ion-content>
