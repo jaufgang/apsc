@@ -1,2 +1,2 @@
 export const datePart = (dateString: string | undefined): string =>
-  dateString ? dateString.split('T')[0] : dateString;
+	dateString ? dateString.split("T")[0] : dateString

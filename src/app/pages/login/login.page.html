@@ -1,49 +1,49 @@
 <ng-container *ngIf="vm$|async; let vm">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Sign In to APSC</ion-title>
-    </ion-toolbar>
-  </ion-header>
+	<ion-header>
+		<ion-toolbar>
+			<ion-title>Sign In to APSC</ion-title>
+		</ion-toolbar>
+	</ion-header>
 
-  <ion-content class="ion-padding">
-    <ng-container
-      *ngIf="vm.userInfo.email && !vm.userInfo.emailVerified;  else elseBlock"
-    >
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Email Verification Required</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          An verification email has been sent to you. Please verify your email
-          address by clicking on the link.</ion-card-content
-        >
+	<ion-content class="ion-padding">
+		<ng-container
+			*ngIf="vm.userInfo.email && !vm.userInfo.emailVerified;  else elseBlock"
+		>
+			<ion-card>
+				<ion-card-header>
+					<ion-card-title>Email Verification Required</ion-card-title>
+				</ion-card-header>
+				<ion-card-content>
+					An verification email has been sent to you. Please verify your email
+					address by clicking on the link.</ion-card-content
+				>
 
-        <ion-toolbar>
-          <ion-buttons slot="end">
-            <ion-button fill="outline" color="primary" (click)="verified()">
-              I've verified my email
-            </ion-button>
-            <ion-button
-              fill="outline"
-              color="primary"
-              (click)="sendEmailVerification()"
-            >
-              Re-send Verification Email
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-card>
-    </ng-container>
+				<ion-toolbar>
+					<ion-buttons slot="end">
+						<ion-button fill="outline" color="primary" (click)="verified()">
+							I've verified my email
+						</ion-button>
+						<ion-button
+							fill="outline"
+							color="primary"
+							(click)="sendEmailVerification()"
+						>
+							Re-send Verification Email
+						</ion-button>
+					</ion-buttons>
+				</ion-toolbar>
+			</ion-card>
+		</ng-container>
 
-    <ng-template #elseBlock>
-      <p>Welcome to Aquatic Park Sailing Club Member's Portal.</p>
+		<ng-template #elseBlock>
+			<p>Welcome to Aquatic Park Sailing Club Member's Portal.</p>
 
-      <p>
-        Please Choose a sign-in method. You can sign up with either method if
-        you don't already have an account.
-      </p>
+			<p>
+				Please Choose a sign-in method. You can sign up with either method if
+				you don't already have an account.
+			</p>
 
-      <div id="firebaseui-auth-container"></div>
-    </ng-template>
-  </ion-content>
+			<div id="firebaseui-auth-container"></div>
+		</ng-template>
+	</ion-content>
 </ng-container>

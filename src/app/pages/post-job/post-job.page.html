@@ -1,93 +1,91 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Post jobs</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Post jobs</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="vm$|async; let vm">
-  <form [formGroup]="form">
-    <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Job</ion-label>
-        <ion-select
-          interface="popover"
-          formControlName="title"
-          [value]="vm.formValues?.title"
-        >
-          <ion-select-option *ngFor="let jobType of vm.jobTypes"
-            >{{jobType.title}}</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
+	<form [formGroup]="form">
+		<ion-list>
+			<ion-item>
+				<ion-label position="stacked">Job</ion-label>
+				<ion-select
+					interface="popover"
+					formControlName="title"
+					[value]="vm.formValues?.title"
+				>
+					<ion-select-option *ngFor="let jobType of vm.jobTypes"
+						>{{jobType.title}}</ion-select-option
+					>
+				</ion-select>
+			</ion-item>
 
-      <ion-item *ngIf="vm.selectedJob">
-        <ion-note>
-          <p><b>Category:</b> {{vm.selectedJob.category}}</p>
-          <p><b>Job Description:</b> {{vm.selectedJob?.description}}</p>
-        </ion-note>
-      </ion-item>
+			<ion-item *ngIf="vm.selectedJob">
+				<ion-note>
+					<p><b>Category:</b> {{vm.selectedJob.category}}</p>
+					<p><b>Job Description:</b> {{vm.selectedJob?.description}}</p>
+				</ion-note>
+			</ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Number of hours required</ion-label>
-        <ion-input
-          type="number"
-          inputmode="numeric"
-          formControlName="hours"
-        ></ion-input>
-      </ion-item>
+			<ion-item>
+				<ion-label position="stacked">Number of hours required</ion-label>
+				<ion-input
+					type="number"
+					inputmode="numeric"
+					formControlName="hours"
+				></ion-input>
+			</ion-item>
 
+			<ion-item button id="open-date-input">
+				<ion-label position="stacked">Date</ion-label>
+				<ion-input>{{vm.formValues?.date|date }} </ion-input>
+				<ion-popover trigger="open-date-input" show-backdrop="false">
+					<ng-template>
+						<ion-datetime
+							#popoverDatetime
+							presentation="date"
+							formControlName="date"
+							showDefaultButtons="true"
+						></ion-datetime>
+					</ng-template>
+				</ion-popover>
+			</ion-item>
 
-      <ion-item button id="open-date-input">
-        <ion-label position="stacked">Date</ion-label>
-        <ion-input>{{vm.formValues?.date|date }} </ion-input>
-        <ion-popover trigger="open-date-input" show-backdrop="false">
-          <ng-template>
-            <ion-datetime
-              #popoverDatetime
-              presentation="date"
-              formControlName="date"
-              showDefaultButtons="true"
-            ></ion-datetime>
-          </ng-template>
-        </ion-popover>
-      </ion-item>
+			<ion-item>
+				<ion-label position="stacked">Number of people needed</ion-label>
+				<ion-input
+					type="number"
+					inputmode="numeric"
+					formControlName="peopleNeeded"
+				></ion-input>
+			</ion-item>
 
+			<ion-item *ngIf="!vm.submitted">
+				<ion-button [disabled]="form.invalid" (click)="postJob()">
+					Post Job
+				</ion-button>
+			</ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Number of people needed</ion-label>
-        <ion-input
-          type="number"
-          inputmode="numeric"
-          formControlName="peopleNeeded"
-        ></ion-input>
-      </ion-item>
+			<ng-container *ngIf="vm.submitted">
+				<ion-item>
+					<ion-label color="primary"
+						>Thanks!
+						<span *ngIf="vm.formValues.peopleNeeded === 1">
+							{{vm.formValues.peopleNeeded}} job has been posted.</span
+						>
+						<span *ngIf="vm.formValues.peopleNeeded > 1">
+							{{vm.formValues.peopleNeeded}} jobs have been posted.
+						</span>
+					</ion-label>
+				</ion-item>
 
-      <ion-item *ngIf="!vm.submitted">
-        <ion-button [disabled]="form.invalid" (click)="postJob()">
-          Post Job
-        </ion-button>
-      </ion-item>
-
-      <ng-container *ngIf="vm.submitted">
-        <ion-item>
-          <ion-label color="primary"
-            >Thanks!
-            <span *ngIf="vm.formValues.peopleNeeded === 1">
-              {{vm.formValues.peopleNeeded}} job has been posted.</span
-            >
-            <span *ngIf="vm.formValues.peopleNeeded > 1">
-              {{vm.formValues.peopleNeeded}} jobs have been posted.
-            </span>
-          </ion-label>
-        </ion-item>
-
-        <ion-item>
-          <ion-button (click)="resetForm()">Post Another</ion-button>
-        </ion-item>
-      </ng-container>
-    </ion-list>
-  </form>
+				<ion-item>
+					<ion-button (click)="resetForm()">Post Another</ion-button>
+				</ion-item>
+			</ng-container>
+		</ion-list>
+	</form>
 </ion-content>

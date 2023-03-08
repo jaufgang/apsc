@@ -1,107 +1,107 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Work Log</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Work Log</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ng-container *ngIf="vm$ |async;  let vm">
-    <ion-card color="warning">
-      <ion-card-content>
-        <p>
-          This form is for logging volunteer work that you've done that was not
-          posted on the <a routerLink="/job-board">job board</a>.
-        </p>
-        <p>
-          <b>
-            Work that you signed up for on the job board will be automatically
-            added to your volunteer hours, and you do not need to log them here.
-          </b>
-        </p>
-      </ion-card-content>
-    </ion-card>
+	<ng-container *ngIf="vm$ |async;  let vm">
+		<ion-card color="warning">
+			<ion-card-content>
+				<p>
+					This form is for logging volunteer work that you've done that was not
+					posted on the <a routerLink="/job-board">job board</a>.
+				</p>
+				<p>
+					<b>
+						Work that you signed up for on the job board will be automatically
+						added to your volunteer hours, and you do not need to log them here.
+					</b>
+				</p>
+			</ion-card-content>
+		</ion-card>
 
-    <form [formGroup]="form">
-      <ion-list>
-        <ion-item>
-          <ion-label position="stacked">Member</ion-label>
-          <ion-select
-            formControlName="member"
-            interface="popover"
-            [compareWith]="compareWith"
-          >
-            <ion-select-option
-              *ngFor="let member of vm.members"
-              [value]="member"
-            >
-              {{member.firstName}} {{member.lastName}}
-              (#{{member.membershipNumber}})
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
+		<form [formGroup]="form">
+			<ion-list>
+				<ion-item>
+					<ion-label position="stacked">Member</ion-label>
+					<ion-select
+						formControlName="member"
+						interface="popover"
+						[compareWith]="compareWith"
+					>
+						<ion-select-option
+							*ngFor="let member of vm.members"
+							[value]="member"
+						>
+							{{member.firstName}} {{member.lastName}}
+							(#{{member.membershipNumber}})
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Job Category</ion-label>
-          <ion-select
-            interface="popover"
-            formControlName="jobCategory"
-            [value]="vm.formValues?.jobCategory"
-          >
-            <ion-select-option *ngFor="let option of  jobCategoryOptions"
-              >{{option}}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
+				<ion-item>
+					<ion-label position="stacked">Job Category</ion-label>
+					<ion-select
+						interface="popover"
+						formControlName="jobCategory"
+						[value]="vm.formValues?.jobCategory"
+					>
+						<ion-select-option *ngFor="let option of  jobCategoryOptions"
+							>{{option}}
+						</ion-select-option>
+					</ion-select>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Work Description</ion-label>
-          <ion-textarea
-            auto-grow="true"
-            formControlName="description"
-          ></ion-textarea>
-        </ion-item>
+				<ion-item>
+					<ion-label position="stacked">Work Description</ion-label>
+					<ion-textarea
+						auto-grow="true"
+						formControlName="description"
+					></ion-textarea>
+				</ion-item>
 
-        <ion-item button id="open-date-input">
-          <ion-label position="stacked">Date</ion-label>
-          <ion-input>{{vm.formValues?.date|date }} </ion-input>
-          <ion-popover trigger="open-date-input" show-backdrop="false">
-            <ng-template>
-              <ion-datetime
-                #popoverDatetime
-                presentation="date"
-                formControlName="date"
-                showDefaultButtons="true"
-              ></ion-datetime>
-            </ng-template>
-          </ion-popover>
-        </ion-item>
+				<ion-item button id="open-date-input">
+					<ion-label position="stacked">Date</ion-label>
+					<ion-input>{{vm.formValues?.date|date }} </ion-input>
+					<ion-popover trigger="open-date-input" show-backdrop="false">
+						<ng-template>
+							<ion-datetime
+								#popoverDatetime
+								presentation="date"
+								formControlName="date"
+								showDefaultButtons="true"
+							></ion-datetime>
+						</ng-template>
+					</ion-popover>
+				</ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Hours Worked</ion-label>
-          <ion-input type="number" formControlName="hours"></ion-input>
-        </ion-item>
+				<ion-item>
+					<ion-label position="stacked">Hours Worked</ion-label>
+					<ion-input type="number" formControlName="hours"></ion-input>
+				</ion-item>
 
-        <ion-item *ngIf="!vm.submitted">
-          <ion-button [disabled]="form.invalid" (click)="submitHours()">
-            Submit Hours
-          </ion-button>
-        </ion-item>
+				<ion-item *ngIf="!vm.submitted">
+					<ion-button [disabled]="form.invalid" (click)="submitHours()">
+						Submit Hours
+					</ion-button>
+				</ion-item>
 
-        <ng-container *ngIf="vm.submitted">
-          <ion-item>
-            <ion-label color="primary">
-              Thank you for submitting your hours!
-            </ion-label>
-          </ion-item>
+				<ng-container *ngIf="vm.submitted">
+					<ion-item>
+						<ion-label color="primary">
+							Thank you for submitting your hours!
+						</ion-label>
+					</ion-item>
 
-          <ion-item>
-            <ion-button (click)="resetForm()">Log More work hours</ion-button>
-          </ion-item>
-        </ng-container>
-      </ion-list>
-    </form>
-  </ng-container>
+					<ion-item>
+						<ion-button (click)="resetForm()">Log More work hours</ion-button>
+					</ion-item>
+				</ng-container>
+			</ion-list>
+		</form>
+	</ng-container>
 </ion-content>

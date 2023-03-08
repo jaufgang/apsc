@@ -1,17 +1,17 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core"
+import { Routes, RouterModule } from "@angular/router"
 
-import { WorkLogPage } from './work-log.page';
+import { WorkLogPage } from "./work-log.page"
 
 const routes: Routes = [
-  {
-    path: '',
-    component: WorkLogPage
-  }
-];
+	{
+		path: "",
+		component: WorkLogPage,
+	},
+]
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule],
 })
 export class WorkLogPageRoutingModule {}

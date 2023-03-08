@@ -1,23 +1,23 @@
-import { JobCategory } from './job.types';
+import { JobCategory } from "./job.types"
 
 export interface JobType {
-  title: string;
-  category: JobCategory;
-  description: string;
+	title: string
+	category: JobCategory
+	description: string
 }
 
 export interface Boat {
-  name: string;
+	name: string
 }
 
 export interface Member {
-  status: string;
-  membershipNumber: string;
-  firstName: string;
-  lastName: string;
+	status: string
+	membershipNumber: string
+	firstName: string
+	lastName: string
 }
 export interface AppData {
-  types: JobType[];
-  members: Member[];
-  boats: Boat[];
+	types: JobType[]
+	members: Member[]
+	boats: Boat[]
 }
