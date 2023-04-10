@@ -1,13 +1,3 @@
-import { tap } from "rxjs/operators"
-
-export const tapLog = (label: string, source: Object) =>
-	tap((value) =>
-		console.log(
-			source ? `[${source?.constructor?.name}] ${label}:` : `${label}:`,
-			value
-		)
-	)
-
 // // export const switchLatestFrom =
 // //   <T>(target$: Observable<T>): ((source$: Observable<any>) => Observable<T>) =>
 // //   (source$: Observable<any>): Observable<T> =>

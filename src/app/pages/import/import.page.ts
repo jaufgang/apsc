@@ -11,6 +11,7 @@ import {
 import { Observable } from "rxjs"
 import { JobType } from "../../types/appData.types"
 import { volunteeredJobs } from "../../../../import/hours"
+import { currentYear } from "../../util/date-helpers"
 
 @Component({
 	selector: "app-import",
@@ -77,6 +78,7 @@ export class ImportPage {
 							})
 						} else {
 							const userInitiatedJob: UserInitiatedJob = {
+								seasonYear: currentYear,
 								jobDetails: {
 									hours: volunteeredJob.hours,
 									category: volunteeredJob.job as JobCategory,
@@ -100,8 +102,10 @@ export class ImportPage {
 		this.jobTypes$
 			.pipe(
 				map((jobTypes) =>
-					postedJobs.map(
-						(postedJob): JobBoardJob => ({
+					postedJobs.map((postedJob): JobBoardJob => {
+						console.log(postedJob)
+						return {
+							seasonYear: currentYear,
 							jobDetails: {
 								title: postedJob.jobTitle,
 								category: jobTypes[postedJob.jobTitle].category,
@@ -111,14 +115,15 @@ export class ImportPage {
 							},
 							showOnJobBoard: true,
 							submittedBy: null,
-						})
-					)
+						}
+					})
 				),
 				switchMap((jobs) =>
 					Promise.all(
-						jobs.map((job) => {
+						jobs.map(async (job) => {
 							console.log(job)
-							return this.firestoreService.jobsCollection.add(job)
+							const x = await this.firestoreService.jobsCollection.add(job)
+							console.log(x)
 						})
 					)
 				),

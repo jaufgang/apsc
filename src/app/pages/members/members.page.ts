@@ -20,6 +20,13 @@ export class MembersPage extends ComponentStore<never> {
 
 	constructor(private readonly firestoreService: FirestoreService) {
 		super()
-		this.vm$.subscribe((vm) => console.log("***", vm))
+		//console.log("MembersPage")
+		//this.vm$.subscribe((vm) => console.log("***", vm))
+		// this.firestoreService.membersGrouped$.subscribe((vm) =>
+		// 	console.log("****", vm)
+		// )
+		// this.firestoreService.membershipsSorted$.subscribe((vm) =>
+		// 	console.log("*****", vm)
+		// )
 	}
 }

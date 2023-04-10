@@ -4,7 +4,14 @@ import {
 	AngularFirestore,
 	AngularFirestoreDocument,
 } from "@angular/fire/compat/firestore"
-import { map, switchMap, tap, withLatestFrom } from "rxjs/operators"
+import {
+	map,
+	shareReplay,
+	startWith,
+	switchMap,
+	tap,
+	withLatestFrom,
+} from "rxjs/operators"
 import { AuthService, UserInfo } from "./auth.service"
 import { AppData, Member } from "../types/appData.types"
 import {
@@ -16,16 +23,14 @@ import {
 	UserInitiatedJob,
 } from "../types/job.types"
 import { AppService } from "./app.service"
-import { memberList } from "./members"
-import add from "date-fns/add"
-import { tapLog } from "../util/operators"
+import { addDays } from "date-fns"
+import { currentYear } from "../util/date-helpers"
 
 const USERS_COLLECTION_ID = "Users"
 const BOATS_COLLECTION_ID = "Boats"
 const JOB_BOARD_COLLECTION_ID = "Jobs"
 const APP_DATA_COLLECTION_ID = "AppData"
 const APP_DATA_DOC_ID = "Jobs"
-
 export interface User {
 	isAdmin?: boolean
 	member?: Member
@@ -44,7 +49,8 @@ export class FirestoreService extends ComponentStore<never> {
 	)
 
 	readonly currentUser$ = this.currentUserDoc$.pipe(
-		switchMap((currentUserDoc) => currentUserDoc.valueChanges())
+		switchMap((currentUserDoc) => currentUserDoc.valueChanges()),
+		shareReplay(1)
 	)
 
 	readonly boatsCollection = this.firestore.collection<any>(BOATS_COLLECTION_ID)
@@ -59,7 +65,7 @@ export class FirestoreService extends ComponentStore<never> {
 
 	readonly appDataDoc = this.appDataCollection.doc<AppData>(APP_DATA_DOC_ID)
 
-	readonly appData$ = this.appDataDoc.valueChanges()
+	readonly appData$ = this.appDataDoc.valueChanges().pipe(shareReplay(1))
 
 	readonly jobTypes$ = this.appData$.pipe(map((appData) => appData.types))
 
@@ -86,8 +92,7 @@ export class FirestoreService extends ComponentStore<never> {
 				}),
 				{}
 			)
-		),
-		tapLog("membersGrouped", this)
+		)
 	)
 
 	readonly boatNames$ = this.appData$.pipe(
@@ -99,31 +104,33 @@ export class FirestoreService extends ComponentStore<never> {
 	)
 
 	readonly selectedBoat$ = this.selectedBoatDoc$.pipe(
-		switchMap((doc) => doc.valueChanges())
+		switchMap((doc) => doc.valueChanges()),
+		shareReplay(1)
 	)
 
 	readonly jobBoard$ = this.firestore
 		.collection<JobBoardJob>(JOB_BOARD_COLLECTION_ID, (ref) =>
 			ref
 				.where("showOnJobBoard", "==", true)
-				.where(
-					"jobDetails.date",
-					">=",
-					add(new Date(), { days: -1 }).toISOString()
-				)
+				.where("jobDetails.date", ">=", addDays(new Date(), -1).toISOString())
 		)
 		.valueChanges({ idField: "id" })
+		.pipe(shareReplay(1))
 
 	readonly submittedWork$ = this.firestore
 		.collection<SignedUpJobBoardJob | UserInitiatedJob>(
 			JOB_BOARD_COLLECTION_ID,
-			(ref) => ref.where("submittedBy", "!=", null)
+			(ref) =>
+				ref
+					.where("seasonYear", "==", currentYear)
+					.where("submittedBy", "!=", null)
 		)
 		.valueChanges({ idField: "id" })
 		.pipe(
 			map((work) =>
 				work.sort((a, b) => b.jobDetails.date.localeCompare(a.jobDetails.date))
-			)
+			),
+			shareReplay(1)
 		)
 
 	readonly submittedByMembershipNumber$ = this.submittedWork$.pipe(
@@ -132,9 +139,10 @@ export class FirestoreService extends ComponentStore<never> {
 		//     (workItem) => workItem.volunteer.membershipNumber === membershipNumber
 		//   )
 		// ),
+		startWith([]),
 		map((submittedWork) =>
 			submittedWork.reduce(
-				(acc, job) => ({
+				(acc, job): any => ({
 					...acc,
 					[job.volunteer.membershipNumber]: {
 						totalHours:
@@ -146,7 +154,7 @@ export class FirestoreService extends ComponentStore<never> {
 						],
 					},
 				}),
-				{ totalHours: 0, jobs: [] }
+				{} as any
 			)
 		)
 	)
@@ -163,18 +171,20 @@ export class FirestoreService extends ComponentStore<never> {
 				.sort((a, b) =>
 					a.members[0].lastName.localeCompare(b.members[0].lastName)
 				)
-		),
-		tapLog("membershipsSorted$", this)
+		)
 	)
 
 	readonly myWork$ = this.authService.userEmail$.pipe(
 		switchMap((userEmail) =>
 			this.firestore
 				.collection<any>(JOB_BOARD_COLLECTION_ID, (ref) =>
-					ref.where("volunteerEmail", "==", userEmail)
+					ref
+						.where("seasonYear", "==", currentYear)
+						.where("volunteerEmail", "==", userEmail)
 				)
 				.valueChanges()
-		)
+		),
+		shareReplay(1)
 	)
 	// *** Effects ***
 
@@ -182,6 +192,7 @@ export class FirestoreService extends ComponentStore<never> {
 		job$.pipe(
 			tap((postedJobDetails: PostedJobDetails) =>
 				this.jobsCollection.add({
+					seasonYear: currentYear,
 					jobDetails: postedJobDetails,
 					submittedBy: null,
 					showOnJobBoard: true,
@@ -222,6 +233,7 @@ export class FirestoreService extends ComponentStore<never> {
 
 			map(([formValues, userInfo]) => ({
 				...formValues,
+				seasonYear: currentYear,
 				submittedBy: { name: "import" },
 				showOnJobBoard: false,
 			})),
@@ -230,7 +242,7 @@ export class FirestoreService extends ComponentStore<never> {
 		)
 	)
 
-	readonly setCurentUserMember = this.effect<Member>((member$) =>
+	readonly setCurrentUserMember = this.effect<Member>((member$) =>
 		member$.pipe(
 			withLatestFrom(this.currentUserDoc$),
 			tap(
@@ -250,8 +262,18 @@ export class FirestoreService extends ComponentStore<never> {
 		private readonly appService: AppService
 	) {
 		super()
-		const members = memberList
-		this.appDataDoc.update({ members })
+		// const members = memberList
+		// console.log(members.length)
+		// this.members$.subscribe((m) => console.log(m.length))
+		// this.appDataDoc.update({ members })
+
+		// this.jobsCollection.ref.get().then(function (querySnapshot) {
+		// 	querySnapshot.forEach(function (doc) {
+		// 		doc.ref.update({
+		// 			seasonYear: 2022,
+		// 		})
+		// 	})
+		// })
 
 		//    this.members$.subscribe((members) => console.log(members));
 	}

@@ -114,7 +114,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 		private readonly alertController: AlertController
 	) {
 		super({})
-		// this.vm$.subscribe((vm) => console.log('[SignUpPage] vm', vm));
+		this.vm$.subscribe((vm) => console.log("[SignUpPage] vm", vm))
 
 		this.initializeFormIfVolunteerHasSignedUp(this.job$)
 

@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router"
 import { ComponentStore } from "@ngrx/component-store"
 import { map } from "rxjs/operators"
 import { combineLatest } from "rxjs"
+import { currentYear } from "../../util/date-helpers"
 
 @Component({
 	selector: "app-member",
@@ -11,6 +12,7 @@ import { combineLatest } from "rxjs"
 	styleUrls: ["./member.page.scss"],
 })
 export class MemberPage extends ComponentStore<never> {
+	readonly currentYear = currentYear
 	readonly submittedWork$ = this.firestoreService.submittedWork$
 
 	readonly membershipNumber$ = combineLatest([
@@ -18,7 +20,7 @@ export class MemberPage extends ComponentStore<never> {
 		this.firestoreService.currentUser$,
 	]).pipe(
 		map(([params, currentUser]) => {
-			console.log(params)
+			//console.log(params)
 			return params.has("membershipNumber")
 				? params.get("membershipNumber")
 				: currentUser.member.membershipNumber
@@ -68,6 +70,6 @@ export class MemberPage extends ComponentStore<never> {
 		private readonly route: ActivatedRoute
 	) {
 		super()
-		this.vm$.subscribe(console.log)
+		//this.vm$.subscribe(console.log)
 	}
 }

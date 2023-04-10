@@ -77,6 +77,6 @@ export class AppComponent extends ComponentStore<any> {
 	}
 
 	setMember(member: Member) {
-		this.firestoreService.setCurentUserMember(member)
+		this.firestoreService.setCurrentUserMember(member)
 	}
 }

@@ -11,6 +11,7 @@ export enum JobCategory {
 	safety = "Safety",
 	other = "Special Request / Other",
 	shuttleDriver = "Shuttle Driver",
+	communications = "Communications",
 }
 export const jobCategoryOptions = Object.values(JobCategory)
 
@@ -34,12 +35,14 @@ export interface MemberWithContactInfo extends Member {
 
 // Jobs to be posted on the Job Board
 export interface JobBoardJob {
+	seasonYear: number
 	jobDetails: PostedJobDetails
 	showOnJobBoard: true
 	submittedBy: null
 }
 
 export interface SignedUpJobBoardJob {
+	seasonYear: number
 	jobDetails: PostedJobDetails
 	showOnJobBoard: true
 	submittedBy: UserInfo
@@ -48,6 +51,7 @@ export interface SignedUpJobBoardJob {
 
 // User initiated jobs just need basic job and volunteer info
 export interface UserInitiatedJob {
+	seasonYear: number
 	jobDetails: JobDetails
 	volunteer: Member
 	submittedBy: UserInfo
