@@ -51,8 +51,8 @@
 						[value]="vm.formValues?.jobCategory"
 					>
 						<ion-select-option *ngFor="let option of  jobCategoryOptions"
-							>{{option}}
-						</ion-select-option>
+							>{{option}}</ion-select-option
+						>
 					</ion-select>
 				</ion-item>
 
@@ -66,11 +66,13 @@
 
 				<ion-item button id="open-date-input">
 					<ion-label position="stacked">Date</ion-label>
-					<ion-input>{{vm.formValues?.date|date }} </ion-input>
-					<ion-popover trigger="open-date-input" show-backdrop="false">
+					<ion-datetime-button datetime="datetime"></ion-datetime-button>
+					<ion-popover [keepContentsMounted]="true" show-backdrop="false">
 						<ng-template>
 							<ion-datetime
-								#popoverDatetime
+								id="datetime"
+								[min]="minDate"
+								[max]="maxDate"
 								presentation="date"
 								formControlName="date"
 								showDefaultButtons="true"

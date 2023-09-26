@@ -65,9 +65,9 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 
 	readonly submit = this.effect(($) =>
 		$.pipe(
-			withLatestFrom(this.jobId$, this.formValues$, this.authService.userInfo$),
-			map(([, jobId, formValues, userInfo]) => ({
-				jobId,
+			withLatestFrom(this.job$, this.formValues$, this.authService.userInfo$),
+			map(([, job, formValues, userInfo]) => ({
+				job,
 				volunteer: { ...formValues.member, contactPhone: formValues.phone },
 				submittedBy: userInfo,
 			})),
@@ -80,12 +80,13 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 		)
 	)
 
-	readonly cancelSignUp = this.effect<string>((jobId$) =>
-		jobId$.pipe(
-			tap((jobId: string) => this.firestoreService.cancelSignUp(jobId)),
-			tap(() => this.form.reset()),
-			tap(() => this.form.enable())
-		)
+	readonly cancelSignUp = this.effect<SignedUpJobBoardJob & { id: string }>(
+		(job$) =>
+			job$.pipe(
+				tap((job) => this.firestoreService.cancelSignUp(job)),
+				tap(() => this.form.reset()),
+				tap(() => this.form.enable())
+			)
 	)
 
 	readonly initializeFormIfVolunteerHasSignedUp = this.effect<Job>((job$) =>
@@ -129,7 +130,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 		return a.membershipNumber === b.membershipNumber && a.status === b.status
 	}
 
-	async confirmCancelSignUp(jobId) {
+	async confirmCancelSignUp(job) {
 		const alert = await this.alertController.create({
 			header: "Confirm Cancel Sign Up",
 			message: "Are you sure you want to cancel this job sign-up?",
@@ -147,7 +148,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 					text: "Yes, cancel this sign-up",
 					id: "confirm-button",
 					handler: () => {
-						this.cancelSignUp(jobId)
+						this.cancelSignUp(job)
 					},
 				},
 			],

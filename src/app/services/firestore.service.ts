@@ -12,13 +12,14 @@ import {
 	tap,
 	withLatestFrom,
 } from "rxjs/operators"
-import { AuthService, UserInfo } from "./auth.service"
+import { AuthService } from "./auth.service"
 import { AppData, Member } from "../types/appData.types"
 import {
 	Job,
 	JobBoardJob,
-	MemberWithContactInfo,
+	jobCategoryEmail,
 	PostedJobDetails,
+	SignedUpJob,
 	SignedUpJobBoardJob,
 	UserInitiatedJob,
 } from "../types/job.types"
@@ -35,6 +36,7 @@ export interface User {
 	isAdmin?: boolean
 	member?: Member
 }
+
 @Injectable({
 	providedIn: "root",
 })
@@ -201,30 +203,31 @@ export class FirestoreService extends ComponentStore<never> {
 		)
 	)
 
-	readonly signUpForJob = this.effect<{
-		jobId: string
-		volunteer: MemberWithContactInfo
-		submittedBy?: UserInfo
-	}>((job$) =>
+	readonly signUpForJob = this.effect<SignedUpJob>((job$) =>
 		job$.pipe(
-			tap(({ jobId, volunteer, submittedBy }) =>
-				this.jobsCollection.doc(jobId).update({
+			tap(({ job, volunteer, submittedBy }) => {
+				this.jobsCollection.doc(job.id).update({
 					volunteer,
 					submittedBy,
 				})
-			)
+			}),
+			tap((job: SignedUpJob) => this.sendSignedUpJobAlert(job))
 		)
 	)
 
-	readonly cancelSignUp = this.effect<string>((jobId$) =>
-		jobId$.pipe(
-			tap((jobId: string) =>
-				this.jobsCollection.doc(jobId).update({
-					volunteer: null,
-					submittedBy: null,
-				})
+	readonly cancelSignUp = this.effect<SignedUpJobBoardJob & { id: string }>(
+		(job$) =>
+			job$.pipe(
+				tap((job: SignedUpJobBoardJob & { id: string }) =>
+					this.jobsCollection.doc(job.id).update({
+						volunteer: null,
+						submittedBy: null,
+					})
+				),
+				tap((job: SignedUpJobBoardJob & { id: string }) =>
+					this.sendCancellationAlert(job)
+				)
 			)
-		)
 	)
 
 	readonly submitHours = this.effect<any>((formValues$) =>
@@ -234,11 +237,11 @@ export class FirestoreService extends ComponentStore<never> {
 			map(([formValues, userInfo]) => ({
 				...formValues,
 				seasonYear: currentYear,
-				submittedBy: { name: "import" },
+				submittedBy: { name: userInfo.name, email: userInfo.email },
 				showOnJobBoard: false,
 			})),
-			// tap((jobData) => console.log('adding job', jobData)),
-			tap((jobData) => this.jobsCollection.add(jobData))
+			tap((jobData) => this.jobsCollection.add(jobData)),
+			tap((jobData) => this.sendHoursLoggedAlert(jobData))
 		)
 	)
 
@@ -254,6 +257,79 @@ export class FirestoreService extends ComponentStore<never> {
 				}
 			)
 		)
+	)
+
+	readonly sendSignedUpJobAlert = this.effect<SignedUpJob>((alert$) =>
+		alert$.pipe(
+			tap((signedUpJob: SignedUpJob) =>
+				this.sendEmail({
+					to: jobCategoryEmail[signedUpJob.job.jobDetails.category],
+					message: {
+						subject: "Job Board signup",
+						text: `A member has signed up for a job from the job board.
+
+Job: ${signedUpJob.job.jobDetails.title}
+Date: ${signedUpJob.job.jobDetails.date}
+Volunteer: ${signedUpJob.volunteer.firstName} ${signedUpJob.volunteer.lastName}
+Phone Number: ${signedUpJob.volunteer.contactPhone}
+Signed Up By: ${signedUpJob.submittedBy.name}
+						`,
+					},
+				})
+			)
+		)
+	)
+
+	readonly sendCancellationAlert = this.effect<
+		SignedUpJobBoardJob & { id: string }
+	>((alert$) =>
+		alert$.pipe(
+			withLatestFrom(this.currentUser$),
+			tap(([job, user]: [SignedUpJobBoardJob & { id: string }, User]) =>
+				this.sendEmail({
+					to: jobCategoryEmail[job.jobDetails.category],
+					message: {
+						subject: "Job Board Cancellation",
+						text: `A member has cancelled their sign-up for a job from the job board.
+
+Job: ${job.jobDetails.title}
+Date: ${job.jobDetails.date}
+Volunteer: ${job.volunteer.firstName} ${job.volunteer.lastName}
+Phone Number: ${job.volunteer.contactPhone}
+Cancelled By: ${user.member.firstName} ${user.member.lastName}
+`,
+					},
+				})
+			)
+		)
+	)
+
+	readonly sendHoursLoggedAlert = this.effect<any>((alert$) =>
+		alert$.pipe(
+			tap((alert) =>
+				this.sendEmail({
+					to: jobCategoryEmail[alert.jobDetails.category],
+					message: {
+						subject: "Volunteer Work Hours Logged",
+						text: `A member has logged work hours.
+
+Job: ${alert.jobDetails.description}
+Hours: ${alert.jobDetails.hours}
+Date: ${alert.jobDetails.date}
+Volunteer: ${alert.volunteer.firstName} ${alert.volunteer.lastName}
+Submitted By: ${alert.submittedBy.name}
+`,
+					},
+				})
+			)
+		)
+	)
+
+	readonly sendEmail = this.effect<{
+		to: string
+		message: { subject: string; html?: string; text?: string }
+	}>((email$) =>
+		email$.pipe(tap((email) => this.firestore.collection("mail").add(email)))
 	)
 
 	constructor(

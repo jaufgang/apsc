@@ -1,13 +1,21 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component } from "@angular/core"
 import { FormBuilder, Validators } from "@angular/forms"
-import { jobCategoryOptions } from "../../types/job.types"
+import { jobCategoryOptions, SubmittedHours } from "../../types/job.types"
 import { ComponentStore } from "@ngrx/component-store"
 import { map, startWith, takeUntil, tap, withLatestFrom } from "rxjs/operators"
 import { FirestoreService } from "../../services/firestore.service"
 import { AuthService } from "../../services/auth.service"
 import { datePart } from "../../util/date-helpers"
 import { Member } from "../../types/appData.types"
+import { endOfYear, startOfDay, startOfYear } from "date-fns"
 
+const today = () => {
+	const date = new Date()
+	return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+		.toISOString()
+		.split("T")[0]
+}
 @Component({
 	selector: "app-work-log",
 	templateUrl: "./work-log.page.html",
@@ -18,9 +26,12 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
 		member: ["", [Validators.required]],
 		jobCategory: ["", [Validators.required]],
 		description: ["", [Validators.required, Validators.minLength(5)]],
-		date: ["", [Validators.required]],
+		date: [today(), [Validators.required]],
 		hours: ["", [Validators.required, Validators.min(1)]],
 	})
+	readonly today = new Date()
+	readonly minDate = startOfYear(this.today).toISOString()
+	readonly maxDate = startOfDay(endOfYear(this.today)).toISOString()
 
 	readonly jobCategoryOptions = jobCategoryOptions
 
@@ -42,6 +53,8 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
 			currentUser,
 			members,
 			submitted,
+			minDate: this.minDate,
+			maxDate: this.maxDate,
 		})
 	)
 
@@ -53,7 +66,7 @@ export class WorkLogPage extends ComponentStore<{ submitted?: boolean }> {
 			map(([, formValues]) => formValues),
 			tap(() => this.patchState({ submitted: true })),
 			tap(() => this.form.disable()),
-			map((formValues) => {
+			map((formValues): SubmittedHours => {
 				const { status, ...volunteer } = formValues.member
 				return {
 					showOnJobBoard: false,

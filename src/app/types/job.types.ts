@@ -13,6 +13,20 @@ export enum JobCategory {
 	shuttleDriver = "Shuttle Driver",
 	communications = "Communications",
 }
+
+export const jobCategoryEmail = {
+	[JobCategory.dutyOfficer]: "duty_officer@aquaticpark.com",
+	[JobCategory.houseAndGrounds]: "h_g@aquaticpark.com",
+	[JobCategory.harbour]: "harbour@aquaticpark.com",
+	[JobCategory.social]: "social@aquaticpark.com",
+	[JobCategory.race]: "race@aquaticpark.com",
+	[JobCategory.fleetProgram]: "fleet_program@aquaticpark.com",
+	[JobCategory.safety]: "safety@aquaticpark.com",
+	[JobCategory.other]: "commodore@aquaticpark.com",
+	[JobCategory.shuttleDriver]: "duty_officer@aquaticpark.com",
+	[JobCategory.communications]: "communication@aquaticpark.com",
+}
+
 export const jobCategoryOptions = Object.values(JobCategory)
 
 // Basic info for all jobs, either posted on the Job board or member initiated
@@ -56,6 +70,22 @@ export interface UserInitiatedJob {
 	volunteer: Member
 	submittedBy: UserInfo
 	showOnJobBoard: false
+}
+
+export interface SignedUpJob {
+	job: JobBoardJob & { id: string }
+	volunteer: MemberWithContactInfo
+	submittedBy?: UserInfo
+}
+export interface SubmittedHours {
+	volunteer: Omit<any, "status">
+	showOnJobBoard: false
+	jobDetails: {
+		date: string
+		hours: string
+		description: string
+		category: string
+	}
 }
 
 export type Job = JobBoardJob | SignedUpJobBoardJob | UserInitiatedJob

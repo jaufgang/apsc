@@ -13,6 +13,7 @@ import { FirestoreService } from "../../services/firestore.service"
 import { combineLatest, Observable } from "rxjs"
 import { JobType } from "../../types/appData.types"
 import { datePart } from "../../util/date-helpers"
+import { endOfYear, startOfDay } from "date-fns"
 
 interface FormValues {
 	title: string
@@ -27,6 +28,10 @@ interface FormValues {
 	styleUrls: ["./post-job.page.scss"],
 })
 export class PostJobPage extends ComponentStore<{ submitted?: boolean }> {
+	readonly today = new Date()
+	readonly minDate = startOfDay(this.today).toISOString()
+	readonly maxDate = startOfDay(endOfYear(this.today)).toISOString()
+
 	readonly jobCategoryOptions = jobCategoryOptions
 
 	readonly submitted$ = this.select((state) => state.submitted)
