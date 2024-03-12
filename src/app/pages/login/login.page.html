@@ -1,7 +1,7 @@
 <ng-container *ngIf="vm$|async; let vm">
 	<ion-header>
 		<ion-toolbar>
-			<ion-title>Sign In to APSC</ion-title>
+			<ion-title>Sign In to APSC Job Board</ion-title>
 		</ion-toolbar>
 	</ion-header>
 
@@ -36,14 +36,19 @@
 		</ng-container>
 
 		<ng-template #elseBlock>
-			<p>Welcome to Aquatic Park Sailing Club Member's Portal.</p>
+			<div class="ion-text-center">
+				<h2>Welcome to Aquatic Park Sailing Club Member's Job Board Portal.</h2>
 
-			<p>
-				Please Choose a sign-in method. You can sign up with either method if
-				you don't already have an account.
-			</p>
+				<div class="ion-padding-vertical">Please Choose a sign-in method.</div>
 
-			<div id="firebaseui-auth-container"></div>
+				<div id="firebaseui-auth-container"></div>
+
+				<div class="ion-padding-vertical">
+					<h5>Don't have an APSC Job board account yet?</h5>
+					No Problem! Just select one of the above options, and you will be
+					prompted to create a new account.
+				</div>
+			</div>
 		</ng-template>
 	</ion-content>
 </ng-container>

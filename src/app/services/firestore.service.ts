@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core"
-import { ComponentStore } from "@ngrx/component-store"
+import { Injectable } from "@angular/core";
+import { ComponentStore } from "@ngrx/component-store";
 import {
 	AngularFirestore,
 	AngularFirestoreDocument,
-} from "@angular/fire/compat/firestore"
+} from "@angular/fire/compat/firestore";
 import {
 	map,
 	shareReplay,
@@ -11,9 +11,9 @@ import {
 	switchMap,
 	tap,
 	withLatestFrom,
-} from "rxjs/operators"
-import { AuthService } from "./auth.service"
-import { AppData, Member } from "../types/appData.types"
+} from "rxjs/operators";
+import { AuthService } from "./auth.service";
+import { AppData, Member } from "../types/appData.types";
 import {
 	Job,
 	JobBoardJob,
@@ -22,19 +22,20 @@ import {
 	SignedUpJob,
 	SignedUpJobBoardJob,
 	UserInitiatedJob,
-} from "../types/job.types"
-import { AppService } from "./app.service"
-import { addDays } from "date-fns"
-import { currentYear } from "../util/date-helpers"
+} from "../types/job.types";
+import { AppService } from "./app.service";
+import { addDays } from "date-fns";
+import { currentYear } from "../util/date-helpers";
+import { combineLatest } from "rxjs";
 
-const USERS_COLLECTION_ID = "Users"
-const BOATS_COLLECTION_ID = "Boats"
-const JOB_BOARD_COLLECTION_ID = "Jobs"
-const APP_DATA_COLLECTION_ID = "AppData"
-const APP_DATA_DOC_ID = "Jobs"
+const USERS_COLLECTION_ID = "Users";
+const BOATS_COLLECTION_ID = "Boats";
+const JOB_BOARD_COLLECTION_ID = "Jobs";
+const APP_DATA_COLLECTION_ID = "AppData";
+const APP_DATA_DOC_ID = "Jobs";
 export interface User {
-	isAdmin?: boolean
-	member?: Member
+	isAdmin?: boolean;
+	member?: Member;
 }
 
 @Injectable({
@@ -44,32 +45,33 @@ export class FirestoreService extends ComponentStore<never> {
 	// *** Selectors ***
 
 	readonly usersCollection =
-		this.firestore.collection<User>(USERS_COLLECTION_ID)
+		this.firestore.collection<User>(USERS_COLLECTION_ID);
 
 	readonly currentUserDoc$ = this.authService.userEmail$.pipe(
 		map((userEmail) => this.usersCollection.doc(userEmail))
-	)
+	);
 
 	readonly currentUser$ = this.currentUserDoc$.pipe(
 		switchMap((currentUserDoc) => currentUserDoc.valueChanges()),
 		shareReplay(1)
-	)
+	);
 
-	readonly boatsCollection = this.firestore.collection<any>(BOATS_COLLECTION_ID)
+	readonly boatsCollection =
+		this.firestore.collection<any>(BOATS_COLLECTION_ID);
 
 	readonly jobsCollection = this.firestore.collection<Job>(
 		JOB_BOARD_COLLECTION_ID
-	)
+	);
 
 	readonly appDataCollection = this.firestore.collection<AppData>(
 		APP_DATA_COLLECTION_ID
-	)
+	);
 
-	readonly appDataDoc = this.appDataCollection.doc<AppData>(APP_DATA_DOC_ID)
+	readonly appDataDoc = this.appDataCollection.doc<AppData>(APP_DATA_DOC_ID);
 
-	readonly appData$ = this.appDataDoc.valueChanges().pipe(shareReplay(1))
+	readonly appData$ = this.appDataDoc.valueChanges().pipe(shareReplay(1));
 
-	readonly jobTypes$ = this.appData$.pipe(map((appData) => appData.types))
+	readonly jobTypes$ = this.appData$.pipe(map((appData) => appData.types));
 
 	readonly members$ = this.appData$.pipe(
 		map((appData) =>
@@ -79,7 +81,7 @@ export class FirestoreService extends ComponentStore<never> {
 					: a.firstName.localeCompare(b.firstName)
 			)
 		)
-	)
+	);
 
 	readonly membersGrouped$ = this.members$.pipe(
 		map((members) =>
@@ -95,20 +97,20 @@ export class FirestoreService extends ComponentStore<never> {
 				{}
 			)
 		)
-	)
+	);
 
 	readonly boatNames$ = this.appData$.pipe(
 		map((appData) => appData.boats.sort((a, b) => a.name.localeCompare(b.name)))
-	)
+	);
 
 	readonly selectedBoatDoc$ = this.appService.selectedBoatName$.pipe(
 		map((boatName) => this.boatsCollection.doc(boatName))
-	)
+	);
 
 	readonly selectedBoat$ = this.selectedBoatDoc$.pipe(
 		switchMap((doc) => doc.valueChanges()),
 		shareReplay(1)
-	)
+	);
 
 	readonly jobBoard$ = this.firestore
 		.collection<JobBoardJob>(JOB_BOARD_COLLECTION_ID, (ref) =>
@@ -117,7 +119,7 @@ export class FirestoreService extends ComponentStore<never> {
 				.where("jobDetails.date", ">=", addDays(new Date(), -1).toISOString())
 		)
 		.valueChanges({ idField: "id" })
-		.pipe(shareReplay(1))
+		.pipe(shareReplay(1));
 
 	readonly submittedWork$ = this.firestore
 		.collection<SignedUpJobBoardJob | UserInitiatedJob>(
@@ -133,7 +135,7 @@ export class FirestoreService extends ComponentStore<never> {
 				work.sort((a, b) => b.jobDetails.date.localeCompare(a.jobDetails.date))
 			),
 			shareReplay(1)
-		)
+		);
 
 	readonly submittedByMembershipNumber$ = this.submittedWork$.pipe(
 		// map((submittedWork) =>
@@ -158,11 +160,14 @@ export class FirestoreService extends ComponentStore<never> {
 				}),
 				{} as any
 			)
-		)
-	)
+		),
+		tap((x) => console.log("x", x))
+	);
 
-	readonly membershipsSorted$ = this.membersGrouped$.pipe(
-		withLatestFrom(this.submittedByMembershipNumber$),
+	readonly membershipsSorted$ = combineLatest(
+		this.membersGrouped$,
+		this.submittedByMembershipNumber$
+	).pipe(
 		map(([memberships, submittedByMembershipNumber]) =>
 			Object.entries(memberships)
 				.map(([membershipNumber, members]) => ({
@@ -173,8 +178,25 @@ export class FirestoreService extends ComponentStore<never> {
 				.sort((a, b) =>
 					a.members[0].lastName.localeCompare(b.members[0].lastName)
 				)
-		)
-	)
+		),
+		tap((y) => console.log("y", y))
+	);
+
+	readonly membershipsCSV$ = this.membershipsSorted$.pipe(
+		map((members) => {
+			const list = members
+				.map((member) => {
+					const names = (member.members as any)
+						.map((m) => `${m.firstName} ${m.lastName}`)
+						.join(", ");
+					return `${member.membershipNumber}, ${
+						member.submittedWork?.totalHours ?? 0
+					}, ${names}`;
+				})
+				.join("\n");
+			return `Membership Number, Hours, Name, Name (Partner)\n${list}`;
+		})
+	);
 
 	readonly myWork$ = this.authService.userEmail$.pipe(
 		switchMap((userEmail) =>
@@ -187,7 +209,7 @@ export class FirestoreService extends ComponentStore<never> {
 				.valueChanges()
 		),
 		shareReplay(1)
-	)
+	);
 	// *** Effects ***
 
 	readonly postJob = this.effect<PostedJobDetails>((job$) =>
@@ -201,7 +223,7 @@ export class FirestoreService extends ComponentStore<never> {
 				})
 			)
 		)
-	)
+	);
 
 	readonly signUpForJob = this.effect<SignedUpJob>((job$) =>
 		job$.pipe(
@@ -209,11 +231,11 @@ export class FirestoreService extends ComponentStore<never> {
 				this.jobsCollection.doc(job.id).update({
 					volunteer,
 					submittedBy,
-				})
+				});
 			}),
 			tap((job: SignedUpJob) => this.sendSignedUpJobAlert(job))
 		)
-	)
+	);
 
 	readonly cancelSignUp = this.effect<SignedUpJobBoardJob & { id: string }>(
 		(job$) =>
@@ -228,7 +250,7 @@ export class FirestoreService extends ComponentStore<never> {
 					this.sendCancellationAlert(job)
 				)
 			)
-	)
+	);
 
 	readonly submitHours = this.effect<any>((formValues$) =>
 		formValues$.pipe(
@@ -243,7 +265,7 @@ export class FirestoreService extends ComponentStore<never> {
 			tap((jobData) => this.jobsCollection.add(jobData)),
 			tap((jobData) => this.sendHoursLoggedAlert(jobData))
 		)
-	)
+	);
 
 	readonly setCurrentUserMember = this.effect<Member>((member$) =>
 		member$.pipe(
@@ -253,11 +275,11 @@ export class FirestoreService extends ComponentStore<never> {
 					Member,
 					AngularFirestoreDocument<User>
 				]) => {
-					currentUserDoc.set({ member }, { merge: true })
+					currentUserDoc.set({ member }, { merge: true });
 				}
 			)
 		)
-	)
+	);
 
 	readonly sendSignedUpJobAlert = this.effect<SignedUpJob>((alert$) =>
 		alert$.pipe(
@@ -278,7 +300,7 @@ Signed Up By: ${signedUpJob.submittedBy.name}
 				})
 			)
 		)
-	)
+	);
 
 	readonly sendCancellationAlert = this.effect<
 		SignedUpJobBoardJob & { id: string }
@@ -302,7 +324,7 @@ Cancelled By: ${user.member.firstName} ${user.member.lastName}
 				})
 			)
 		)
-	)
+	);
 
 	readonly sendHoursLoggedAlert = this.effect<any>((alert$) =>
 		alert$.pipe(
@@ -323,21 +345,21 @@ Submitted By: ${alert.submittedBy.name}
 				})
 			)
 		)
-	)
+	);
 
 	readonly sendEmail = this.effect<{
-		to: string
-		message: { subject: string; html?: string; text?: string }
+		to: string;
+		message: { subject: string; html?: string; text?: string };
 	}>((email$) =>
 		email$.pipe(tap((email) => this.firestore.collection("mail").add(email)))
-	)
+	);
 
 	constructor(
 		private readonly firestore: AngularFirestore,
 		private readonly authService: AuthService,
 		private readonly appService: AppService
 	) {
-		super()
+		super();
 		// const members = memberList
 		// console.log(members.length)
 		// this.members$.subscribe((m) => console.log(m.length))
