@@ -1,17 +1,17 @@
-import { Component } from "@angular/core"
-import { postedJobs } from "../../../../import/jobs"
-import { FirestoreService } from "../../services/firestore.service"
-import { map, switchMap, take, tap, withLatestFrom } from "rxjs/operators"
+import { Component } from "@angular/core";
+import { postedJobs } from "../../../../import/jobs";
+import { FirestoreService } from "../../services/firestore.service";
+import { map, switchMap, take, tap, withLatestFrom } from "rxjs/operators";
 import {
 	JobBoardJob,
 	JobCategory,
 	MemberWithContactInfo,
 	UserInitiatedJob,
-} from "../../types/job.types"
-import { Observable } from "rxjs"
-import { JobType } from "../../types/appData.types"
-import { volunteeredJobs } from "../../../../import/hours"
-import { currentYear } from "../../util/date-helpers"
+} from "../../types/job.types";
+import { Observable } from "rxjs";
+import { JobType } from "../../types/appData.types";
+import { volunteeredJobs } from "../../../../import/hours";
+import { currentYear } from "../../util/date-helpers";
 
 @Component({
 	selector: "app-import",
@@ -31,12 +31,12 @@ export class ImportPage {
 					{}
 				)
 			)
-		)
+		);
 
-	readonly jobBoard$ = this.firestoreService.jobBoard$
+	readonly jobBoard$ = this.firestoreService.jobBoard$;
 
 	constructor(private readonly firestoreService: FirestoreService) {
-		console.log("??", volunteeredJobs)
+		console.log("??", volunteeredJobs);
 	}
 
 	importHours() {
@@ -46,17 +46,17 @@ export class ImportPage {
 				take(1),
 				map(([jobBoard, jobTypes]) =>
 					volunteeredJobs.map((volunteeredJob) => {
-						const matchingJobType = jobTypes[volunteeredJob.job]
+						const matchingJobType = jobTypes[volunteeredJob.job];
 						const matchingJob = jobBoard.find(
 							(job) =>
 								job.jobDetails.title === volunteeredJob.job &&
 								job.jobDetails.date === volunteeredJob.date
-						)
+						);
 
-						console.log("**********")
-						console.log(volunteeredJob)
-						console.log(matchingJobType)
-						console.log(matchingJob)
+						console.log("**********");
+						console.log(volunteeredJob);
+						console.log(matchingJobType);
+						console.log(matchingJob);
 
 						const volunteer: MemberWithContactInfo = {
 							contactPhone: "",
@@ -64,18 +64,19 @@ export class ImportPage {
 							lastName: volunteeredJob.lastName,
 							membershipNumber: volunteeredJob.memberId.toString(),
 							status: "",
-						}
+						};
 
 						if (matchingJob) {
 							this.firestoreService.signUpForJob({
-								jobId: matchingJob.id,
+								id: matchingJob.id,
+								job: matchingJob,
 								volunteer,
 								submittedBy: {
 									name: "import",
 									email: "",
 									emailVerified: false,
 								},
-							})
+							});
 						} else {
 							const userInitiatedJob: UserInitiatedJob = {
 								seasonYear: currentYear,
@@ -88,14 +89,14 @@ export class ImportPage {
 								showOnJobBoard: false,
 								submittedBy: null,
 								volunteer,
-							}
-							this.firestoreService.submitHours(userInitiatedJob)
+							};
+							this.firestoreService.submitHours(userInitiatedJob);
 						}
 					})
 				)
 				//  tap((results) => results.forEach((result) => console.log(result)))
 			)
-			.subscribe()
+			.subscribe();
 	}
 
 	importJobs() {
@@ -103,7 +104,7 @@ export class ImportPage {
 			.pipe(
 				map((jobTypes) =>
 					postedJobs.map((postedJob): JobBoardJob => {
-						console.log(postedJob)
+						console.log(postedJob);
 						return {
 							seasonYear: currentYear,
 							jobDetails: {
@@ -115,20 +116,20 @@ export class ImportPage {
 							},
 							showOnJobBoard: true,
 							submittedBy: null,
-						}
+						};
 					})
 				),
 				switchMap((jobs) =>
 					Promise.all(
 						jobs.map(async (job) => {
-							console.log(job)
-							const x = await this.firestoreService.jobsCollection.add(job)
-							console.log(x)
+							console.log(job);
+							const x = await this.firestoreService.jobsCollection.add(job);
+							console.log(x);
 						})
 					)
 				),
 				tap(() => console.log("done"))
 			)
-			.subscribe()
+			.subscribe();
 	}
 }

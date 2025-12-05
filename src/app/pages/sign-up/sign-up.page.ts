@@ -1,15 +1,15 @@
-import { Component } from "@angular/core"
-import { filter, map, switchMap, tap, withLatestFrom } from "rxjs/operators"
-import { ActivatedRoute } from "@angular/router"
-import { FirestoreService } from "../../services/firestore.service"
-import { ComponentStore } from "@ngrx/component-store"
-import { FormBuilder, Validators } from "@angular/forms"
-import { AuthService } from "../../services/auth.service"
-import { PHONE_NUMBER_REGEX } from "../../util/regex"
-import { Member } from "../../types/appData.types"
-import { Observable } from "rxjs"
-import { AlertController } from "@ionic/angular"
-import { Job, SignedUpJobBoardJob } from "../../types/job.types"
+import { Component } from "@angular/core";
+import { filter, map, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { ActivatedRoute } from "@angular/router";
+import { FirestoreService } from "../../services/firestore.service";
+import { ComponentStore } from "@ngrx/component-store";
+import { FormBuilder, Validators } from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
+import { PHONE_NUMBER_REGEX } from "../../util/regex";
+import { Member } from "../../types/appData.types";
+import { Observable } from "rxjs";
+import { AlertController } from "@ionic/angular";
+import { Job, SignedUpJobBoardJob } from "../../types/job.types";
 
 @Component({
 	selector: "app-sign-up",
@@ -17,11 +17,11 @@ import { Job, SignedUpJobBoardJob } from "../../types/job.types"
 	styleUrls: ["./sign-up.page.scss"],
 })
 export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
-	readonly members$ = this.firestoreService.members$
+	readonly members$ = this.firestoreService.members$;
 
 	readonly jobId$ = this.route.paramMap.pipe(
 		map((paramMap) => paramMap.get("jobId"))
-	)
+	);
 
 	readonly job$ = this.jobId$.pipe(
 		switchMap((jobId) =>
@@ -29,19 +29,19 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 				map((jobs) => jobs.find((job) => job.id === jobId))
 			)
 		)
-	)
+	);
 
-	readonly submitted$ = this.job$.pipe(map((job) => !!job.submittedBy))
+	readonly submitted$ = this.job$.pipe(map((job) => !!job.submittedBy));
 
 	readonly form = this.fb.group({
 		member: ["", [Validators.required]],
 		phone: ["", [Validators.required, Validators.pattern(PHONE_NUMBER_REGEX)]],
-	})
+	});
 
 	readonly formValues$ = this.form.valueChanges as Observable<{
-		member: Member
-		phone: string
-	}>
+		member: Member;
+		phone: string;
+	}>;
 
 	readonly vm$ = this.select(
 		this.authService.userInfo$,
@@ -59,7 +59,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 			submitted,
 		}),
 		{ debounce: true }
-	)
+	);
 
 	// *** Effects ***
 
@@ -67,18 +67,19 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 		$.pipe(
 			withLatestFrom(this.job$, this.formValues$, this.authService.userInfo$),
 			map(([, job, formValues, userInfo]) => ({
+				id: job.id,
 				job,
 				volunteer: { ...formValues.member, contactPhone: formValues.phone },
 				submittedBy: userInfo,
 			})),
 			tap((signUpData) => {
-				this.firestoreService.signUpForJob(signUpData)
+				this.firestoreService.signUpForJob(signUpData);
 				// return console.log(signUpData);
 			}),
 			tap(() => this.patchState({ submitted: true })),
 			tap(() => this.form.disable())
 		)
-	)
+	);
 
 	readonly cancelSignUp = this.effect<SignedUpJobBoardJob & { id: string }>(
 		(job$) =>
@@ -87,7 +88,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 				tap(() => this.form.reset()),
 				tap(() => this.form.enable())
 			)
-	)
+	);
 
 	readonly initializeFormIfVolunteerHasSignedUp = this.effect<Job>((job$) =>
 		job$.pipe(
@@ -105,7 +106,7 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 				})
 			)
 		)
-	)
+	);
 
 	constructor(
 		private readonly route: ActivatedRoute,
@@ -114,20 +115,20 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 		private readonly authService: AuthService,
 		private readonly alertController: AlertController
 	) {
-		super({})
-		this.vm$.subscribe((vm) => console.log("[SignUpPage] vm", vm))
+		super({});
+		this.vm$.subscribe((vm) => console.log("[SignUpPage] vm", vm));
 
-		this.initializeFormIfVolunteerHasSignedUp(this.job$)
+		this.initializeFormIfVolunteerHasSignedUp(this.job$);
 
 		this.firestoreService.currentUser$.subscribe((user) => {
 			this.form.patchValue({
 				member: user.member,
-			})
-		})
+			});
+		});
 	}
 
 	compareWith(a: Member, b: Member) {
-		return a.membershipNumber === b.membershipNumber && a.status === b.status
+		return a.membershipNumber === b.membershipNumber && a.status === b.status;
 	}
 
 	async confirmCancelSignUp(job) {
@@ -141,19 +142,19 @@ export class SignUpPage extends ComponentStore<{ submitted?: boolean }> {
 					cssClass: "secondary",
 					id: "cancel-button",
 					handler: () => {
-						console.log("Confirm Cancel")
+						console.log("Confirm Cancel");
 					},
 				},
 				{
 					text: "Yes, cancel this sign-up",
 					id: "confirm-button",
 					handler: () => {
-						this.cancelSignUp(job)
+						this.cancelSignUp(job);
 					},
 				},
 			],
-		})
+		});
 
-		await alert.present()
+		await alert.present();
 	}
 }

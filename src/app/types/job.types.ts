@@ -1,5 +1,5 @@
-import { UserInfo } from "./auth.types"
-import { Member } from "./appData.types"
+import { UserInfo } from "./auth.types";
+import { Member } from "./appData.types";
 
 export enum JobCategory {
 	dutyOfficer = "Duty Officer",
@@ -25,67 +25,68 @@ export const jobCategoryEmail = {
 	[JobCategory.other]: "commodore@aquaticpark.com",
 	[JobCategory.shuttleDriver]: "duty_officer@aquaticpark.com",
 	[JobCategory.communications]: "communication@aquaticpark.com",
-}
+};
 
-export const jobCategoryOptions = Object.values(JobCategory)
+export const jobCategoryOptions = Object.values(JobCategory);
 
 // Basic info for all jobs, either posted on the Job board or member initiated
 export interface JobDetails {
-	category: JobCategory
-	description: string
-	date: string
-	hours: number
+	category: JobCategory;
+	description: string;
+	date: string;
+	hours: number;
 }
 // Jobs on the job board also require a title
 export interface PostedJobDetails extends JobDetails {
-	title: string
+	title: string;
 }
 
 // Volunteers signing up for job board jobs need to include contact info
 // so they can be contacted in case of problems
 export interface MemberWithContactInfo extends Member {
-	contactPhone: string
+	contactPhone: string;
 }
 
 // Jobs to be posted on the Job Board
 export interface JobBoardJob {
-	seasonYear: number
-	jobDetails: PostedJobDetails
-	showOnJobBoard: true
-	submittedBy: null
+	seasonYear: number;
+	jobDetails: PostedJobDetails;
+	showOnJobBoard: true;
+	submittedBy: null;
 }
 
 export interface SignedUpJobBoardJob {
-	seasonYear: number
-	jobDetails: PostedJobDetails
-	showOnJobBoard: true
-	submittedBy: UserInfo
-	volunteer: MemberWithContactInfo
+	seasonYear: number;
+	jobDetails: PostedJobDetails;
+	showOnJobBoard: true;
+	submittedBy: UserInfo;
+	volunteer: MemberWithContactInfo;
 }
 
 // User initiated jobs just need basic job and volunteer info
 export interface UserInitiatedJob {
-	seasonYear: number
-	jobDetails: JobDetails
-	volunteer: Member
-	submittedBy: UserInfo
-	showOnJobBoard: false
+	seasonYear: number;
+	jobDetails: JobDetails;
+	volunteer: Member;
+	submittedBy: UserInfo;
+	showOnJobBoard: false;
 }
 
 export interface SignedUpJob {
-	job: JobBoardJob & { id: string }
-	volunteer: MemberWithContactInfo
-	submittedBy?: UserInfo
+	id: string;
+	job: JobBoardJob & { id: string };
+	volunteer: MemberWithContactInfo;
+	submittedBy?: UserInfo;
 }
 export interface SubmittedHours {
-	volunteer: Omit<any, "status">
-	showOnJobBoard: false
+	volunteer: Omit<any, "status">;
+	showOnJobBoard: false;
 	jobDetails: {
-		date: string
-		hours: string
-		description: string
-		category: string
-	}
+		date: string;
+		hours: string;
+		description: string;
+		category: string;
+	};
 }
 
-export type Job = JobBoardJob | SignedUpJobBoardJob | UserInitiatedJob
+export type Job = JobBoardJob | SignedUpJobBoardJob | UserInitiatedJob;
