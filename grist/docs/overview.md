@@ -23,28 +23,28 @@ The Bulletin Board connects to Grist (the club's membership database) so only ve
 
 ## Features
 
-### [Job Board](./job-board.md) ⬅️ *Building First*
+### [Job Board](./JOB_BOARD.md) ⬅️ *Building First*
 Volunteer work obligation tracking and job signup system. Sign up for Duty Officer, Shuttle Driver, or event shifts.
 
-### [Community Board](./community.md)
+### [Community Board](./COMMUNITY.md)
 Member-to-member posts:
 - **Classifieds**: For sale, wanted, free stuff
 - **Crew Board**: Looking for crew / available to crew
 - **General Posts**: Anything else members want to share
 
-### [Announcements](./announcements.md)
+### [Announcements](./ANNOUNCEMENTS.md)
 Club news from the board - one-way, official notices.
 
-### [Member Profile](./member-profile.md)
+### [Member Profile](./MEMBER_PROFILE.md)
 See what the club has on file for you:
 - Contact info, boat details, mooring assignment
 - Flag anything that's wrong
 - **Membership card** for mobile wallet (for reciprocal visits)
 
-### [Insurance Submission](./insurance.md)
+### [Insurance Submission](./INSURANCE.md)
 Upload your proof of insurance each year. Track status.
 
-### [Reciprocal Visitors](./reciprocal-visitors.md)
+### [Reciprocal Visitors](./RECIPROCAL_VISITORS.md)
 Booking system for visiting sailors from partner clubs.
 
 ### Links & Resources
@@ -87,7 +87,7 @@ Email notifications for:
 
 ## Technical Overview
 
-See [technical.md](./technical.md) for details on:
+See [TECHNICAL.md](./TECHNICAL.md) for details on:
 - Frontend stack (React, Vite, Tailwind)
 - Grist integration strategy
 - Authentication approach
@@ -99,13 +99,13 @@ See [technical.md](./technical.md) for details on:
 
 | Document | Description |
 |----------|-------------|
-| [overview.md](./overview.md) | This file - vision and feature summary |
-| [job-board.md](./job-board.md) | Work obligations, signups, approvals |
-| [community.md](./community.md) | Classifieds, crew board, member posts |
-| [announcements.md](./announcements.md) | Official news from the board |
-| [member-profile.md](./member-profile.md) | Profile viewing and data verification |
-| [insurance.md](./insurance.md) | Annual insurance submission workflow |
-| [reciprocal-visitors.md](./reciprocal-visitors.md) | Booking system for visiting sailors |
-| [technical.md](./technical.md) | Stack, auth, Grist integration |
-| [current-schema.md](./current-schema.md) | Current Grist data model |
-| [proposed-schema.md](./proposed-schema.md) | Proposed schema changes |
+| [OVERVIEW.md](./OVERVIEW.md) | This file - vision and feature summary |
+| [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, approvals |
+| [COMMUNITY.md](./COMMUNITY.md) | Classifieds, crew board, member posts |
+| [ANNOUNCEMENTS.md](./ANNOUNCEMENTS.md) | Official news from the board |
+| [MEMBER_PROFILE.md](./MEMBER_PROFILE.md) | Profile viewing and data verification |
+| [INSURANCE.md](./INSURANCE.md) | Annual insurance submission workflow |
+| [RECIPROCAL_VISITORS.md](./RECIPROCAL_VISITORS.md) | Booking system for visiting sailors |
+| [TECHNICAL.md](./TECHNICAL.md) | Stack, auth, Grist integration |
+| [CURRENT_SCHEMA.md](./CURRENT_SCHEMA.md) | Current Grist data model |
+| [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md) | Proposed schema changes |

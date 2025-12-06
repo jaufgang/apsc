@@ -8,7 +8,7 @@ Official club news from the board.
 
 One-way communication from the board to members. Short, timely notices about club business.
 
-This is different from the [Community Board](./community.md) - announcements are official club communications, not member-to-member posts.
+This is different from the [Community Board](./COMMUNITY.md) - announcements are official club communications, not member-to-member posts.
 
 ---
 
