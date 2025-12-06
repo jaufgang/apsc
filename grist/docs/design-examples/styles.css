@@ -1284,21 +1284,21 @@ body {
 .guestbook {
     display: flex;
     box-shadow: var(--shadow-lg);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .guestbook-cover {
-    width: 80px;
-    background: var(--white);
-    border-radius: 8px 0 0 8px;
-    padding: var(--space-lg) var(--space-md);
+    width: 70px;
+    background: linear-gradient(180deg, var(--deep-navy) 0%, #2D4A6A 100%);
+    padding: var(--space-md) var(--space-sm);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     text-align: center;
-    color: var(--deep-navy);
+    color: var(--white);
     position: relative;
-    border: 2px solid var(--deep-navy);
     border-right: none;
 }
 
@@ -1307,8 +1307,8 @@ body {
     right: 0;
     top: 0;
     bottom: 0;
-    width: 8px;
-    background: var(--deep-navy);
+    width: 4px;
+    background: linear-gradient(180deg, var(--ocean-blue) 0%, var(--deep-navy) 100%);
 }
 
 .guestbook-emblem {
@@ -1319,18 +1319,33 @@ body {
 .guestbook-logo {
     width: 50px;
     height: 50px;
-    margin-bottom: var(--space-sm);
+    transform: rotate(-90deg);
+    margin-bottom: var(--space-md);
     border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.guestbook-front {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
 }
 
 .guestbook-cover h3 {
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: var(--space-xs);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
     writing-mode: vertical-rl;
     text-orientation: mixed;
     transform: rotate(180deg);
-    letter-spacing: 0.1em;
+    color: var(--white);
+    line-height: 1.3;
 }
 
 .guestbook-cover p {
@@ -1339,19 +1354,21 @@ body {
     writing-mode: vertical-rl;
     text-orientation: mixed;
     transform: rotate(180deg);
+    color: var(--white);
 }
 
 .guestbook-year {
-    font-size: 0.75rem !important;
-    font-weight: 600;
-    margin-top: var(--space-md);
-    color: var(--ocean-blue);
+    font-size: 0.875rem !important;
+    font-weight: 700;
+    color: var(--sky-blue);
+    writing-mode: horizontal-tb;
+    transform: none;
+    opacity: 1;
 }
 
 .guestbook-pages {
     display: flex;
     background: var(--white);
-    border-radius: 0 8px 8px 0;
     overflow: hidden;
 }
 
@@ -1420,6 +1437,16 @@ body {
     color: var(--ocean-blue);
 }
 
+.visitor-message {
+    font-family: var(--font-handwritten);
+    font-size: 0.9rem;
+    color: var(--gray-700);
+    font-style: italic;
+    margin-top: var(--space-xs);
+    padding-left: var(--space-sm);
+    border-left: 2px solid var(--cork);
+}
+
 .visitor-boat {
     font-size: 0.7rem;
     color: var(--gray-500);
@@ -1458,6 +1485,12 @@ body {
     outline: none;
     border-color: var(--ocean-blue);
     background: var(--white);
+}
+
+.guestbook-textarea {
+    min-height: 60px;
+    resize: vertical;
+    line-height: 1.4;
 }
 
 .btn-checkin {
