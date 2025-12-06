@@ -2,6 +2,8 @@
 
 Members view and verify their profile information stored in Grist.
 
+**Schema:** [Data_Change_Requests](./PROPOSED_SCHEMA.md#member-profile-tables)
+
 ---
 
 ## Overview

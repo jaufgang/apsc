@@ -2,6 +2,8 @@
 
 Streamline the yearly insurance verification process.
 
+**Schema:** [Insurance_Submissions](./PROPOSED_SCHEMA.md#insurance-tables)
+
 ---
 
 ## Overview

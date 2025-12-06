@@ -1,165 +1,472 @@
-# Proposed Schema: Volunteer Job Management
+# Proposed Schema: APSC Bulletin Board
 
 ## Overview
-Extend the existing Grist database to support a complete volunteer work management system similar to the legacy Ionic app.
+
+Extend the existing Grist database to support the full APSC Bulletin Board application, including:
+- **[Job Board](./JOB_BOARD.md)** - Volunteer work tracking and signups
+- **[Announcements](./ANNOUNCEMENTS.md)** - Official club news
+- **[Newsletter](./ANNOUNCEMENTS.md#newsletter)** - Periodic member newsletter
+- **[Community Board](./COMMUNITY.md)** - Member-to-member posts (classifieds, crew, general)
+- **[Reciprocal Visitors](./RECIPROCAL_VISITORS.md)** - Booking system for visiting sailors
+- **[Insurance](./INSURANCE.md)** - Annual insurance submission and tracking
+- **[Member Profile](./MEMBER_PROFILE.md)** - View/verify profile info, data change requests
+
+---
 
 ## New Tables Required
 
-### Jobs
+### Job Board Tables
+
+*Feature details: [JOB_BOARD.md](./JOB_BOARD.md)*
+
+#### Jobs
 Posted volunteer jobs that members can sign up for.
 
 | Column | Type | Description |
 |--------|------|-------------|
-| id | Auto | Primary key (Grist provides this) |
-| Title | Text | Job title (e.g., "Duty Officer - Saturday") |
-| Category | Choice | Job category (see categories below) |
-| Description | Text | Detailed job description |
-| Date | Date | When the job needs to be done |
-| Hours | Numeric | Estimated hours for the job |
-| Season | Text | Season year (e.g., "2025") |
-| Posted_By | Ref:Member_List | Who posted this job |
-| Posted_Date | DateTime | When the job was posted |
-| Status | Choice | Open, Filled, Completed, Cancelled |
+| id | Auto | Primary key |
+| title | Text | Job title (e.g., "Duty Officer - Saturday") |
+| category | Ref:Job_Categories | Job category |
+| description | Text | Detailed job description |
+| date | Date | When the job needs to be done |
+| hours | Numeric | Estimated hours for the job |
+| slots | Numeric | Number of volunteers needed (default: 1) |
+| season | Text | Season year (e.g., "2025") |
+| posted_by | Ref:Member_List | Who posted this job |
+| posted_date | DateTime | When the job was posted |
+| status | Choice | Open / Filled / Completed / Cancelled |
 
-### Job_Signups
+#### Job_Signups
 When a member signs up for a posted job.
 
 | Column | Type | Description |
 |--------|------|-------------|
 | id | Auto | Primary key |
-| Job | Ref:Jobs | The job being signed up for |
-| Volunteer | Ref:Member_List | Member who signed up |
-| Contact_Phone | Text | Phone for this job (may differ from profile) |
-| Signup_Date | DateTime | When they signed up |
-| Status | Choice | Signed_Up, Completed, Cancelled, No_Show |
-| Actual_Hours | Numeric | Actual hours worked (may differ from estimate) |
-| Completed_Date | DateTime | When marked complete |
-| Notes | Text | Any notes about the work |
+| job | Ref:Jobs | The job being signed up for |
+| volunteer | Ref:Member_List | Member who signed up |
+| signed_up_by | Ref:Member_List | Who entered the signup (may differ from volunteer) |
+| contact_phone | Text | Phone for this job (may differ from profile) |
+| signup_date | DateTime | When they signed up |
+| status | Choice | Signed_Up / Completed / Cancelled / No_Show |
+| actual_hours | Numeric | Actual hours worked (may differ from estimate) |
+| completed_date | DateTime | When marked complete |
+| notes | Text | Any notes about the work |
 
-### Work_Log
-For logging volunteer work NOT from the job board (member-initiated).
+#### Work_Log
+For logging volunteer work NOT from the job board (ad-hoc/member-initiated).
 
 | Column | Type | Description |
 |--------|------|-------------|
 | id | Auto | Primary key |
-| Volunteer | Ref:Member_List | Member who did the work |
-| Category | Choice | Job category |
-| Description | Text | What work was done |
-| Date | Date | When work was done |
-| Hours | Numeric | Hours worked |
-| Season | Text | Season year |
-| Submitted_By | Ref:Member_List | Who submitted this log entry |
-| Submitted_Date | DateTime | When submitted |
-| Status | Choice | Pending, Approved, Rejected |
-| Approved_By | Ref:Member_List | Who approved (if applicable) |
-| Approved_Date | DateTime | When approved |
-| Notes | Text | Admin notes |
+| volunteer | Ref:Member_List | Member who did the work |
+| category | Ref:Job_Categories | Job category |
+| description | Text | What work was done |
+| date | Date | When work was done |
+| hours | Numeric | Hours worked |
+| season | Text | Season year |
+| submitted_by | Ref:Member_List | Who submitted this log entry |
+| submitted_date | DateTime | When submitted |
+| status | Choice | Pending / Approved / Rejected |
+| approved_by | Ref:Member_List | Who approved (if applicable) |
+| approved_date | DateTime | When approved |
+| notes | Text | Admin notes |
 
-### Job_Categories
+#### Job_Categories
 Reference table for job categories.
 
 | Column | Type | Description |
 |--------|------|-------------|
 | id | Auto | Primary key |
-| Name | Text | Category name |
-| Email | Text | Committee email for this category |
-| Description | Text | What this category covers |
-| Active | Bool | Whether this category is active |
+| name | Text | Category name |
+| email | Text | Committee email for this category |
+| approver_role | Text | Board position responsible for approvals |
+| description | Text | What this category covers |
+| active | Bool | Whether this category is active |
 
-**Initial Categories (from legacy app):**
+**Initial Categories:**
 - Duty Officer → duty_officer@aquaticpark.com
+- Shuttle Driver → duty_officer@aquaticpark.com
 - House & Grounds → h_g@aquaticpark.com  
 - Harbor → harbour@aquaticpark.com
 - Social → social@aquaticpark.com
 - Race → race@aquaticpark.com
 - Fleet Program → fleet_program@aquaticpark.com
 - Safety → safety@aquaticpark.com
-- Special Request / Other → commodore@aquaticpark.com
-- Shuttle Driver → duty_officer@aquaticpark.com
 - Communications → communication@aquaticpark.com
+- Special Request / Other → commodore@aquaticpark.com
+
+---
+
+### Announcements & Newsletter Tables
+
+*Feature details: [ANNOUNCEMENTS.md](./ANNOUNCEMENTS.md)*
+
+#### Announcements
+Official club announcements from the board.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| author_id | Ref:Member_List | Board member who posted |
+| title | Text | Announcement title |
+| body | Text | Announcement content |
+| category | Choice | General / Safety / Events / Harbour / Board |
+| send_email | Boolean | Did this trigger an email blast? |
+| created_at | DateTime | When posted |
+
+#### Newsletters
+Club newsletter issues (Markdown content).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| title | Text | Issue title (e.g., "Spring 2025 Issue") |
+| content | Text | Markdown content |
+| author_id | Ref:Member_List | Communications Director |
+| status | Choice | Draft / Published |
+| published_at | DateTime | When published |
+| email_sent | Boolean | Was email blast sent? |
+
+---
+
+### Community Board Tables
+
+*Feature details: [COMMUNITY.md](./COMMUNITY.md)*
+
+#### Community_Posts
+Member-to-member posts (classifieds, crew board, general).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| member_id | Ref:Member_List | Who posted |
+| type | Choice | Classifieds / Crew / General |
+| category | Choice | For Sale / Wanted / Free (classifieds only) |
+| crew_type | Choice | Looking for Crew / Available to Crew (crew board only) |
+| title | Text | Post title |
+| body | Text | Post content |
+| price | Numeric | Optional (for classifieds) |
+| contact_pref | Choice | Show Email / Show Phone / Both |
+| status | Choice | Active / Resolved / Expired |
+| created_at | DateTime | When posted |
+| expires_at | DateTime | Auto-set to created + 60 days |
+
+---
+
+### Reciprocal Visitors Tables
+
+*Feature details: [RECIPROCAL_VISITORS.md](./RECIPROCAL_VISITORS.md)*
+
+#### Reciprocal_Clubs
+Partner clubs with reciprocal agreements.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| name | Text | Club name |
+| location | Text | City/region |
+| website | Text | Club website URL |
+| free_nights | Numeric | Number of free nights offered |
+| nightly_fee | Numeric | Fee after free nights |
+| notes | Text | Visitor policies, amenities, etc. |
+| active | Boolean | Is agreement active? |
+
+#### Mooring_Balls
+All mooring balls in the harbour with GPS coordinates.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| ball_number | Numeric | Mooring ball number |
+| latitude | Numeric | GPS latitude |
+| longitude | Numeric | GPS longitude |
+| notes | Text | Location notes (e.g., "Near the dock") |
+| last_updated | DateTime | When position was last verified |
+| updated_by | Ref:Member_List | Who updated it |
+
+#### Visitor_Moorings
+Which moorings are available for reciprocal visitors (managed by Harbour Master).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| mooring_id | Ref:Mooring_Balls | Which mooring ball |
+| available_from | Date | When it becomes available |
+| available_until | Date | Optional end date |
+| notes | Text | e.g., "Member on vacation" |
+
+#### Visitor_Reservations
+Visitor booking requests and confirmations.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| visitor_name | Text | Visitor's name |
+| visitor_email | Text | Visitor's email |
+| visitor_phone | Text | Visitor's phone |
+| home_club | Ref:Reciprocal_Clubs | Or Text if club not in list |
+| home_club_membership_number | Text | For verification |
+| arrival_date | Date | Planned arrival |
+| departure_date | Date | Planned departure |
+| boat_name | Text | Vessel name |
+| boat_length | Numeric | Length in feet |
+| boat_draft | Numeric | Draft in feet |
+| crew_count | Numeric | Number of people |
+| arriving_from_usa | Boolean | CBSA reminder flag |
+| special_requests | Text | Any notes |
+| assigned_mooring | Ref:Mooring_Balls | Set by Harbour Master |
+| status | Choice | Pending / Confirmed / Checked_In / Cancelled / Completed |
+| checked_in_at | DateTime | When they scanned QR / checked in |
+| created_at | DateTime | When reservation was made |
+| notes | Text | Admin notes |
+
+#### Visitor_Blocked_Dates
+Dates when visitors cannot be accepted (regatta, crane day, etc.).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| date | Date | Blocked date |
+| reason | Text | Why blocked (e.g., "Regatta weekend") |
+| created_by | Ref:Member_List | Who blocked it |
+
+---
+
+### Insurance Tables
+
+*Feature details: [INSURANCE.md](./INSURANCE.md)*
+
+#### Insurance_Submissions
+Annual insurance proof submissions.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| member_id | Ref:Member_List | Who submitted |
+| carrier | Text | Insurance company |
+| policy_number | Text | Policy number |
+| expiration_date | Date | When policy expires |
+| document_url | Text | Link to uploaded document |
+| submitted_at | DateTime | When submitted |
+| status | Choice | Pending / Approved / Rejected |
+| reviewed_by | Ref:Member_List | Who reviewed |
+| reviewed_at | DateTime | When reviewed |
+| review_notes | Text | Notes (especially if rejected) |
+
+---
+
+### Member Profile Tables
+
+*Feature details: [MEMBER_PROFILE.md](./MEMBER_PROFILE.md)*
+
+#### Data_Change_Requests
+Member requests to update their profile info.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| member_id | Ref:Member_List | Who submitted |
+| field_name | Text | Which field to change |
+| current_value | Text | What's currently on record |
+| requested_value | Text | What they want it changed to |
+| reason | Text | Why the change |
+| submitted_at | DateTime | When submitted |
+| status | Choice | Pending / Approved / Rejected |
+| reviewed_by | Ref:Member_List | Who reviewed |
+| reviewed_at | DateTime | When reviewed |
+| notes | Text | Admin notes |
+
+---
 
 ## Changes to Existing Tables
 
 ### Member_List
-No changes needed - we'll reference existing members.
+No schema changes needed - we reference existing members.
+
+**Considerations:**
+- Verify `Membership_Type` field exists for work obligation lookup
+- Verify `email` field exists for notifications
+- May want to add `role` or reference to Roles table for permission checks
+
+### Roles Table
+Currently no FK to Member_List.
+
+**Proposed Enhancement:**
+| Column | Type | Description |
+|--------|------|-------------|
+| member_id | Ref:Member_List | Which member holds this role |
+| year | Text | Board year (e.g., "2025") |
+
+This enables: historical tracking, proper auth lookup, year-over-year reporting.
 
 ### Consider Replacing T{YEAR}_WO_Completed
 The current pattern of creating a new table each year is not ideal. The new `Job_Signups` and `Work_Log` tables with a `Season` field will track this more elegantly.
 
-A summary view can aggregate:
-- Total hours from `Job_Signups` (where Status = Completed)
-- Total hours from `Work_Log` (where Status = Approved)
+---
 
 ## Views to Create
 
 ### Member_Hours_Summary
-Summary table grouping by Member + Season:
-- Total hours from job signups
-- Total hours from work log
+Summary view grouping by Member + Season:
+- Total hours from Job_Signups (Status = Completed)
+- Total hours from Work_Log (Status = Approved)
 - Combined total
-- Hours required (from Member_List)
+- Hours required (from Member_List/Membership_Type)
 - Hours remaining
 
 ### Job_Board_View
-Active jobs view filtered to:
+Active jobs filtered to:
 - Status = Open
 - Date >= Today
+- Has open slots
+
+### Pending_Approvals_By_Category
+For board member dashboard:
+- Work_Log entries with Status = Pending
+- Grouped by category
+- Sorted by submitted_date
+
+### Insurance_Compliance
+Member insurance status:
+- Latest submission per member
+- Current status
+- Days until expiration
+- Flagged if expired or expiring soon
+
+### Visitor_Calendar
+All visitor reservations:
+- Grouped by date range
+- Shows mooring assignments
+- Filters for pending/confirmed
+
+---
 
 ## Relationships Diagram
 
 ```
 Member_List
     │
-    ├──< Job_Signups >── Jobs
+    ├──< Job_Signups >── Jobs ──< Job_Categories
     │       │
     │       └── Volunteer hours (completed signups)
     │
-    └──< Work_Log
-            │
-            └── Ad-hoc volunteer hours
-            
-Job_Categories ──< Jobs (via Category)
-                 < Work_Log (via Category)
+    ├──< Work_Log ──────────────< Job_Categories
+    │       │
+    │       └── Ad-hoc volunteer hours
+    │
+    ├──< Announcements
+    │
+    ├──< Newsletters
+    │
+    ├──< Community_Posts
+    │
+    ├──< Insurance_Submissions
+    │
+    ├──< Data_Change_Requests
+    │
+    └──< Mooring_Balls (updated_by)
+
+Mooring_Balls
+    │
+    ├──< Visitor_Moorings
+    │
+    └──< Visitor_Reservations (assigned_mooring)
+
+Reciprocal_Clubs ──< Visitor_Reservations (home_club)
 ```
+
+---
 
 ## Migration Notes
 
-1. **No data migration needed** - Starting fresh for job tracking
-2. **Keep T2023/T2024_WO_Completed** - For historical reference, but new system won't use this pattern
+1. **No data migration needed** - Starting fresh for new features
+2. **Keep T2023/T2024_WO_Completed** - For historical reference
 3. **Member_List unchanged** - New tables reference existing members
-4. **Consider cleanup** - Eventually remove year-specific WO columns from Member_List in favor of computed summaries
+4. **Reciprocal clubs** - Import current list from website into Reciprocal_Clubs table
+5. **Mooring balls** - Initial setup requires GPS coordinates for each ball
+
+---
 
 ## API Endpoints Needed
 
-For the React app, we'll need:
-
 ```
 # Jobs
-GET  /tables/Jobs/records - List jobs (with filters)
-POST /tables/Jobs/records - Create job
-PATCH /tables/Jobs/records - Update job
+GET    /tables/Jobs/records
+POST   /tables/Jobs/records
+PATCH  /tables/Jobs/records
 
 # Signups
-GET  /tables/Job_Signups/records - List signups
-POST /tables/Job_Signups/records - Sign up for job
-PATCH /tables/Job_Signups/records - Update signup (complete, cancel)
+GET    /tables/Job_Signups/records
+POST   /tables/Job_Signups/records
+PATCH  /tables/Job_Signups/records
 
 # Work Log
-GET  /tables/Work_Log/records - List work entries
-POST /tables/Work_Log/records - Submit work
-PATCH /tables/Work_Log/records - Approve/reject
+GET    /tables/Work_Log/records
+POST   /tables/Work_Log/records
+PATCH  /tables/Work_Log/records
+
+# Announcements
+GET    /tables/Announcements/records
+POST   /tables/Announcements/records
+
+# Newsletters
+GET    /tables/Newsletters/records
+POST   /tables/Newsletters/records
+PATCH  /tables/Newsletters/records
+
+# Community Posts
+GET    /tables/Community_Posts/records
+POST   /tables/Community_Posts/records
+PATCH  /tables/Community_Posts/records
+
+# Reciprocal Visitors (public endpoints - no auth)
+GET    /tables/Reciprocal_Clubs/records
+GET    /tables/Mooring_Balls/records
+POST   /tables/Visitor_Reservations/records
+PATCH  /tables/Visitor_Reservations/records
+
+# Mooring Management (Harbour Master)
+PATCH  /tables/Mooring_Balls/records
+GET    /tables/Visitor_Moorings/records
+POST   /tables/Visitor_Moorings/records
+GET    /tables/Visitor_Blocked_Dates/records
+POST   /tables/Visitor_Blocked_Dates/records
+
+# Insurance
+GET    /tables/Insurance_Submissions/records
+POST   /tables/Insurance_Submissions/records
+PATCH  /tables/Insurance_Submissions/records
+
+# Profile
+GET    /tables/Member_List/records (filtered to current user)
+GET    /tables/Data_Change_Requests/records
+POST   /tables/Data_Change_Requests/records
+PATCH  /tables/Data_Change_Requests/records
 
 # Reference Data
-GET /tables/Job_Categories/records - List categories
-GET /tables/Member_List/records - List members (for dropdowns)
+GET    /tables/Job_Categories/records
 ```
+
+---
 
 ## Next Steps
 
-1. Create `Job_Categories` table with initial data
-2. Create `Jobs` table
-3. Create `Job_Signups` table  
-4. Create `Work_Log` table
-5. Create summary views
-6. Test API access from scratch scripts
-7. Build React frontend
+1. **Phase 1: Job Board** (priority)
+   - Create Job_Categories, Jobs, Job_Signups, Work_Log tables
+   - Build React frontend for job board features
+   
+2. **Phase 2: Announcements & Newsletter**
+   - Create Announcements, Newsletters tables
+   - Build posting and viewing UI
+   
+3. **Phase 3: Community Board**
+   - Create Community_Posts table
+   - Build classifieds/crew board UI
+   
+4. **Phase 4: Reciprocal Visitors**
+   - Create visitor-related tables
+   - Build public booking form and Harbour Master UI
+   
+5. **Phase 5: Insurance & Profile**
+   - Create Insurance_Submissions, Data_Change_Requests tables
+   - Build submission and review workflows

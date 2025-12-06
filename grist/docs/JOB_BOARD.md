@@ -4,6 +4,8 @@ Volunteer work obligation tracking and job signup system.
 
 **Status:** 🔨 Building First
 
+**Schema:** [Jobs, Job_Signups, Work_Log, Job_Categories](./PROPOSED_SCHEMA.md#job-board-tables)
+
 ---
 
 ## Overview

@@ -4,6 +4,8 @@ Booking system for visiting sailors from reciprocal clubs.
 
 **This is a public-facing feature - no APSC member login required.**
 
+**Schema:** [Reciprocal_Clubs, Mooring_Balls, Visitor_Moorings, Visitor_Reservations](./PROPOSED_SCHEMA.md#reciprocal-visitors-tables)
+
 ---
 
 ## Overview
@@ -133,17 +135,11 @@ Use **Google Maps** as the base layer (default to map view, with satellite toggl
 
 This handles balls being moved by the barge - Harbour Master updates the position, map stays accurate.
 
-### Data Model Addition
+### Data Model
 
-Add to **Mooring_Balls** table in Grist:
+*Full schema: [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md#reciprocal-visitors-tables)*
 
-| Field | Type | Notes |
-|-------|------|-------|
-| ball_number | Number | |
-| latitude | Number | GPS coordinate |
-| longitude | Number | GPS coordinate |
-| last_updated | DateTime | When position was last verified |
-| updated_by | Reference | Who updated it |
+**Mooring_Balls**: `ball_number`, `latitude`, `longitude`, `last_updated`
 
 ### For Visitors
 
@@ -178,30 +174,11 @@ Visitors should be able to **reserve** a mooring, not just request:
 
 ### Data Model
 
-**Visitor_Moorings** (managed by Harbour Master):
-| Field | Type | Notes |
-|-------|------|-------|
-| mooring_id | Reference | Which mooring ball |
-| available_from | Date | When it becomes available for visitors |
-| available_until | Date | Optional end date |
-| notes | Text | "Member on vacation" etc. |
+*Full schema: [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md#reciprocal-visitors-tables)*
 
-**Visitor_Reservations**:
-| Field | Type | Notes |
-|-------|------|-------|
-| id | Auto | |
-| visitor_name | Text | |
-| visitor_email | Text | |
-| visitor_phone | Text | |
-| home_club | Text/Reference | |
-| home_club_membership_number | Text | For verification of reciprocal privileges |
-| arrival_date | Date | |
-| departure_date | Date | |
-| boat_name | Text | |
-| boat_length | Number | |
-| assigned_mooring | Reference | Set by Harbour Master or auto-assigned |
-| status | Choice | Pending / Confirmed / Cancelled / Completed |
-| created_at | DateTime | |
+**Visitor_Moorings**: `mooring_id`, `available_from`, `available_until`
+
+**Visitor_Reservations**: `visitor_name`, `home_club`, `arrival_date`, `departure_date`, `boat_name`, `assigned_mooring`, `status`
 
 ---
 

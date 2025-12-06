@@ -2,6 +2,8 @@
 
 Official club news from the board.
 
+**Schema:** [Announcements, Newsletters](./PROPOSED_SCHEMA.md#announcements--newsletter-tables)
+
 ---
 
 ## Overview
@@ -41,17 +43,9 @@ This is different from the [Community Board](./COMMUNITY.md) - announcements are
 
 ## Data Model (Grist)
 
-Simple table:
+*Full schema: [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md#announcements--newsletter-tables)*
 
-| Field | Type | Notes |
-|-------|------|-------|
-| id | Auto | |
-| author_id | Reference | Board member who posted |
-| title | Text | |
-| body | Text | |
-| category | Choice | General / Safety / Events / Harbour / Board |
-| send_email | Boolean | Did this trigger an email blast? |
-| created_at | DateTime | |
+Key fields: `title`, `body`, `category`, `send_email`, `author_id`
 
 ---
 
@@ -79,15 +73,9 @@ Libraries like `react-markdown` + `@uiw/react-md-editor` make this straightforwa
 
 ### Data Model (Grist)
 
-| Field | Type | Notes |
-|-------|------|-------|
-| id | Auto | |
-| title | Text | e.g., "Spring 2025 Issue" |
-| content | Text | Markdown content |
-| author_id | Reference | Who wrote it |
-| status | Choice | Draft / Published |
-| published_at | DateTime | |
-| email_sent | Boolean | Was email blast sent? |
+*Full schema: [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md#announcements--newsletter-tables)*
+
+Key fields: `title`, `content` (Markdown), `status` (Draft/Published), `author_id`
 
 ### For Members
 
@@ -116,6 +104,8 @@ Keep it simple. Announcements are just "news from the board" - nothing fancy.
 
 ## User Stories
 
+### Announcements
+
 **US-AN1**: As a board member, I want to post an announcement so members see important news.
 
 **US-AN2**: As a board member, I want to send an email notification for urgent announcements.
@@ -123,3 +113,19 @@ Keep it simple. Announcements are just "news from the board" - nothing fancy.
 **US-AN3**: As a member, I want to see recent announcements when I log in.
 
 **US-AN4**: As a member, I want to browse past announcements.
+
+### Newsletter
+
+**US-NL1**: As the Communications Director, I want to write a newsletter in a Markdown editor so I can create formatted content easily.
+
+**US-NL2**: As the Communications Director, I want to preview the newsletter before publishing so I can see how it will look.
+
+**US-NL3**: As the Communications Director, I want to save a draft so I can work on it over time.
+
+**US-NL4**: As the Communications Director, I want to publish and send the newsletter to all members with one click.
+
+**US-NL5**: As a member, I want to see the latest newsletter on my dashboard.
+
+**US-NL6**: As a member, I want to browse past newsletters in an archive.
+
+**US-NL7**: As a member, I want to receive an email when a new newsletter is published.

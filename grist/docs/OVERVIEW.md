@@ -33,7 +33,7 @@ Member-to-member posts:
 - **General Posts**: Anything else members want to share
 
 ### [Announcements](./ANNOUNCEMENTS.md)
-Club news from the board - one-way, official notices.
+Club news from the board - one-way, official notices. Also includes the club **Newsletter** (Markdown editor for the Communications Director).
 
 ### [Member Profile](./MEMBER_PROFILE.md)
 See what the club has on file for you:
@@ -51,7 +51,6 @@ Booking form for visiting sailors from partner clubs to request a mooring.
 Some things don't need to be built - just linked:
 - **Documents**: → Google Drive folder (club rules, forms, minutes)
 - **Calendar**: → Embedded Google Calendar
-- **Newsletter**: → Emailed directly (no portal feature needed)
 
 ### Future Ideas (Backlog)
 - Online dues payment

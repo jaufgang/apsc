@@ -2,6 +2,8 @@
 
 Member-to-member posts - like the bulletin board in the clubhouse.
 
+**Schema:** [Community_Posts](./PROPOSED_SCHEMA.md#community-board-tables)
+
 ---
 
 ## Overview
@@ -94,20 +96,9 @@ If members want discussion, that's what the fire pit is for. 🔥
 
 ## Data Model (Grist)
 
-Simple table:
+*Full schema: [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md#community-board-tables)*
 
-| Field | Type | Notes |
-|-------|------|-------|
-| id | Auto | |
-| member_id | Reference | Who posted |
-| type | Choice | Classifieds / Crew / General |
-| category | Choice | For Sale / Wanted / Free (classifieds only) |
-| title | Text | |
-| body | Text | |
-| price | Number | Optional |
-| status | Choice | Active / Resolved / Expired |
-| created_at | DateTime | |
-| expires_at | DateTime | Auto-set to created + 60 days |
+Key fields: `type` (Classifieds/Crew/General), `title`, `body`, `status`, `expires_at`
 
 ---
 
