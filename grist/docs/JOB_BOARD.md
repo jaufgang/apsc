@@ -4,7 +4,7 @@ Volunteer work obligation tracking and job signup system.
 
 **Status:** 🔨 Building First
 
-**Schema:** [Jobs, Job_Signups, Work_Log, Job_Categories](./PROPOSED_SCHEMA.md#job-board-tables)
+**Schema:** [Jobs, Job_Signups, Work_Log, Hour_Adjustments, Job_Categories](./PROPOSED_SCHEMA.md#job-board-tables)
 
 ---
 
@@ -49,6 +49,48 @@ Board members can:
 - Spouses/partners share a membership number
 - Their volunteer hours are pooled together toward the shared obligation
 - Consortium memberships (boat co-owners who are NOT spouses) are tracked separately
+
+### Hour Adjustments
+
+While membership type defines the **base hours** required per season, board members can apply **adjustments** to individual members for specific years.
+
+**Adjustment Types:**
+
+| Type | Hours | Example Scenario |
+|------|-------|------------------|
+| Pro-rated start | Negative | Member joined mid-season (25 → 15 hrs) |
+| No-show penalty | Positive | Missed a Duty Officer shift without notice (+5 hrs) |
+| Medical/hardship | Negative | Injury prevented participation (-10 hrs) |
+| Board discretion | +/- | Special circumstances |
+
+**Rules:**
+- All adjustments are **manual** - only board members can create them
+- Adjustments apply to a **specific member** and **specific season**
+- A **comment is always required** explaining the reason
+- Multiple adjustments can exist for the same member/season
+- Adjustments stack additively with base hours
+
+**Calculation:**
+```
+Effective Requirement = Base Hours (from membership type) + Sum of Adjustments
+```
+
+**Example:**
+- Sarah is a Senior Sailor → base requirement: 30 hours
+- Joined August 15 (pro-rated): -15 hours adjustment
+- **Effective requirement: 15 hours** for the season
+
+**Another Example:**
+- Tom is a Senior Sailor → base requirement: 30 hours  
+- No-showed his Duty Officer shift: +5 hours adjustment
+- **Effective requirement: 35 hours** for the season
+
+**Audit Trail:**
+Each adjustment records:
+- Who made the adjustment
+- When it was made
+- Reason/comment (required)
+- The adjustment amount (+/-)
 
 ---
 
@@ -173,12 +215,26 @@ Board members can:
 
 ### R1: Member Dashboard
 Members see their work obligation status at a glance:
-- Hours required for the season
+- **Base hours** from membership type
+- **Adjustments** applied (if any) with reasons
+- **Effective hours required** for the season
 - Hours completed (approved)
 - Hours pending approval
 - Hours remaining / surplus
 - For shared memberships: combined household total
 - History of all volunteer work
+
+**Hours Breakdown Example:**
+```
+Base requirement (Senior Sailor):    30 hrs
+Pro-rated start (joined Aug 15):    -15 hrs
+─────────────────────────────────────────
+Effective requirement:               15 hrs
+Completed:                            8 hrs
+Pending approval:                     3 hrs
+─────────────────────────────────────────
+Remaining:                            4 hrs
+```
 
 ### R2: Job Board / Sign-Up Sheets
 A **visual bulletin board** metaphor with signup sheets that look like paper forms.
@@ -239,7 +295,6 @@ Review and approve submitted hours:
 ### R6: Administration
 System management for admins:
 - View all members and work status
-- Manual hour adjustments (credits, corrections)
 - Configure season dates
 - Manage job categories and approvers
 - Generate reports:
@@ -247,6 +302,27 @@ System management for admins:
   - Unfulfilled obligations
   - Job board utilization
   - Export for billing/fees
+
+### R7: Hour Adjustments (Board Members)
+Modify individual member's hour requirements:
+- Create adjustment for a specific member and season
+- Select adjustment type:
+  - **Pro-rated start** - member joined mid-season
+  - **No-show penalty** - missed scheduled duty without notice
+  - **Medical/hardship** - accommodation for health issues
+  - **Board discretion** - other approved circumstances
+- Enter hours (+/-) and **required comment**
+- View adjustment history for any member
+- Adjustments visible to the affected member on their dashboard
+
+**UI Workflow:**
+1. Navigate to member's profile or search for member
+2. Click "Adjust Hours" button
+3. Select season (defaults to current)
+4. Choose adjustment reason from dropdown
+5. Enter hours (negative to reduce, positive to add)
+6. Enter required comment explaining the adjustment
+7. Submit - member's effective requirement updates immediately
 
 ---
 
@@ -317,6 +393,18 @@ Board members need real-time visibility into volunteer hours:
 **US-A5**: As an admin, I want to generate reports of unfulfilled obligations so we can calculate fees owed.
 
 **US-A6**: As an admin, I want to manage user roles so the right people have the right access.
+
+### Hour Adjustment Stories
+
+**US-H1**: As a board member, I want to pro-rate a new member's hours when they join mid-season so they have a fair obligation.
+
+**US-H2**: As a board member, I want to add penalty hours when a member no-shows a scheduled duty so there are consequences for unreliability.
+
+**US-H3**: As a board member, I want to reduce a member's hours for medical or hardship reasons so we can accommodate special circumstances.
+
+**US-H4**: As a member, I want to see any adjustments applied to my account so I understand my actual hour requirement.
+
+**US-H5**: As an admin, I want to view all adjustments with their reasons so I have an audit trail of hour modifications.
 
 ---
 

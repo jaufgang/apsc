@@ -72,6 +72,33 @@ For logging volunteer work NOT from the job board (ad-hoc/member-initiated).
 | approved_date | DateTime | When approved |
 | notes | Text | Admin notes |
 
+#### Hour_Adjustments
+Manual adjustments to a member's work hour requirement for a specific season.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| member | Ref:Member_List | Member whose hours are being adjusted |
+| season | Text | Season year (e.g., "2025") |
+| adjustment | Numeric | Hours to add (+) or subtract (-) |
+| reason | Choice | Pro_Rated_Start / No_Show_Penalty / Medical / Board_Discretion / Other |
+| comment | Text | Required explanation for the adjustment |
+| created_by | Ref:Member_List | Board member who made the adjustment |
+| created_at | DateTime | When adjustment was created |
+
+**Notes:**
+- `adjustment` is signed: negative reduces requirement, positive increases it
+- `comment` is required - cannot be blank
+- Multiple adjustments can exist for same member/season (they stack)
+- Effective requirement = Base hours (from Membership_Type) + Sum of adjustments
+
+**Reason Values:**
+- `Pro_Rated_Start` - Member joined mid-season
+- `No_Show_Penalty` - Failed to show for scheduled duty
+- `Medical` - Health/injury accommodation  
+- `Board_Discretion` - Other circumstances approved by board
+- `Other` - Requires detailed explanation in comment
+
 #### Job_Categories
 Reference table for job categories.
 
