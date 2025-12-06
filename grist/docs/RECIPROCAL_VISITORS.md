@@ -100,6 +100,7 @@ A public-facing form to request a visit:
 When approved, visitor receives:
 - Approval confirmation
 - Assigned mooring location
+- **Mooring map/guide** - how to find your ball in the harbour
 - Club address and access instructions (see [Getting Here](https://www.aquaticpark.com/about-2))
 - Reminder: No water or electrical hookups
 - Amenities info: Clubhouse, bonfire, kitchen facilities
@@ -108,6 +109,51 @@ When approved, visitor receives:
 - Weekend shuttle bus: 9am-6pm
 - USA visitors: CBSA reminder
 - Contact info for questions
+
+---
+
+## Harbour Map / Mooring Guide
+
+Visitors need to find their assigned mooring ball when they sail in.
+
+### Interactive Map Approach
+
+Use **Google Maps** as the base layer (default to map view, with satellite toggle), with **dynamic markers** for each mooring ball pulled from Grist.
+
+**How it works:**
+- Each mooring ball in Grist has GPS coordinates (lat/long)
+- Map displays satellite view with markers at each ball's coordinates
+- Visitor's assigned ball is highlighted
+- Clicking a marker shows ball number and status
+
+**Harbour Master can update coordinates:**
+1. **Drag & drop** - Move markers on the map, save new position
+2. **GPS capture** - While at the ball (in a dinghy), tap "Update location" to capture current GPS from mobile device
+3. **Manual entry** - Type in coordinates directly
+
+This handles balls being moved by the barge - Harbour Master updates the position, map stays accurate.
+
+### Data Model Addition
+
+Add to **Mooring_Balls** table in Grist:
+
+| Field | Type | Notes |
+|-------|------|-------|
+| ball_number | Number | |
+| latitude | Number | GPS coordinate |
+| longitude | Number | GPS coordinate |
+| last_updated | DateTime | When position was last verified |
+| updated_by | Reference | Who updated it |
+
+### For Visitors
+
+- Confirmation email includes link to map with their ball highlighted
+- Can open in Google Maps app for navigation
+- Shows ball number and any notes (e.g., "Near the dock")
+
+**Club Location:** 
+- Centre coordinates: 43.6298507, -79.3334965
+- [Google Maps (satellite view)](https://www.google.com/maps/search/aquatic+park+sailing+club/@43.6298507,-79.3334965,572m/data=!3m1!1e3)
 
 ---
 
