@@ -24,7 +24,7 @@ Think of it as the clubhouse bulletin board - just online.
 | Document | Description |
 |----------|-------------|
 | [OVERVIEW.md](./OVERVIEW.md) | Vision and feature summary |
-| [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, approvals |
+| [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, confirmations |
 | [COMMUNITY.md](./COMMUNITY.md) | Classifieds, crew board, member posts |
 | [RACING.md](./RACING.md) | Wednesday night racing and standings |
 | [ANNOUNCEMENTS.md](./ANNOUNCEMENTS.md) | Official news from the board |

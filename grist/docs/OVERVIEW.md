@@ -109,7 +109,7 @@ See [DESIGN.md](./DESIGN.md) for:
 | Document | Description |
 |----------|-------------|
 | [OVERVIEW.md](./OVERVIEW.md) | This file - vision and feature summary |
-| [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, approvals |
+| [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, confirmations |
 | [EVENTS.md](./EVENTS.md) | Social events, work parties, RSVPs |
 | [RACING.md](./RACING.md) | Wednesday night racing, results, standings |
 | [COMMUNITY.md](./COMMUNITY.md) | Classifieds, crew board, member posts |

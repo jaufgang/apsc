@@ -4,7 +4,7 @@ Volunteer work obligation tracking and job signup system.
 
 **Status:** 🔨 Building First
 
-**Schema:** [Jobs, Job_Signups, Work_Log, Hour_Adjustments, Job_Categories](./PROPOSED_SCHEMA.md#job-board-tables)
+**Schema:** [Jobs, Job_Signups, Work_Log, Hour_Adjustments, Board_Members, Job_Categories](./PROPOSED_SCHEMA.md#job-board-tables)
 
 ---
 
@@ -14,11 +14,11 @@ The Job Board allows members to:
 - See their work obligation status
 - Browse and sign up for volunteer jobs
 - Log ad-hoc volunteer hours
-- Track approval status
+- Track confirmation status
 
 Board members can:
 - Post jobs and events
-- Approve submitted hours
+- Confirm submitted hours
 - Monitor signup status
 
 ---
@@ -28,7 +28,35 @@ Board members can:
 ### Hours Requirement
 - Determined by membership type (stored in Grist)
 - Some membership classes have zero obligation (e.g., Dormant, Ex Member, Lifetime)
+- **Board members are exempt** - serving on the board counts as their volunteer contribution (0 hours required)
 - Unfulfilled hours result in a buyout fee: **$25/hour** (+ HST = $28.25)
+
+### Board Member Exemption
+
+Members serving on the board in the current season are **automatically exempt** from work hour requirements:
+
+- Board membership tracked by year in the `Board_Members` table
+- Any member with a record for the current season has:
+  - **0 hours required** (regardless of membership type)
+  - **Board member privileges** in the app
+- Historical board service preserved for reporting
+- Mid-season appointments: effective immediately upon being added
+- Mid-season departures: exemption ends, pro-rated hours may apply
+
+**Board Positions:**
+- Commodore
+- Vice Commodore  
+- Treasurer
+- Secretary
+- Harbour Master
+- Fleet Captain
+- Duty Officer Director
+- H&G Director
+- Social Director
+- Race Director
+- Safety Officer
+- Communications Director
+- Member at Large
 
 ### Membership Types & Work Obligations (2025)
 
@@ -106,6 +134,12 @@ Each adjustment records:
 **Statutory holidays during sailing season:**
 - Good Friday, Victoria Day, Canada Day, Civic Holiday, Labour Day, Thanksgiving
 
+**Holiday Date Source:**
+- At the start of each season, fetch Ontario statutory holiday dates from a public API or official listing
+- Recommended: [Canada Public Holidays API](https://canada-holidays.ca/api) or [Government of Canada open data](https://www.canada.ca/en/revenue-agency/services/tax/public-holidays.html)
+- Holidays are stored with the season configuration and used during bulk job generation
+- Admin can review/override dates if needed before generating the schedule
+
 ### 2. Special Event Jobs
 - Posted by board members on an ad-hoc basis before events
 - Configurable number of volunteers needed (e.g., "Setup: 3 needed")
@@ -133,16 +167,31 @@ Each adjustment records:
 
 ### Cancellations
 - Members can cancel/remove themselves from signups
-- Last-minute cancellations allowed (emergencies happen)
-- Cancellation triggers notification to board member so replacement can be found
+- **Last-minute cancellations require an explanation**
+  - "Last-minute" = within 48 hours of the job start
+  - Reason is required (free-text field)
+  - Reason is visible to the board member responsible for that category
+- Early cancellations (48+ hours out) do not require a reason
+- All cancellations trigger notification to board member so replacement can be found
 
 ---
 
-## Approval Workflow
+## Confirmation Workflow
 
-- **All logged hours require approval**
+- **All logged hours require confirmation**
 - Each job category has a designated board member responsible
-- That board member approves/rejects hours for their category
+- That board member confirms/rejects hours for their category
+
+### Confirmation Actions
+
+When reviewing submitted hours, board members can:
+
+1. **Confirm as submitted** - Hours credited exactly as logged
+2. **Confirm with adjustment** - Modify hours up or down (requires comment)
+   - "Showed up 1 hour late" → reduce hours
+   - "Stayed extra to help cleanup" → increase hours
+3. **Reject** - No hours credited (requires reason + comment)
+   - No-show, event cancelled, duplicate entry, etc.
 
 ### Category Ownership
 
@@ -166,8 +215,27 @@ Each adjustment records:
 | Role | Capabilities |
 |------|--------------|
 | Member | View job board, sign up for jobs, log ad-hoc hours, view own status |
-| Board Member | All member abilities + post jobs + approve hours in their category |
-| Admin | All abilities + system configuration + reports + manual adjustments |
+| Board Member | All member abilities + post jobs + confirm hours in their category + hour adjustments |
+| Admin | All abilities + system configuration + reports + manage board members |
+
+### Board Member Privileges
+
+Board member status is determined by the `Board_Members` table:
+
+```
+IF member has Board_Members record for current season:
+  → Grant board member privileges
+  → Set work hours required = 0
+ELSE:
+  → Standard member privileges
+  → Work hours from membership type
+```
+
+**Privilege Assignment:**
+- Automatic based on current season's board roster
+- No manual role assignment needed
+- Updates immediately when board roster changes
+- Each board position maps to approval categories (see Category Ownership below)
 
 ---
 
@@ -176,14 +244,14 @@ Each adjustment records:
 ### For Members
 - Confirmation when you sign up for a job
 - Reminder before your upcoming shift
-- Alert when your submitted hours are approved/rejected
+- Alert when your submitted hours are confirmed/rejected
 - Season summary of your hours
 
 ### For Board Members
 - Alert when someone signs up for a job in your category
 - Alert when someone cancels a job in your category
-- Alert when hours are submitted for approval
-- Weekly digest of pending approvals
+- Alert when hours are submitted for confirmation
+- Weekly digest of pending confirmations
 - Alert when a job is approaching with no signup
 
 ### For Admins
@@ -194,8 +262,8 @@ Each adjustment records:
 **Must-have for launch:**
 - Shift reminder (before your job)
 - Cancellation alert to board member
-- Hours approved/rejected notification
-- Pending approval alert for board members
+- Hours confirmed/rejected notification
+- Pending confirmation alert for board members
 
 **Soon after launch:**
 - Signup confirmation
@@ -218,8 +286,8 @@ Members see their work obligation status at a glance:
 - **Base hours** from membership type
 - **Adjustments** applied (if any) with reasons
 - **Effective hours required** for the season
-- Hours completed (approved)
-- Hours pending approval
+- Hours completed (confirmed)
+- Hours pending confirmation
 - Hours remaining / surplus
 - For shared memberships: combined household total
 - History of all volunteer work
@@ -231,7 +299,7 @@ Pro-rated start (joined Aug 15):    -15 hrs
 ─────────────────────────────────────────
 Effective requirement:               15 hrs
 Completed:                            8 hrs
-Pending approval:                     3 hrs
+Pending confirmation:                 3 hrs
 ─────────────────────────────────────────
 Remaining:                            4 hrs
 ```
@@ -272,10 +340,10 @@ A **visual bulletin board** metaphor with signup sheets that look like paper for
 
 ### R3: Ad-Hoc Work Logging
 Submit hours for unscheduled volunteer work:
-- Select category (determines approver)
+- Select category (determines who confirms)
 - Enter date, hours, description
 - Track submission status
-- Receive notification when approved/rejected
+- Receive notification when confirmed/rejected
 
 ### R4: Job Posting (Board Members)
 Create volunteer opportunities:
@@ -286,11 +354,42 @@ Create volunteer opportunities:
   - Title, description, category, date, hours, # of volunteers needed
 - View signups for posted jobs
 
-### R5: Hour Approval (Board Members)
-Review and approve submitted hours:
+### R5: Hour Confirmation (Board Members)
+Review and confirm submitted hours:
 - See pending hours in your category
-- Approve or reject with optional comment
-- View approval history
+- **Confirm**: Accept hours as submitted, or adjust hours up/down
+- **Reject**: Decline hours with required reason and comment
+- View confirmation history
+
+**Confirmation Options:**
+
+| Action | Fields Required |
+|--------|----------------|
+| Confirm (as-is) | None |
+| Confirm (adjusted) | New hour amount + comment explaining adjustment |
+| Reject | Rejection reason + comment |
+
+**Rejection Reasons:**
+- `No-Show` - Member did not show up for the work
+- `Event Cancelled` - The event/work was cancelled
+- `Duplicate` - Hours already logged elsewhere
+- `Other` - Requires detailed explanation in comment
+
+**Hour Adjustments (during confirmation):**
+- Board member can adjust hours up, down, or even negative
+- **Positive adjustment**: "Stayed extra 2 hours to help cleanup"
+- **Reduced hours**: "Left 1 hour early", "Arrived 30 min late"
+- **Negative hours (penalty)**: "No-show without notice" → e.g., -5 hours as penalty
+- Comment required to explain any adjustment
+- Member sees both submitted and confirmed hours
+
+**Example - No-Show Penalty:**
+```
+Submitted hours:   8 hrs (Duty Officer shift)
+Confirmed hours:  -5 hrs (penalty)
+Comment:          "No-show without notice. Must arrange replacement."
+```
+This adds 5 hours to the member's remaining obligation instead of crediting any.
 
 ### R6: Administration
 System management for admins:
@@ -330,8 +429,8 @@ Modify individual member's hour requirements:
 
 Board members need real-time visibility into volunteer hours:
 
-- **Pending approvals** - Hours submitted, awaiting their review
-- **Recent activity** - Recently approved/logged hours
+- **Pending confirmations** - Hours submitted, awaiting their review
+- **Recent activity** - Recently confirmed/logged hours
 - **Upcoming jobs** - Scheduled jobs in their category and signup status
 - **Unfilled slots** - Jobs needing volunteers
 
@@ -343,7 +442,7 @@ Board members need real-time visibility into volunteer hours:
 
 **Visibility Model:**
 - Small club, no compartmentalization - everyone with board/admin access can see all data
-- Board members can approve hours only for their category
+- Board members can confirm hours only for their category
 - Reporting is club-wide, not siloed
 
 ---
@@ -406,13 +505,26 @@ Board members need real-time visibility into volunteer hours:
 
 **US-H5**: As an admin, I want to view all adjustments with their reasons so I have an audit trail of hour modifications.
 
+### Board Member Stories
+
+**US-BM1**: As an admin, I want to add members to the board for a season so they automatically get board privileges.
+
+**US-BM2**: As an admin, I want to assign board positions (Commodore, Harbour Master, etc.) so the right people can approve hours in their category.
+
+**US-BM3**: As a board member, I want my work hours to be automatically waived so I don't have to track volunteer hours while serving.
+
+**US-BM4**: As an admin, I want to view the board roster history so I can see who served in previous years.
+
+**US-BM5**: As a member, I want to see that I'm exempt from work hours when I'm on the board so I understand my status.
+
 ---
 
 ## Open Questions
 
-1. **Category → Board Member mapping**: Currently Roles table has no FK to Member_List.
-   - Proposed: Track board membership by year with proper member references
-   - This enables: historical record, proper auth lookup, year-over-year reporting
+1. ~~**Category → Board Member mapping**: Currently Roles table has no FK to Member_List.~~
+   - ✅ **Resolved**: New `Board_Members` table tracks board membership by year with proper member references
+   - Enables: historical record, automatic privilege assignment, year-over-year reporting
+   - Board members for current season automatically get board privileges and 0 hour requirement
 
 2. **Signup compliance reminders**: Should there be a deadline by which members must sign up for at least one Duty Officer or Shuttle Driver shift?
    - What is the deadline?

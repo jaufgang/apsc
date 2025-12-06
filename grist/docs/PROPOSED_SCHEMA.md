@@ -51,6 +51,8 @@ When a member signs up for a posted job.
 | status | Choice | Signed_Up / Completed / Cancelled / No_Show |
 | actual_hours | Numeric | Actual hours worked (may differ from estimate) |
 | completed_date | DateTime | When marked complete |
+| cancelled_date | DateTime | When cancelled (if applicable) |
+| cancellation_reason | Text | Required if cancelled within 48 hours of job |
 | notes | Text | Any notes about the work |
 
 #### Work_Log
@@ -63,14 +65,24 @@ For logging volunteer work NOT from the job board (ad-hoc/member-initiated).
 | category | Ref:Job_Categories | Job category |
 | description | Text | What work was done |
 | date | Date | When work was done |
-| hours | Numeric | Hours worked |
+| hours | Numeric | Hours submitted by member |
+| confirmed_hours | Numeric | Actual hours credited (may differ from submitted) |
 | season | Text | Season year |
 | submitted_by | Ref:Member_List | Who submitted this log entry |
 | submitted_date | DateTime | When submitted |
-| status | Choice | Pending / Approved / Rejected |
-| approved_by | Ref:Member_List | Who approved (if applicable) |
-| approved_date | DateTime | When approved |
-| notes | Text | Admin notes |
+| status | Choice | Pending / Confirmed / Rejected |
+| confirmed_by | Ref:Member_List | Who confirmed/rejected |
+| confirmed_date | DateTime | When confirmed/rejected |
+| rejection_reason | Choice | No_Show / Event_Cancelled / Duplicate / Other |
+| review_comment | Text | Required comment when rejecting or adjusting hours |
+
+**Confirmation Notes:**
+- `confirmed_hours` defaults to `hours` but can be adjusted up, down, or negative
+- Positive adjustment: worked longer than expected
+- Negative adjustment: showed up late, left early
+- Negative hours (penalty): no-show without notice, creates additional obligation
+- `review_comment` required when rejecting OR when `confirmed_hours` differs from `hours`
+- `rejection_reason` required when status = Rejected
 
 #### Hour_Adjustments
 Manual adjustments to a member's work hour requirement for a specific season.
@@ -99,6 +111,40 @@ Manual adjustments to a member's work hour requirement for a specific season.
 - `Board_Discretion` - Other circumstances approved by board
 - `Other` - Requires detailed explanation in comment
 
+#### Board_Members
+Tracks who serves on the board each year.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| member | Ref:Member_List | The board member |
+| position | Choice | Board position held |
+| season | Text | Season year (e.g., "2025") |
+| start_date | Date | When they started (optional, defaults to season start) |
+| end_date | Date | When they ended (optional, null = full season) |
+| notes | Text | Any notes |
+
+**Position Values:**
+- `Commodore`
+- `Vice_Commodore`
+- `Treasurer`
+- `Secretary`
+- `Harbour_Master`
+- `Fleet_Captain`
+- `Duty_Officer_Director`
+- `H_And_G_Director`
+- `Social_Director`
+- `Race_Director`
+- `Safety_Officer`
+- `Communications_Director`
+- `Member_At_Large`
+
+**Notes:**
+- A member can hold multiple positions in the same season
+- Members with a Board_Members record for the current season automatically have board privileges
+- Board members are exempt from work hour requirements (0 hours required)
+- Historical records preserved for year-over-year reporting
+
 #### Job_Categories
 Reference table for job categories.
 
@@ -107,7 +153,7 @@ Reference table for job categories.
 | id | Auto | Primary key |
 | name | Text | Category name |
 | email | Text | Committee email for this category |
-| approver_role | Text | Board position responsible for approvals |
+| confirmer_role | Text | Board position responsible for confirmations |
 | description | Text | What this category covers |
 | active | Bool | Whether this category is active |
 
@@ -377,7 +423,7 @@ The current pattern of creating a new table each year is not ideal. The new `Job
 ### Member_Hours_Summary
 Summary view grouping by Member + Season:
 - Total hours from Job_Signups (Status = Completed)
-- Total hours from Work_Log (Status = Approved)
+- Total hours from Work_Log (Status = Confirmed)
 - Combined total
 - Hours required (from Member_List/Membership_Type)
 - Hours remaining
@@ -388,7 +434,7 @@ Active jobs filtered to:
 - Date >= Today
 - Has open slots
 
-### Pending_Approvals_By_Category
+### Pending_Confirmations_By_Category
 For board member dashboard:
 - Work_Log entries with Status = Pending
 - Grouped by category

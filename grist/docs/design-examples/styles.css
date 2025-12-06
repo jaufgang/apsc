@@ -1102,6 +1102,286 @@ body {
     text-align: center;
 }
 
+/* ===========================================
+   Potluck Menu
+   =========================================== */
+.potluck-menu {
+    background: var(--white);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+    border: 2px dashed var(--cork);
+}
+
+.menu-label {
+    font-weight: 700;
+    color: var(--deep-navy);
+    margin-bottom: var(--space-md);
+    text-align: center;
+    font-size: 1rem;
+}
+
+.menu-categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+}
+
+.menu-category {
+    background: var(--gray-50);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+}
+
+.category-icon {
+    font-size: 1.25rem;
+    margin-right: var(--space-xs);
+}
+
+.category-name {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    letter-spacing: 0.5px;
+}
+
+.menu-items {
+    list-style: none;
+    margin-top: var(--space-xs);
+    padding-left: 0;
+}
+
+.menu-items li {
+    font-size: 0.8rem;
+    color: var(--gray-700);
+    padding: 2px 0;
+    border-bottom: 1px dotted var(--gray-200);
+}
+
+.menu-items li:last-child {
+    border-bottom: none;
+}
+
+.contributor {
+    font-family: var(--font-handwritten);
+    color: var(--ocean-blue);
+    font-size: 0.9rem;
+}
+
+.contributor::after {
+    content: " — ";
+    color: var(--gray-400);
+}
+
+.attendee.more {
+    color: var(--gray-500);
+    font-style: italic;
+}
+
+/* ===========================================
+   Ticketed Events
+   =========================================== */
+.event-poster-ticketed {
+    max-width: 360px;
+    background: linear-gradient(135deg, #FFF5F5 0%, #FEE2E2 100%);
+    border-color: #DC2626;
+}
+
+.poster-details {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+}
+
+.ticket-section {
+    background: var(--white);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-md);
+    border: 2px solid var(--success);
+}
+
+.ticket-price {
+    text-align: center;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.price-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    letter-spacing: 0.5px;
+    margin-bottom: var(--space-xs);
+}
+
+.price-amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.price-note {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+.ticket-purchase {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.qty-label {
+    font-size: 0.875rem;
+    color: var(--gray-700);
+}
+
+.qty-select {
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    background: var(--white);
+}
+
+.ticket-total {
+    font-weight: 600;
+    color: var(--deep-navy);
+    font-size: 0.9rem;
+}
+
+.payment-methods {
+    text-align: center;
+}
+
+.payment-label {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.payment-buttons {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-payment {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-payment:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-paypal {
+    border-color: #0070BA;
+    color: #0070BA;
+}
+
+.btn-paypal:hover {
+    background: #0070BA;
+    color: var(--white);
+}
+
+.btn-etransfer {
+    border-color: #FF6B00;
+    color: #FF6B00;
+}
+
+.btn-etransfer:hover {
+    background: #FF6B00;
+    color: var(--white);
+}
+
+.btn-cash {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.btn-cash:hover {
+    background: var(--success);
+    color: var(--white);
+}
+
+.payment-icon {
+    font-size: 1rem;
+}
+
+.attendee-list-compact .attendee {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.paid-badge {
+    background: var(--success-light);
+    color: var(--success);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: var(--font-sans);
+}
+
+.pending-badge {
+    background: var(--warning-light);
+    color: var(--warning);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: var(--font-sans);
+}
+
+.payment-instructions {
+    background: var(--sky-blue);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.payment-instructions p {
+    font-size: 0.8rem;
+    margin-bottom: var(--space-xs);
+    color: var(--deep-navy);
+}
+
+.payment-instructions p:last-child {
+    margin-bottom: 0;
+}
+
+.card-note {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    font-style: italic;
+    margin-bottom: var(--space-sm);
+}
+
 /* Volunteer slots */
 .volunteer-slots {
     margin: var(--space-md) 0;

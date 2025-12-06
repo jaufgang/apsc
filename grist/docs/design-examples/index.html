@@ -259,10 +259,10 @@
 
         <!-- Social Event Signup -->
         <section class="section">
-            <h2>Social Event Signup</h2>
+            <h2>Social Event Signup (Potluck)</h2>
             <div class="bulletin-board">
                 <div class="board-surface board-surface-wide">
-                    <!-- Event Poster Card -->
+                    <!-- Event Poster Card - Potluck -->
                     <div class="event-poster">
                         <div class="pin pin-yellow"></div>
                         <div class="poster-header">
@@ -272,15 +272,56 @@
                         </div>
                         <div class="poster-body">
                             <p>Join us for burgers, hot dogs, and good company at the clubhouse!</p>
-                            <p class="poster-note">🍽️ Please bring a side dish or dessert to share</p>
+                            <p class="poster-note">🍖 <strong>Main course provided</strong> — please bring a dish to share</p>
                         </div>
+                        
+                        <!-- Potluck Menu Section -->
+                        <div class="potluck-menu">
+                            <p class="menu-label">🍽️ What's on the Menu</p>
+                            <div class="menu-categories">
+                                <div class="menu-category">
+                                    <span class="category-icon">🥗</span>
+                                    <span class="category-name">Appetizers</span>
+                                    <ul class="menu-items">
+                                        <li><span class="contributor">Sarah M.</span> Spinach dip</li>
+                                        <li><span class="contributor">Mike T.</span> Cheese platter</li>
+                                    </ul>
+                                </div>
+                                <div class="menu-category">
+                                    <span class="category-icon">🥔</span>
+                                    <span class="category-name">Side Dishes</span>
+                                    <ul class="menu-items">
+                                        <li><span class="contributor">Smith Family</span> Potato salad</li>
+                                        <li><span class="contributor">The Johnsons</span> Coleslaw</li>
+                                        <li><span class="contributor">Karen W.</span> Caesar salad</li>
+                                    </ul>
+                                </div>
+                                <div class="menu-category">
+                                    <span class="category-icon">🍰</span>
+                                    <span class="category-name">Desserts</span>
+                                    <ul class="menu-items">
+                                        <li><span class="contributor">Captain Dave</span> Brownies</li>
+                                        <li><span class="contributor">Ellen M.</span> Fruit salad</li>
+                                    </ul>
+                                </div>
+                                <div class="menu-category">
+                                    <span class="category-icon">🍹</span>
+                                    <span class="category-name">Beverages</span>
+                                    <ul class="menu-items">
+                                        <li><span class="contributor">Tom B.</span> Lemonade</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="poster-signup">
-                            <p class="signup-label">Who's Coming?</p>
+                            <p class="signup-label">Who's Coming? (18 attending)</p>
                             <div class="attendee-list">
                                 <div class="attendee">✓ Smith Family (4)</div>
                                 <div class="attendee">✓ Mike & Sarah T.</div>
                                 <div class="attendee">✓ Captain Dave</div>
                                 <div class="attendee">✓ The Johnsons (3)</div>
+                                <div class="attendee more">+6 more...</div>
                             </div>
                             <button class="btn-rsvp">+ Count Me In!</button>
                         </div>
@@ -308,6 +349,93 @@
                             </div>
                         </div>
                         <p class="card-attribution">– Social Director</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ticketed Event -->
+        <section class="section">
+            <h2>Ticketed Event</h2>
+            <div class="bulletin-board">
+                <div class="board-surface board-surface-wide">
+                    <!-- Ticketed Event Poster -->
+                    <div class="event-poster event-poster-ticketed">
+                        <div class="pin pin-yellow"></div>
+                        <div class="poster-header">
+                            <span class="poster-icon">🎄</span>
+                            <h3>Holiday Dinner & Dance</h3>
+                            <p class="poster-date">Saturday, December 14 • 6:00 PM</p>
+                        </div>
+                        <div class="poster-body">
+                            <p>Join us for a catered holiday celebration at the clubhouse!</p>
+                            <p class="poster-details">🍽️ Three-course dinner • 🎵 Live music • 🥂 Cash bar</p>
+                        </div>
+                        
+                        <!-- Ticket Info -->
+                        <div class="ticket-section">
+                            <div class="ticket-price">
+                                <span class="price-label">Tickets</span>
+                                <span class="price-amount">$45</span>
+                                <span class="price-note">per person</span>
+                            </div>
+                            <div class="ticket-purchase">
+                                <label class="qty-label">Quantity:</label>
+                                <select class="qty-select">
+                                    <option>1</option>
+                                    <option selected>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                                <span class="ticket-total">Total: $90</span>
+                            </div>
+                            <div class="payment-methods">
+                                <p class="payment-label">Pay with:</p>
+                                <div class="payment-buttons">
+                                    <button class="btn-payment btn-paypal">
+                                        <span class="payment-icon">💳</span> PayPal
+                                    </button>
+                                    <button class="btn-payment btn-etransfer">
+                                        <span class="payment-icon">📧</span> e-Transfer
+                                    </button>
+                                    <button class="btn-payment btn-cash">
+                                        <span class="payment-icon">💵</span> Pay in Person
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="poster-signup">
+                            <p class="signup-label">32 tickets sold</p>
+                            <div class="attendee-list attendee-list-compact">
+                                <div class="attendee">✓ Smith Family (4) <span class="paid-badge">Paid</span></div>
+                                <div class="attendee">✓ Mike & Sarah T. <span class="paid-badge">Paid</span></div>
+                                <div class="attendee">✓ The Johnsons (3) <span class="pending-badge">Pending</span></div>
+                                <div class="attendee more">+8 more...</div>
+                            </div>
+                        </div>
+                        <p class="poster-footer">Posted by Social Committee</p>
+                    </div>
+
+                    <!-- Payment Instructions Card -->
+                    <div class="pinned-card card-rotate-3" style="max-width: 260px;">
+                        <div class="pin"></div>
+                        <div class="card-badge badge-blue">e-Transfer Instructions</div>
+                        <div class="payment-instructions">
+                            <p><strong>Send to:</strong> treasurer@apsc.ca</p>
+                            <p><strong>Amount:</strong> $90.00</p>
+                            <p><strong>Message:</strong> "Holiday Dinner - Your Name"</p>
+                        </div>
+                        <p class="card-note">Payment will be confirmed within 24-48 hours</p>
+                        <p class="card-attribution">– Treasurer</p>
+                    </div>
+
+                    <!-- Cash Payment Card -->
+                    <div class="pinned-card card-small card-rotate-1" style="max-width: 200px;">
+                        <div class="pin pin-green"></div>
+                        <div class="card-badge badge-green">Pay in Person</div>
+                        <p class="card-body-small">Pay cash or cheque to the <strong>Treasurer</strong> or <strong>Social Director</strong> at the club.</p>
+                        <p class="card-attribution">Office hours: Sat 10am-2pm</p>
                     </div>
                 </div>
             </div>
