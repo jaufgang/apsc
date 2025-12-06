@@ -12,7 +12,8 @@ A simple web app for APSC members to:
 - Post classifieds, find crew, share announcements
 - View their membership info and mooring details
 - Submit annual insurance documents
-- Book reciprocal visitors
+
+Plus a **public sign-in sheet** for reciprocal visitors to book their stay (no login required).
 
 Think of it as the clubhouse bulletin board - just online.
 

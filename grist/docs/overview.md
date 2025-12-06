@@ -44,8 +44,8 @@ See what the club has on file for you:
 ### [Insurance Submission](./INSURANCE.md)
 Upload your proof of insurance each year. Track status.
 
-### [Reciprocal Visitors](./RECIPROCAL_VISITORS.md)
-Booking system for visiting sailors from partner clubs.
+### [Reciprocal Visitors](./RECIPROCAL_VISITORS.md) *(public - no login)*
+Booking form for visiting sailors from partner clubs to request a mooring.
 
 ### Links & Resources
 Some things don't need to be built - just linked:
