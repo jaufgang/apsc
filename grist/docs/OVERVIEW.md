@@ -36,7 +36,7 @@ Member-to-member posts:
 - **General Posts**: Anything else members want to share
 
 ### [Announcements](./ANNOUNCEMENTS.md)
-Club news from the board - one-way, official notices. Also includes the club **Newsletter** (Markdown editor for the Communications Director).
+Club news from the board - one-way, official notices. Also includes **"The Mooring Line"** newsletter (Markdown editor for the Communications Director).
 
 ### [Member Profile](./MEMBER_PROFILE.md)
 See what the club has on file for you:

@@ -49,9 +49,9 @@ Key fields: `title`, `body`, `category`, `send_email`, `author_id`
 
 ---
 
-## Newsletter
+## The Mooring Line (Newsletter)
 
-The club newsletter is being revived! (Traditional name TBD - ask what it was called years ago.)
+The club newsletter **"The Mooring Line"** is being revived!
 
 ### How It Works
 
