@@ -24,7 +24,10 @@ The Bulletin Board connects to Grist (the club's membership database) so only ve
 ## Features
 
 ### [Job Board](./JOB_BOARD.md) ⬅️ *Building First*
-Volunteer work obligation tracking and job signup system. Sign up for Duty Officer, Shuttle Driver, or event shifts.
+Volunteer work obligation tracking and job signup system. Sign up for Duty Officer, Shuttle Driver, or event volunteer shifts.
+
+### [Events & RSVPs](./EVENTS.md)
+Club social events, work parties, races. RSVP to let organizers know you're coming. Distinct from volunteer signups - this is about *attendance*, not work hours.
 
 ### [Community Board](./COMMUNITY.md)
 Member-to-member posts:
@@ -92,6 +95,11 @@ See [TECHNICAL.md](./TECHNICAL.md) for details on:
 - Authentication approach
 - Hosting options
 
+See [DESIGN.md](./DESIGN.md) for:
+- Visual design language
+- Component patterns
+- [Live examples](./design-examples/index.html)
+
 ---
 
 ## Documentation Index
@@ -100,11 +108,13 @@ See [TECHNICAL.md](./TECHNICAL.md) for details on:
 |----------|-------------|
 | [OVERVIEW.md](./OVERVIEW.md) | This file - vision and feature summary |
 | [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, approvals |
+| [EVENTS.md](./EVENTS.md) | Social events, work parties, RSVPs |
 | [COMMUNITY.md](./COMMUNITY.md) | Classifieds, crew board, member posts |
-| [ANNOUNCEMENTS.md](./ANNOUNCEMENTS.md) | Official news from the board |
+| [ANNOUNCEMENTS.md](./ANNOUNCEMENTS.md) | Official news from the board, newsletter |
 | [MEMBER_PROFILE.md](./MEMBER_PROFILE.md) | Profile viewing and data verification |
 | [INSURANCE.md](./INSURANCE.md) | Annual insurance submission workflow |
 | [RECIPROCAL_VISITORS.md](./RECIPROCAL_VISITORS.md) | Booking system for visiting sailors |
+| [DESIGN.md](./DESIGN.md) | Visual design language and examples |
 | [TECHNICAL.md](./TECHNICAL.md) | Stack, auth, Grist integration |
 | [CURRENT_SCHEMA.md](./CURRENT_SCHEMA.md) | Current Grist data model |
 | [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md) | Proposed schema changes |

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APSC Bulletin Board - Design Examples</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <img src="apsc-logo.png" alt="APSC Logo" class="header-logo">
+            <div class="header-text">
+                <h1>APSC Bulletin Board</h1>
+                <p class="subtitle">Design Language Examples</p>
+            </div>
+        </header>
+
+        <!-- APSC Brand Colors -->
+        <section class="section">
+            <h2>APSC Brand Colors</h2>
+            <p class="section-note">Official colors extracted from the APSC logo</p>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #FAC800;"></div>
+                    <span class="color-name">APSC Gold</span>
+                    <span class="color-hex">#FAC800</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #FA3200;"></div>
+                    <span class="color-name">APSC Red</span>
+                    <span class="color-hex">#FA3200</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #1E1E1E;"></div>
+                    <span class="color-name">APSC Black</span>
+                    <span class="color-hex">#1E1E1E</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Extended Color Palette -->
+        <section class="section">
+            <h2>Extended Palette</h2>
+            <p class="section-note">Supporting colors for UI elements</p>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #2563EB;"></div>
+                    <span class="color-name">Ocean Blue</span>
+                    <span class="color-hex">#2563EB</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #1E3A5F;"></div>
+                    <span class="color-name">Deep Navy</span>
+                    <span class="color-hex">#1E3A5F</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #E0F2FE;"></div>
+                    <span class="color-name">Sky Blue</span>
+                    <span class="color-hex">#E0F2FE</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #D4A574;"></div>
+                    <span class="color-name">Cork</span>
+                    <span class="color-hex">#D4A574</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #F5E6D3;"></div>
+                    <span class="color-name">Warm Sand</span>
+                    <span class="color-hex">#F5E6D3</span>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: #8B7355;"></div>
+                    <span class="color-name">Weathered Wood</span>
+                    <span class="color-hex">#8B7355</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Typography -->
+        <section class="section">
+            <h2>Typography</h2>
+            <div class="type-samples">
+                <div class="type-sample">
+                    <span class="type-label">Heading 1</span>
+                    <h1 class="sample-h1">Welcome to the Club</h1>
+                </div>
+                <div class="type-sample">
+                    <span class="type-label">Heading 2</span>
+                    <h2 class="sample-h2">Duty Officer Schedule</h2>
+                </div>
+                <div class="type-sample">
+                    <span class="type-label">Body Text</span>
+                    <p class="sample-body">Sign up for your volunteer shifts, check announcements, and connect with fellow sailors.</p>
+                </div>
+                <div class="type-sample">
+                    <span class="type-label">Handwritten Accent</span>
+                    <p class="sample-handwritten">Posted by the Marina Committee</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bulletin Board -->
+        <section class="section">
+            <h2>Bulletin Board Layout</h2>
+            <div class="bulletin-board">
+                <div class="board-surface">
+                    <!-- Card 1: Job Signup -->
+                    <div class="pinned-card card-rotate-1">
+                        <div class="pin"></div>
+                        <div class="card-badge badge-blue">Duty Officer</div>
+                        <h3 class="card-title">Saturday, June 15</h3>
+                        <p class="card-subtitle">9:00 AM - 6:00 PM • 9 hours</p>
+                        <div class="signup-slots">
+                            <div class="slot slot-open">
+                                <span class="slot-icon">○</span>
+                                <span class="slot-text">Sign Up</span>
+                            </div>
+                        </div>
+                        <p class="card-attribution">Posted by Duty Officer Director</p>
+                    </div>
+
+                    <!-- Card 2: For Sale -->
+                    <div class="pinned-card card-rotate-2">
+                        <div class="pin"></div>
+                        <div class="card-badge badge-green">For Sale</div>
+                        <h3 class="card-title">Harken Blocks</h3>
+                        <p class="card-subtitle">Set of 4, good condition</p>
+                        <p class="card-price">$50</p>
+                        <p class="card-attribution">Posted by John S.</p>
+                    </div>
+
+                    <!-- Card 3: Safety Notice -->
+                    <div class="pinned-card card-rotate-3">
+                        <div class="pin pin-red"></div>
+                        <div class="card-badge badge-red">⚠️ Safety Notice</div>
+                        <h3 class="card-title">Dock Repairs in Progress</h3>
+                        <p class="card-subtitle">South dock closed until June 20. Use north entrance.</p>
+                        <p class="card-attribution">Posted by Harbour Master</p>
+                    </div>
+
+                    <!-- Card 4: Crew Wanted -->
+                    <div class="pinned-card card-rotate-4">
+                        <div class="pin"></div>
+                        <div class="card-badge badge-purple">Crew Wanted</div>
+                        <h3 class="card-title">AHMEN Race - June 22</h3>
+                        <p class="card-subtitle">Looking for experienced foredeck. C&C 27.</p>
+                        <p class="card-attribution">Posted by Mike T.</p>
+                    </div>
+
+                    <!-- Card 5: Event -->
+                    <div class="pinned-card card-rotate-5">
+                        <div class="pin"></div>
+                        <div class="card-badge badge-orange">Event</div>
+                        <h3 class="card-title">Summer BBQ</h3>
+                        <p class="card-subtitle">July 1 • 4:00 PM</p>
+                        <p class="card-body">Burgers, dogs, and good company. Bring a side dish!</p>
+                        <p class="card-attribution">Posted by Social Committee</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Signup Sheet on Bulletin Board -->
+        <section class="section">
+            <h2>Signup Sheet on Bulletin Board</h2>
+            <div class="bulletin-board">
+                <div class="board-surface board-surface-wide">
+                    <!-- Clipboard signup sheet -->
+                    <div class="clipboard">
+                        <div class="clipboard-clip"></div>
+                        <div class="clipboard-paper">
+                            <div class="sheet-title">
+                                <h3>⚓ Duty Officer & Shuttle Schedule</h3>
+                                <p>Summer 2025</p>
+                            </div>
+                            <table class="sheet-table-pinned">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Duty Officer</th>
+                                        <th>Shuttle Driver</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="date-cell">
+                                            <span class="day-name">Sat</span>
+                                            <span class="day-date">Jun 7</span>
+                                        </td>
+                                        <td><button class="btn-signup-inline">Sign Up</button></td>
+                                        <td><span class="filled-name">J. Doe ✓</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="date-cell">
+                                            <span class="day-name">Sun</span>
+                                            <span class="day-date">Jun 8</span>
+                                        </td>
+                                        <td><span class="filled-name">M. Smith ✓</span></td>
+                                        <td><button class="btn-signup-inline">Sign Up</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="date-cell">
+                                            <span class="day-name">Sat</span>
+                                            <span class="day-date">Jun 14</span>
+                                        </td>
+                                        <td><button class="btn-signup-inline">Sign Up</button></td>
+                                        <td><button class="btn-signup-inline">Sign Up</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="date-cell">
+                                            <span class="day-name">Sun</span>
+                                            <span class="day-date">Jun 15</span>
+                                        </td>
+                                        <td><span class="filled-name">K. Jones ✓</span></td>
+                                        <td><span class="filled-name">L. Brown ✓</span></td>
+                                    </tr>
+                                    <tr class="row-holiday">
+                                        <td class="date-cell">
+                                            <span class="day-name">Tue</span>
+                                            <span class="day-date">Jul 1</span>
+                                            <span class="holiday-tag">🇨🇦 Canada Day</span>
+                                        </td>
+                                        <td><button class="btn-signup-inline">Sign Up</button></td>
+                                        <td><button class="btn-signup-inline">Sign Up</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="sheet-footer">Posted by Duty Officer Director</p>
+                        </div>
+                    </div>
+
+                    <!-- Side cards -->
+                    <div class="side-cards">
+                        <div class="pinned-card card-small card-rotate-2">
+                            <div class="pin"></div>
+                            <div class="card-badge badge-blue">Reminder</div>
+                            <p class="card-body-small">Duty Officers: Please arrive by 8:45am for handoff!</p>
+                            <p class="card-attribution">– Marina Committee</p>
+                        </div>
+                        
+                        <div class="pinned-card card-small card-rotate-4">
+                            <div class="pin"></div>
+                            <div class="card-badge badge-green">Thank You!</div>
+                            <p class="card-body-small">Thanks to everyone who volunteered for Spring Crane-In! 🎉</p>
+                            <p class="card-attribution">– Harbour Master</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Event Signup -->
+        <section class="section">
+            <h2>Social Event Signup</h2>
+            <div class="bulletin-board">
+                <div class="board-surface board-surface-wide">
+                    <!-- Event Poster Card -->
+                    <div class="event-poster">
+                        <div class="pin pin-yellow"></div>
+                        <div class="poster-header">
+                            <span class="poster-icon">🎉</span>
+                            <h3>Summer BBQ & Potluck</h3>
+                            <p class="poster-date">Saturday, July 12 • 4:00 PM</p>
+                        </div>
+                        <div class="poster-body">
+                            <p>Join us for burgers, hot dogs, and good company at the clubhouse!</p>
+                            <p class="poster-note">🍽️ Please bring a side dish or dessert to share</p>
+                        </div>
+                        <div class="poster-signup">
+                            <p class="signup-label">Who's Coming?</p>
+                            <div class="attendee-list">
+                                <div class="attendee">✓ Smith Family (4)</div>
+                                <div class="attendee">✓ Mike & Sarah T.</div>
+                                <div class="attendee">✓ Captain Dave</div>
+                                <div class="attendee">✓ The Johnsons (3)</div>
+                            </div>
+                            <button class="btn-rsvp">+ Count Me In!</button>
+                        </div>
+                        <p class="poster-footer">Posted by Social Committee</p>
+                    </div>
+
+                    <!-- Volunteer signup for event -->
+                    <div class="pinned-card card-rotate-2" style="max-width: 240px;">
+                        <div class="pin"></div>
+                        <div class="card-badge badge-orange">Volunteers Needed</div>
+                        <h3 class="card-title">BBQ Setup Crew</h3>
+                        <p class="card-subtitle">July 12 • 2:00 PM</p>
+                        <div class="volunteer-slots">
+                            <div class="vol-slot filled">
+                                <span>🔥 Grill Master</span>
+                                <span class="vol-name">Dave S.</span>
+                            </div>
+                            <div class="vol-slot open">
+                                <span>🪑 Table Setup</span>
+                                <button class="btn-vol">Sign Up</button>
+                            </div>
+                            <div class="vol-slot open">
+                                <span>🧹 Cleanup</span>
+                                <button class="btn-vol">Sign Up</button>
+                            </div>
+                        </div>
+                        <p class="card-attribution">– Social Director</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Log Hours -->
+        <section class="section">
+            <h2>Log Volunteer Hours</h2>
+            <div class="bulletin-board">
+                <div class="board-surface board-surface-wide">
+                    <!-- Hours Log Form as clipboard -->
+                    <div class="clipboard clipboard-form">
+                        <div class="clipboard-clip"></div>
+                        <div class="clipboard-paper">
+                            <div class="sheet-title">
+                                <h3>📝 Volunteer Hours Log</h3>
+                                <p>Submit your ad-hoc work</p>
+                            </div>
+                            <form class="hours-form">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select class="form-select">
+                                        <option>House & Grounds</option>
+                                        <option>Harbour</option>
+                                        <option>Safety</option>
+                                        <option selected>Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        <input type="text" class="form-input" value="Dec 5, 2025">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hours</label>
+                                        <input type="text" class="form-input form-input-small" value="3">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>What did you do?</label>
+                                    <textarea class="form-textarea" rows="3">Helped repair the south dock railing. Replaced two rotted boards and re-secured handrail.</textarea>
+                                </div>
+                                <button type="button" class="btn-submit-hours">Submit for Approval</button>
+                            </form>
+                            <p class="sheet-footer">Your hours will be reviewed by the Harbour Master</p>
+                        </div>
+                    </div>
+
+                    <!-- Recent submissions -->
+                    <div class="side-cards">
+                        <div class="pinned-card card-small card-rotate-1">
+                            <div class="pin pin-green"></div>
+                            <div class="card-badge badge-green">Approved ✓</div>
+                            <p class="card-body-small"><strong>2 hrs</strong> – Grounds cleanup</p>
+                            <p class="card-meta">Nov 28 • H&G Director</p>
+                        </div>
+                        
+                        <div class="pinned-card card-small card-rotate-3">
+                            <div class="pin pin-orange"></div>
+                            <div class="card-badge badge-orange">Pending</div>
+                            <p class="card-body-small"><strong>4 hrs</strong> – Helped with haul-out</p>
+                            <p class="card-meta">Nov 15 • Awaiting review</p>
+                        </div>
+
+                        <div class="hours-summary-mini">
+                            <h4>Your 2025 Hours</h4>
+                            <div class="mini-progress">
+                                <div class="mini-bar">
+                                    <div class="mini-fill" style="width: 60%;"></div>
+                                </div>
+                                <span>18 / 30 hrs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visitor Guest Book -->
+        <section class="section">
+            <h2>Visitor Check-In (Guest Book)</h2>
+            <div class="guestbook-container">
+                <div class="guestbook">
+                    <div class="guestbook-cover">
+                        <div class="guestbook-spine"></div>
+                        <div class="guestbook-front">
+                            <img src="apsc-logo.png" alt="APSC" class="guestbook-logo">
+                            <h3>Visitor Log</h3>
+                            <p class="guestbook-year">2025</p>
+                        </div>
+                    </div>
+                    <div class="guestbook-pages">
+                        <div class="guestbook-page page-left">
+                            <div class="page-header">Recent Visitors</div>
+                            <div class="visitor-entry">
+                                <div class="visitor-date">Dec 4</div>
+                                <div class="visitor-info">
+                                    <span class="visitor-name">James & Ellen Wheeler</span>
+                                    <span class="visitor-club">Royal Hamilton YC</span>
+                                    <span class="visitor-boat">S/V "Windchaser" – C&C 30</span>
+                                </div>
+                                <div class="visitor-mooring">Ball #7</div>
+                            </div>
+                            <div class="visitor-entry">
+                                <div class="visitor-date">Dec 2</div>
+                                <div class="visitor-info">
+                                    <span class="visitor-name">Tom Bergman</span>
+                                    <span class="visitor-club">Oakville Yacht Squadron</span>
+                                    <span class="visitor-boat">S/V "Northern Light" – Hunter 33</span>
+                                </div>
+                                <div class="visitor-mooring">Ball #12</div>
+                            </div>
+                            <div class="visitor-entry">
+                                <div class="visitor-date">Nov 28</div>
+                                <div class="visitor-info">
+                                    <span class="visitor-name">The Patels</span>
+                                    <span class="visitor-club">Bluffers Park YC</span>
+                                    <span class="visitor-boat">S/V "Serenity" – Catalina 27</span>
+                                </div>
+                                <div class="visitor-mooring">Ball #3</div>
+                            </div>
+                        </div>
+                        <div class="guestbook-page page-right">
+                            <div class="page-header">Sign In</div>
+                            <form class="checkin-form">
+                                <div class="form-group">
+                                    <label>Your Name</label>
+                                    <input type="text" class="form-input guestbook-input" placeholder="Captain's name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Home Club</label>
+                                    <input type="text" class="form-input guestbook-input" placeholder="e.g., Royal Hamilton YC">
+                                </div>
+                                <div class="form-group">
+                                    <label>Boat Name & Type</label>
+                                    <input type="text" class="form-input guestbook-input" placeholder="e.g., S/V 'Odyssey' – Catalina 30">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Arrival</label>
+                                        <input type="text" class="form-input guestbook-input" value="Today">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nights</label>
+                                        <input type="text" class="form-input guestbook-input form-input-small" value="2">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reservation #</label>
+                                    <input type="text" class="form-input guestbook-input" placeholder="If you booked ahead">
+                                </div>
+                                <button type="button" class="btn-checkin">Check In</button>
+                            </form>
+                            <p class="guestbook-footer">Welcome to APSC! ⛵</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Physical QR Sign (Printable) -->
+        <section class="section">
+            <h2>Physical Check-In Sign (Printable)</h2>
+            <p class="section-note">This is a printable sign to post at the club, not displayed in the app.</p>
+            <div class="print-sign-container">
+                <div class="checkin-sign">
+                    <div class="sign-header">
+                        <img src="apsc-logo.png" alt="APSC Logo" class="sign-logo">
+                        <h2>Welcome, Visitors!</h2>
+                        <p class="sign-subtitle">Aquatic Park Sailing Club</p>
+                    </div>
+                    <div class="sign-body">
+                        <div class="sign-qr">
+                            <div class="qr-large">
+                                <div class="qr-pattern"></div>
+                            </div>
+                        </div>
+                        <div class="sign-instructions">
+                            <h3>Please Check In</h3>
+                            <ol>
+                                <li>Scan the QR code with your phone</li>
+                                <li>Fill out the visitor form</li>
+                                <li>You'll receive your mooring assignment</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="sign-footer">
+                        <p>Or visit: <strong>apsc.club/checkin</strong></p>
+                        <p class="sign-small">3 nights free for reciprocal club members • Additional nights $30/night</p>
+                    </div>
+                    <div class="sign-contact">
+                        <p>Questions? Find the Duty Officer or call (416) 555-SAIL</p>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-print" onclick="window.print()">🖨️ Print Sign</button>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section class="section">
+            <h2>Buttons</h2>
+            <div class="button-grid">
+                <button class="btn btn-primary">Sign Up</button>
+                <button class="btn btn-secondary">Cancel</button>
+                <button class="btn btn-outline">View Details</button>
+                <button class="btn btn-danger">Remove</button>
+                <button class="btn btn-primary" disabled>Disabled</button>
+            </div>
+        </section>
+
+        <!-- Status Badges -->
+        <section class="section">
+            <h2>Status Badges</h2>
+            <div class="badge-grid">
+                <span class="status-badge status-open">Open</span>
+                <span class="status-badge status-pending">Pending Approval</span>
+                <span class="status-badge status-approved">Approved</span>
+                <span class="status-badge status-completed">Completed</span>
+                <span class="status-badge status-cancelled">Cancelled</span>
+            </div>
+        </section>
+
+        <!-- Icons -->
+        <section class="section">
+            <h2>Icons (Line Art Style)</h2>
+            <div class="icon-grid">
+                <div class="icon-sample">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </div>
+                <div class="icon-sample">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Calendar</span>
+                </div>
+                <div class="icon-sample">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <span>Profile</span>
+                </div>
+                <div class="icon-sample">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <span>Alert</span>
+                </div>
+                <div class="icon-sample">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    <span>Newsletter</span>
+                </div>
+                <div class="icon-sample">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="5" r="3"/>
+                        <line x1="12" y1="22" x2="12" y2="8"/>
+                        <path d="M5 12H2a10 10 0 0 0 20 0h-3"/>
+                    </svg>
+                    <span>Anchor</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Member Hours Card -->
+        <section class="section">
+            <h2>Member Dashboard Card</h2>
+            <div class="hours-card">
+                <div class="hours-header">
+                    <h3>Your Work Hours</h3>
+                    <span class="season-badge">2025 Season</span>
+                </div>
+                <div class="hours-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%;"></div>
+                    </div>
+                    <div class="hours-stats">
+                        <span class="hours-done">18 hrs completed</span>
+                        <span class="hours-total">/ 30 hrs required</span>
+                    </div>
+                </div>
+                <div class="hours-detail">
+                    <div class="detail-item">
+                        <span class="detail-label">Approved</span>
+                        <span class="detail-value approved">15 hrs</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Pending</span>
+                        <span class="detail-value pending">3 hrs</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Remaining</span>
+                        <span class="detail-value remaining">12 hrs</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empty State -->
+        <section class="section">
+            <h2>Empty State</h2>
+            <div class="empty-state">
+                <svg class="empty-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M50 20 L20 80 L80 80 Z" stroke-linejoin="round"/>
+                    <line x1="50" y1="35" x2="50" y2="70"/>
+                    <circle cx="30" cy="50" r="3" fill="currentColor"/>
+                    <circle cx="70" cy="50" r="3" fill="currentColor"/>
+                </svg>
+                <h3>No jobs posted yet</h3>
+                <p>Check back soon, or ask a board member about upcoming volunteer opportunities.</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>APSC Bulletin Board • Design Examples</p>
+            <p><a href="../DESIGN.md">← Back to Design Doc</a></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -2,6 +2,8 @@
 
 Stack, architecture, and implementation decisions.
 
+**See also:** [DESIGN.md](./DESIGN.md) for visual design language and examples.
+
 ---
 
 ## Frontend Stack (Proposed)

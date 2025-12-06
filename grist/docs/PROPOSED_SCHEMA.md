@@ -4,6 +4,7 @@
 
 Extend the existing Grist database to support the full APSC Bulletin Board application, including:
 - **[Job Board](./JOB_BOARD.md)** - Volunteer work tracking and signups
+- **[Events & RSVPs](./EVENTS.md)** - Social events, work parties, attendance tracking
 - **[Announcements](./ANNOUNCEMENTS.md)** - Official club news
 - **[Newsletter](./ANNOUNCEMENTS.md#newsletter)** - Periodic member newsletter
 - **[Community Board](./COMMUNITY.md)** - Member-to-member posts (classifieds, crew, general)
@@ -126,6 +127,46 @@ Club newsletter issues (Markdown content).
 | status | Choice | Draft / Published |
 | published_at | DateTime | When published |
 | email_sent | Boolean | Was email blast sent? |
+
+---
+
+### Events Tables
+
+*Feature details: [EVENTS.md](./EVENTS.md)*
+
+#### Events
+Club social events, work parties, races.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| title | Text | Event name |
+| description | Text | Event details |
+| date | Date | Event date |
+| time | Text | Start time |
+| end_time | Text | Optional end time |
+| location | Text | Where (e.g., "Clubhouse", "South Dock") |
+| category | Choice | Social / Racing / Work Party / Other |
+| organizer_id | Ref:Member_List | Who's organizing |
+| rsvp_enabled | Boolean | Is RSVP tracking on? |
+| rsvp_deadline | DateTime | Optional deadline for RSVPs |
+| max_attendees | Numeric | Optional capacity limit |
+| created_at | DateTime | When posted |
+| status | Choice | Upcoming / Completed / Cancelled |
+
+#### Event_RSVPs
+Member responses to events.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | Auto | Primary key |
+| event_id | Ref:Events | Which event |
+| member_id | Ref:Member_List | Who's responding |
+| response | Choice | Yes / No / Maybe |
+| guest_count | Numeric | Additional guests (default: 0) |
+| note | Text | Optional note ("Bringing dessert!") |
+| created_at | DateTime | When they RSVPed |
+| updated_at | DateTime | Last change |
 
 ---
 
