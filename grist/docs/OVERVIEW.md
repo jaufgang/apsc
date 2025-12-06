@@ -4,11 +4,12 @@
 
 A **Bulletin Board** for APSC members - the online version of what you'd see pinned up in the clubhouse. Log in, see what's happening, sign up for stuff, post something for sale, find crew. Simple.
 
-The Bulletin Board connects to Grist (the club's membership database) so only verified members have access.
+The Bulletin Board connects to Grist (the club's membership database) so only verified members have access. It also welcomes **visiting sailors** from reciprocal clubs who can request a mooring without needing to log in.
 
 **Core Philosophy:**
 - Keep it simple - no new apps, no accounts to create
 - Verified members only - tied to Grist membership
+- Welcoming to visitors - easy mooring requests for reciprocal guests
 - Feels familiar - like a clubhouse bulletin board, just online
 
 ---
@@ -18,6 +19,7 @@ The Bulletin Board connects to Grist (the club's membership database) so only ve
 - **Club members** (primary audience)
 - **Committee leads / Board members** (post announcements, manage jobs)
 - **Administrators** (system management)
+- **Reciprocal visitors** (sailors from partner clubs requesting moorings - no login required)
 
 ---
 
