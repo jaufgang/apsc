@@ -1758,6 +1758,116 @@ body {
     margin-top: var(--space-sm);
     padding-top: var(--space-sm);
     border-top: 1px dashed var(--gray-200);
+}
+
+/* Racing on Bulletin Board */
+.clipboard-racing {
+    max-width: 420px;
+    transform: rotate(-0.5deg);
+}
+
+.clipboard-racing .race-card-header {
+    background: linear-gradient(135deg, var(--deep-navy) 0%, #2D4A6A 100%);
+    color: var(--white);
+    padding: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-md);
+}
+
+.clipboard-racing .race-icon {
+    font-size: 1.75rem;
+}
+
+.clipboard-racing .race-info h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.clipboard-racing .race-date {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.clipboard-racing .race-conditions {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 2px;
+}
+
+.clipboard-racing .race-results-table {
+    font-size: 0.8rem;
+}
+
+.clipboard-racing .race-results-table th {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.65rem;
+}
+
+.clipboard-racing .race-results-table td {
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.clipboard-racing .race-notes {
+    padding: var(--space-sm);
+    font-size: 0.7rem;
+    background: transparent;
+    border-top: 1px dashed var(--gray-300);
+    margin-top: var(--space-sm);
+}
+
+.card-standings {
+    background: var(--white);
+    padding: var(--space-md);
+    max-width: 340px;
+}
+
+.card-standings .standings-header {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, #3B7DE8 100%);
+    color: var(--white);
+    padding: var(--space-md);
+    text-align: center;
+    border-radius: var(--radius-sm);
+    margin: calc(var(--space-md) * -1);
+    margin-bottom: var(--space-md);
+}
+
+.card-standings .standings-header h3 {
+    font-size: 1rem;
+}
+
+.card-standings .standings-table {
+    font-size: 0.75rem;
+}
+
+.card-standings .standings-table th {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.6rem;
+}
+
+.card-standings .standings-table td {
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.card-standings .race-scores {
+    font-size: 0.6rem;
+}
+
+.card-standings .standings-footer {
+    padding: var(--space-sm) 0 0 0;
+    background: transparent;
+    border-top: none;
+    margin-top: var(--space-sm);
+}
+
+.side-cards-racing {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 200px;
     font-size: 0.75rem;
     color: var(--gray-500);
 }
