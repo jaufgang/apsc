@@ -35,3 +35,8 @@ npm-debug.log*
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+# Grist scratch files
+grist/node_modules
+grist/scratch/
+scratch/
