@@ -1269,6 +1269,226 @@ body {
 }
 
 /* ===========================================
+   Racing Results & Standings
+   =========================================== */
+.racing-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+    background: linear-gradient(135deg, var(--sky-blue) 0%, #D0E8F8 100%);
+    border-radius: var(--radius-lg);
+    align-items: start;
+}
+
+.race-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.race-card-header {
+    background: linear-gradient(135deg, var(--deep-navy) 0%, #2D4A6A 100%);
+    color: var(--white);
+    padding: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.race-icon {
+    font-size: 2rem;
+}
+
+.race-info h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+}
+
+.race-date {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.race-conditions {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: var(--space-xs);
+}
+
+.race-results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.race-results-table th {
+    background: var(--gray-50);
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.race-results-table td {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.race-results-table tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.podium-1 td:first-child,
+.podium-2 td:first-child,
+.podium-3 td:first-child {
+    font-size: 1.125rem;
+}
+
+.podium-1 {
+    background: linear-gradient(90deg, #FEF9C3 0%, var(--white) 50%);
+}
+
+.podium-2 {
+    background: linear-gradient(90deg, #E5E7EB 0%, var(--white) 50%);
+}
+
+.podium-3 {
+    background: linear-gradient(90deg, #FED7AA 0%, var(--white) 50%);
+}
+
+.dnf {
+    color: var(--gray-400);
+    font-style: italic;
+}
+
+.race-notes {
+    padding: var(--space-md);
+    font-size: 0.75rem;
+    color: var(--gray-500);
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+}
+
+.standings-card {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.standings-header {
+    background: linear-gradient(135deg, var(--ocean-blue) 0%, #3B7DE8 100%);
+    color: var(--white);
+    padding: var(--space-lg);
+    text-align: center;
+}
+
+.standings-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+}
+
+.standings-subtitle {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.standings-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.standings-table th {
+    background: var(--gray-50);
+    padding: var(--space-sm);
+    text-align: left;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+}
+
+.standings-table td {
+    padding: var(--space-sm);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.standings-table tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.leader {
+    background: linear-gradient(90deg, #FEF9C3 0%, var(--white) 30%);
+}
+
+.leader td:first-child::before {
+    content: "🏆 ";
+}
+
+.race-scores {
+    font-family: monospace;
+    font-size: 0.6875rem;
+    color: var(--gray-500);
+}
+
+.race-scores .drop {
+    text-decoration: line-through;
+    color: var(--gray-300);
+}
+
+.standings-footer {
+    padding: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+}
+
+.standings-link {
+    font-size: 0.8125rem;
+    color: var(--ocean-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.standings-link:hover {
+    text-decoration: underline;
+}
+
+.standings-note {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+.dinner-rsvp {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px dashed var(--gray-200);
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+@media (max-width: 900px) {
+    .racing-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===========================================
    The Mooring Line (Newsletter)
    =========================================== */
 .newsletter-container {

@@ -29,6 +29,9 @@ Volunteer work obligation tracking and job signup system. Sign up for Duty Offic
 ### [Events & RSVPs](./EVENTS.md)
 Club social events, work parties, races. RSVP to let organizers know you're coming. Distinct from volunteer signups - this is about *attendance*, not work hours.
 
+### [Racing](./RACING.md)
+Wednesday night race series, results, and season standings. Dinner afterwards at the clubhouse.
+
 ### [Community Board](./COMMUNITY.md)
 Member-to-member posts:
 - **Classifieds**: For sale, wanted, free stuff
@@ -59,7 +62,6 @@ Some things don't need to be built - just linked:
 - Online dues payment
 - Boat ramp / crane scheduling
 - Guest registration
-- Racing results and standings
 - Photo gallery
 - Member directory (opt-in)
 - Maintenance request submission
@@ -109,6 +111,7 @@ See [DESIGN.md](./DESIGN.md) for:
 | [OVERVIEW.md](./OVERVIEW.md) | This file - vision and feature summary |
 | [JOB_BOARD.md](./JOB_BOARD.md) | Work obligations, signups, approvals |
 | [EVENTS.md](./EVENTS.md) | Social events, work parties, RSVPs |
+| [RACING.md](./RACING.md) | Wednesday night racing, results, standings |
 | [COMMUNITY.md](./COMMUNITY.md) | Classifieds, crew board, member posts |
 | [ANNOUNCEMENTS.md](./ANNOUNCEMENTS.md) | Official news from the board, newsletter |
 | [MEMBER_PROFILE.md](./MEMBER_PROFILE.md) | Profile viewing and data verification |
