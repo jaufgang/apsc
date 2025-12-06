@@ -10,6 +10,16 @@ The Member Profile feature gives members visibility into what the club has on re
 
 ---
 
+## Membership Card
+
+**Already working via Grist.**
+
+Virtual membership card for your mobile wallet (Apple Wallet / Google Pay). Show it when visiting reciprocal clubs to prove your APSC membership.
+
+The Bulletin Board should provide easy access to add/view your card.
+
+---
+
 ## What Members Can See
 
 Everything Grist has on record for them:

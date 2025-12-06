@@ -1,51 +1,57 @@
-# APSC Member Portal
+# APSC Bulletin Board
 
 ## Vision
 
-A **Member Portal** that serves as the central hub for APSC members to interact with the club. The portal connects directly to Grist (the club's source of truth for membership data) and provides members with self-service access to their information, obligations, and club activities.
+A **Bulletin Board** for APSC members - the online version of what you'd see pinned up in the clubhouse. Log in, see what's happening, sign up for stuff, post something for sale, find crew. Simple.
+
+The Bulletin Board connects to Grist (the club's membership database) so only verified members have access.
 
 **Core Philosophy:**
-- Members own their data - they can view and verify what the club has on record
-- Single source of truth - everything syncs with Grist
-- Start simple, grow features over time
+- Keep it simple - no new apps, no accounts to create
+- Verified members only - tied to Grist membership
+- Feels familiar - like a clubhouse bulletin board, just online
 
 ---
 
 ## Target Users
 
 - **Club members** (primary audience)
-- **Committee leads / Board members** (administrative functions)
+- **Committee leads / Board members** (post announcements, manage jobs)
 - **Administrators** (system management)
 
 ---
 
-## Portal Features
+## Features
 
 ### [Job Board](./job-board.md) ⬅️ *Building First*
-Volunteer work obligation tracking and job signup system. This is the most immediate pain point and the first feature to launch.
+Volunteer work obligation tracking and job signup system. Sign up for Duty Officer, Shuttle Driver, or event shifts.
+
+### [Community Board](./community.md)
+Member-to-member posts:
+- **Classifieds**: For sale, wanted, free stuff
+- **Crew Board**: Looking for crew / available to crew
+- **General Posts**: Anything else members want to share
+
+### [Announcements](./announcements.md)
+Club news from the board - one-way, official notices.
 
 ### [Member Profile](./member-profile.md)
-Members view and verify their profile information stored in Grist:
-- Personal details (name, contact info)
-- Boat information (name, size, type)
-- Mooring ball assignment
-- Membership type and status
-- Emergency contacts
-- Family members on the membership
+See what the club has on file for you:
+- Contact info, boat details, mooring assignment
+- Flag anything that's wrong
+- **Membership card** for mobile wallet (for reciprocal visits)
 
 ### [Insurance Submission](./insurance.md)
-Streamline the yearly insurance verification process:
-- Upload proof of insurance documents
-- Track submission status
-- Automated reminders before deadline
-- Board member review workflow
+Upload your proof of insurance each year. Track status.
 
-### [Communications](./communications.md)
-- **Newsletter**: Club publication authored and distributed through portal
-- **Announcements**: Club news, events, important notices
-- **Document Library**: Club rules, forms, guides, meeting minutes
-- **Event Calendar**: Club events, races, social gatherings
-- **Message Board**: *(deferred - evaluate need later)*
+### [Reciprocal Visitors](./reciprocal-visitors.md)
+Booking system for visiting sailors from partner clubs.
+
+### Links & Resources
+Some things don't need to be built - just linked:
+- **Documents**: → Google Drive folder (club rules, forms, minutes)
+- **Calendar**: → Embedded Google Calendar
+- **Newsletter**: → Emailed directly (no portal feature needed)
 
 ### Future Ideas (Backlog)
 - Online dues payment
@@ -58,28 +64,24 @@ Streamline the yearly insurance verification process:
 
 ---
 
-## Cross-Cutting Concerns
+## How It Works
 
 ### Member Identity
-All portal features know who you are:
-- Authenticated via email (matches Grist record)
-- Your membership type determines what you see
-- Family members see shared data (work hours, boat info)
-- Board members get additional capabilities
+- Log in with your email (must match Grist membership record)
+- See your stuff: hours, boat, mooring
+- Family members share access to household info
+- Board members get extra capabilities
 
-### Notifications Hub
-Unified notification system across all features:
-- Job signups and reminders
+### Notifications
+Email notifications for:
+- Job signup reminders
 - Insurance expiration warnings
-- Announcement alerts
-- All configurable per-member
+- Replies to your posts (optional)
 
 ### Mobile-Friendly
-Not a native app, but:
-- Fully responsive web design
 - Works great on phone browsers
-- PWA capability for "add to home screen"
-- Touch-friendly interactions
+- No app to install
+- "Add to home screen" if you want
 
 ---
 
@@ -99,9 +101,11 @@ See [technical.md](./technical.md) for details on:
 |----------|-------------|
 | [overview.md](./overview.md) | This file - vision and feature summary |
 | [job-board.md](./job-board.md) | Work obligations, signups, approvals |
+| [community.md](./community.md) | Classifieds, crew board, member posts |
+| [announcements.md](./announcements.md) | Official news from the board |
 | [member-profile.md](./member-profile.md) | Profile viewing and data verification |
 | [insurance.md](./insurance.md) | Annual insurance submission workflow |
-| [communications.md](./communications.md) | Newsletter, announcements, documents |
+| [reciprocal-visitors.md](./reciprocal-visitors.md) | Booking system for visiting sailors |
 | [technical.md](./technical.md) | Stack, auth, Grist integration |
 | [current-schema.md](./current-schema.md) | Current Grist data model |
 | [proposed-schema.md](./proposed-schema.md) | Proposed schema changes |

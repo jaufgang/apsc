@@ -137,3 +137,71 @@ Options:
 4. Add other features incrementally
 5. Deploy to staging for testing
 6. Launch to members
+
+---
+
+## Dev / Prod Environments
+
+### Grist Environment Setup
+
+Use a **duplicate Grist document** for development:
+
+1. Open production Grist document
+2. Click document menu (⋮) → "Duplicate Document"
+3. Name it "APSC Dev" or "APSC Bulletin Board - Dev"
+4. Use the dev copy for all development/testing
+
+This gives you:
+- Same schema and sample data
+- Complete isolation from production
+- Free (same Grist account)
+
+### Environment Configuration
+
+Your app should switch Grist endpoints based on environment:
+
+```typescript
+// config.ts
+const config = {
+  development: {
+    gristDocId: 'DEV_DOC_ID_HERE',
+    gristApiUrl: 'https://docs.getgrist.com/api',
+  },
+  production: {
+    gristDocId: 'PROD_DOC_ID_HERE',
+    gristApiUrl: 'https://docs.getgrist.com/api',
+  },
+};
+
+export const gristConfig = config[process.env.NODE_ENV] || config.development;
+```
+
+### API Keys
+
+- **Dev API key**: Can be less restricted, stored in `.env.local`
+- **Prod API key**: More restricted, stored in production secrets
+
+Never commit API keys to git. Use environment variables.
+
+### Schema Changes Workflow
+
+1. Make schema changes in dev Grist document
+2. Test thoroughly with dev app
+3. Document changes needed
+4. Apply same changes to production Grist document
+5. Deploy app update
+
+**Note:** Grist doesn't have built-in migrations. Schema changes are manual but straightforward for a small project.
+
+### Alternative: Self-Hosted Grist for Dev
+
+If you want complete isolation, run Grist locally:
+
+```bash
+docker run -p 8484:8484 -v ~/grist-dev:/persist gristlabs/grist
+```
+
+Then access at `http://localhost:8484`. Useful for:
+- Offline development
+- Experimenting without affecting any hosted data
+- Testing destructive operations
