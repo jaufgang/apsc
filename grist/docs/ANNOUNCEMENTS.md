@@ -55,9 +55,58 @@ Simple table:
 
 ---
 
+## Newsletter
+
+The club newsletter is being revived! (Traditional name TBD - ask what it was called years ago.)
+
+### How It Works
+
+1. **Communications Director writes** the newsletter in a simple Markdown editor in the portal
+2. **Previews** the formatted version
+3. **Publishes** - newsletter goes live and email is sent to all members
+4. **Archived** for future reference
+
+### Markdown Editor
+
+Simple React Markdown editor with:
+- Live preview (side-by-side or toggle)
+- Basic formatting toolbar (bold, italic, headers, lists, links, images)
+- Image upload (stored in cloud storage, embedded in content)
+- Save draft / Publish
+- Nothing fancy - just clean, readable newsletters
+
+Libraries like `react-markdown` + `@uiw/react-md-editor` make this straightforward.
+
+### Data Model (Grist)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| id | Auto | |
+| title | Text | e.g., "Spring 2025 Issue" |
+| content | Text | Markdown content |
+| author_id | Reference | Who wrote it |
+| status | Choice | Draft / Published |
+| published_at | DateTime | |
+| email_sent | Boolean | Was email blast sent? |
+
+### For Members
+
+- See latest newsletter on dashboard (rendered Markdown)
+- Browse newsletter archive
+- Receive email when new issue is published (HTML rendered from Markdown)
+
+### For Communications Director
+
+1. Log in → Newsletter → New Issue (or edit draft)
+2. Write in Markdown editor with live preview
+3. Save as draft or Publish
+4. On publish: goes live + sends email to members
+
+---
+
 ## What We're NOT Building
 
-- **Newsletter authoring**: Just email it directly. No need for portal features.
+- **Rich text / WYSIWYG editor**: Markdown is simpler and sufficient.
 - **Document library**: Link to a Google Drive folder instead.
 - **Event calendar**: Embed Google Calendar instead.
 
