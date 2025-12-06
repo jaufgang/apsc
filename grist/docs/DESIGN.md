@@ -2,7 +2,9 @@
 
 Visual design principles and patterns for the APSC Bulletin Board.
 
-**Examples:** [View live examples](./design-examples/index.html)
+![Bulletin Board Preview](./design-examples/screenshots/bulletin-board-preview.png)
+
+**[→ View all live examples](https://htmlpreview.github.io/?https://github.com/jaufgang/apsc/blob/grist/grist/docs/design-examples/index.html)**
 
 ---
 

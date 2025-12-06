@@ -31,8 +31,7 @@ Think of it as the clubhouse bulletin board - just online.
 | [INSURANCE.md](./INSURANCE.md) | Annual insurance submission |
 | [RECIPROCAL_VISITORS.md](./RECIPROCAL_VISITORS.md) | Visitor booking system |
 | [TECHNICAL.md](./TECHNICAL.md) | Stack, auth, Grist integration |
-| [DESIGN.md](./DESIGN.md) | Visual design language |
-| [Design Examples](https://htmlpreview.github.io/?https://github.com/jaufgang/apsc/blob/grist/grist/docs/design-examples/index.html) | Live UI component previews |
+| [DESIGN.md](./DESIGN.md) | Visual design language and examples |
 | [CURRENT_SCHEMA.md](./CURRENT_SCHEMA.md) | Current Grist data model |
 | [PROPOSED_SCHEMA.md](./PROPOSED_SCHEMA.md) | Proposed schema changes |
 
